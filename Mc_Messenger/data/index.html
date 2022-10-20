@@ -5,9 +5,7 @@
 		<meta charset="utf-8">
 		<title>TEST</title>
 		<link rel='stylesheet' type='text/css' href='css/style.css'/>
-		<!--
 		<script defer src='js/main.js' type='text/javascript'></script>
-		-->
 	</head>
 	<body onload="init()">
 		<div class="tile-container">
@@ -16,31 +14,4 @@
 			<button class="tile tile-1x4" onclick="sendMessage()">Send</button>
 		</div>
 	</body>
-	<script type="text/javascript">
-		var soc;
-		function init(){
-			soc = new WebSocket('ws://' + window.location.hostname + '/ws');
-			soc.onmessage = function(event) {
-				document.getElementById("msg_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString() + " " + event.data;
-				
-				/*
-				// Send messages as JSON String is possibly the way to go?!
-				var edata = event.data;
-				var json_obj = JSON.parse(edata);
-				*/
-			}
-			/*
-			soc.onopen = function(ev){
-				soc.send("T" + Math.round((new Date()).getTime() / 1000));
-			}
-			*/
-		}
-		
-		function sendMessage(){
-			let msg = document.getElementById("msg_field").value;
-			document.getElementById("msg_field").value = "";
-			console.log(msg);
-			soc.send(msg);
-		}
-	</script>
 </html>
