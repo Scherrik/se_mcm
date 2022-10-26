@@ -5,6 +5,7 @@ body {
     font-size: 100%;
     color: white !important;
 	background: #555;
+	margin: 0;
 }
 
 button {
@@ -76,31 +77,37 @@ button:hover {
 }
 
 /* Place the navbar at the bottom of the page, and make it stick */
+/*
+.msgbox { grid-area: msgbox; }
+.btnfield { grid-area: btnfield; }
+*/
 .navbar {
   background-color: #333;
-  overflow: hidden;
+  /*overflow: hidden;*/
   position: fixed;
   bottom: 0;
   width: 100%;
   box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 90% 10%;
+  grid-template-rows: 3em 3em;
 }
 
 .navbar textarea {
-	width: 90%;
-	height: auto;
-	float: left;
+	resize: none;
+	grid-column: 1;  grid-row: span 2;	
 }
 
 /* Style the links inside the navigation bar */
 .navbar button {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-  width: auto;
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	/*padding: 14px 16px;*/
+	text-decoration: none;
+	font-size: 17px;
+	grid-column: 2;  grid-row: span 1;	
 }
 
 /* Change the color of links on hover */
@@ -109,12 +116,21 @@ button:hover {
   color: #AAA;
 }
 
+.placeholder {
+	min-height: 6em;
+	height: 6em;
+	width: 100%;
+	bottom: 0;
+	
+}
+
 /* Add a color to the active/current link */
 .navbar button.active {
   background-color: #04AA6D;
   color: white;
 }
 
+/*
 .menu { grid-area: menu; }
 .main3 { grid-area: main; }
 .footer { grid-area: footer; }
@@ -128,3 +144,4 @@ button:hover {
   gap: 10px;
   padding: 10px;
 }
+*/

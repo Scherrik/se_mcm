@@ -8,7 +8,6 @@
 		<script defer src='js/main.js' type='text/javascript'></script>
 	</head>
 	<body onload="init()">
-		<div class="grid-container">
 			<div class="tile tile-container column side">
 				<p>
 					<input type="text" class="tile" value="erik89">
@@ -23,26 +22,21 @@
 					</ul>
 				</div>
 			</div>
-			<div class="main tile" id="msg_box">
+			<div class="tile column middle" id="msg_box">
 				<h2>Welcome to Mc_Messenger</h2>
 				<p>Nearfield communication made easy!</p>
 				<br>
-				<!--
 				<div class="message"><b>You</b>@10/26/2022 12:43: Hello together!</div>
 				<br>
 				<div class="message"><b>Destrix</b>@10/26/2022 12:43: Hi!</div>
 				<br>
 				<div class="message"><b>You</b>@10/26/2022 12:43 (<b>private</b>): <b>@Scherrik</b> Why are you always so late to the lectures? :D</div>
-				-->
 			</div>
-			<div class="footer"></div>
-		
-		</div>
+			<div class="placeholder"></div>
 		<div class="navbar">
-			<form>
-				<textarea class="tile tile-3x4" onkeypress="keyPress(event)" id="msg_field"></textarea>
-				<button class="tile tile-1x4" onclick="sendMessage()">Send</button>
-			</form>
+				<textarea class="tile tile-3x4 msgbox" onkeypress="keyPress(event)" id="msg_field"></textarea>
+				<button class="tile tile-1x4 btnfield" onclick="sendMessage()">Send</button>
+				<button class="tile tile-1x4 btnfield" onclick="sendMessage()">Upload</button>
 		</div>
 	</body>
 </html>
