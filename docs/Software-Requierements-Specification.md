@@ -91,9 +91,107 @@ This allows a portable and in almost every environment implementable chat server
 ### 3.1 Functionality (all)
 This section will explain the different use cases, you could see in the Use Case Diagram, and their functionality.  
 
-#### 3.1.1 Temp1
+#### 3.1.1 Connect to AP
 DESCRIPTION
 #####Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.2 Join Chatroom/Open Website
+DESCRIPTION
+#####Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.3 Leave Chatroom
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.4 Reset Session
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.5 See Online Users
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.6 Send Message
+DESCRIPTION
+##### Precondition:
+##### Postcondition:
+Send private Message
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.7 Send private Message
+DESCRIPTION
+##### Precondition: 
+Send Message
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.8 Receive Message
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.9 Choose/Change Username
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.10 Vote Ban 
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.11 Customize Interface
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.12 Portable Chat-Host
+DESCRIPTION
+##### Precondition:
+##### Postcondition
+##### Effort estimation / story points
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.13 Battery-Status Monitoring
+DESCRIPTION
+##### Precondition:
 ##### Postcondition
 ##### Effort estimation / story points
 
