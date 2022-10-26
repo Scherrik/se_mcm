@@ -10,16 +10,36 @@ function init(){
 		var json_obj = JSON.parse(edata);
 		*/
 	}
+	
 	/*
 	soc.onopen = function(ev){
 		soc.send("T" + Math.round((new Date()).getTime() / 1000));
 	}
 	*/
+	
+	
+}
+
+function keyPress(event){
+	if(event.charCode === 13){
+		if(event.shiftKey){
+			event.preventDefault();
+			sendMessage();
+		}
+	}
 }
 
 function sendMessage(){
 	let msg = document.getElementById("msg_field").value;
 	document.getElementById("msg_field").value = "";
+	if(msg === ""){
+		console.log("Empty message, nothing to do...");
+	}
 	console.log(msg);
 	soc.send(msg);
+}
+
+function sendName(name){
+	console.log(name);
+	soc.send(name);
 }

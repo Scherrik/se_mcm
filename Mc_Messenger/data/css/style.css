@@ -1,8 +1,8 @@
 body {
-    background-color: #999;
     font-family: 'FontAwesome', Arial, Helvetica, sans-serif;
     font-size: 100%;
     color: white !important;
+	background: #555;
 }
 
 button {
@@ -19,16 +19,110 @@ button:hover {
 	border: 1px solid #222;
 	border-radius: 3px;
 	transition: all 0.5s linear;
-	background: linear-gradient(gray, black);
+	background: linear-gradient(#222, black);
 	color: #AAA;
 	height: auto;
+	min-height: 1em;
 }
 
 .tile-container {
 	display: grid;
+	width: 20em;
 	margin: 0 auto;
 	grid-gap: 5px;
 	grid-template-columns: repeat( auto-fit, 20em );
 	grid-auto-flow: row dense;
 	justify-content: space-around;
+}
+
+.msg-tile-container {
+	display: grid;
+	margin: 0 auto;
+	grid-gap: 5px;
+	grid-template-columns: repeat( auto-fit, 20em );
+	grid-auto-flow: column dense;
+	/*justify-content: space-around;*/
+}
+
+.column {
+  float: left;
+}
+
+/* Left and right column */
+.column.side {
+  width: 25%;
+}
+
+/* Middle column */
+.column.middle {
+  width: 50%;
+  height: auto;
+  min-height: 20em;
+}
+
+/* bottom column */
+.column.bottom {
+  width: 100%;
+}
+
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
+}
+
+/* Place the navbar at the bottom of the page, and make it stick */
+.navbar {
+  background-color: #333;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navbar textarea {
+	width: 90%;
+	height: auto;
+	float: left;
+}
+
+/* Style the links inside the navigation bar */
+.navbar button {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  width: auto;
+}
+
+/* Change the color of links on hover */
+.navbar button:hover {
+  background-color: #999;
+  color: #AAA;
+}
+
+/* Add a color to the active/current link */
+.navbar button.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.menu { grid-area: menu; }
+.main3 { grid-area: main; }
+.footer { grid-area: footer; }
+
+.grid-container {
+  display: inline-grid;
+  grid-template-areas:
+    'menu main main main main'
+    'menu footer footer footer footer ';
+  grid-template-columns: repeat(auto-fill, 40em);
+  gap: 10px;
+  padding: 10px;
 }
