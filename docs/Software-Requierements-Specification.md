@@ -53,7 +53,7 @@ In these situations communication gets impossible if there is no stable internet
 We want to provide an from the internet infrastructure independent and fast local bound Messenger-Service.
 
 Our goal is to implement this vison with a browser accessible webserver and the help of a microcontroller.
-This allows a portable and in almost every environment implementable chat server for everyone at that specific location. The users can use any device they want, it only needs a wifi connectibiliy and a browser. We want to provide a broadcast and private chat and the possibility for the user to select a costum username.
+This allows a portable and in almost every environment implementable chat server for everyone at that specific location. The users can use any device they want, it only needs a wifi connectibiliy and a browser. We want to provide a broadcast and private chat and the possibility for the user to select a custom username.
 
 ### 2.2 Use Case Diagram (all)
 
@@ -63,25 +63,25 @@ This allows a portable and in almost every environment implementable chat server
 ### 2.3 Technology Stack (Marcel)
 
 #### Backend:
--Hardware: ESP32 (ESP32 Wi-Fi & Bluetooth MCU I Espressif Systems)
--µC development: Arduino IDE with ESP SDK, Language: C++ Dialect (Arduino)
+- Hardware: ESP32 (ESP32 Wi-Fi & Bluetooth MCU I Espressif Systems)
+- µC development: Arduino IDE with ESP SDK, Language: C++ Dialect (Arduino)
 
 #### Frontend:
--HTML
--CSS
--JS
+- HTML
+- CSS
+- JS
 
 #### IDE:
--VisualStudio
+- VisualStudio
 
 #### Project Management:
--Jira
--GitHub
--Discord
--WordPress
+- Jira
+- GitHub
+- Discord
+- WordPress
 
 #### Deployment:
--Browser
+- Web Browser
 
 #### Testing:
 -
