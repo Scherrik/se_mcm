@@ -1,5 +1,10 @@
 /*TODO Clean up*/
 
+@font-face {
+  font-family: Font Awesome 5 Free Regular;
+  src: url(../fonts/fa-regular-400.woff2);
+}
+
 body {
     font-family: 'FontAwesome', Arial, Helvetica, sans-serif;
     font-size: 100%;
@@ -110,9 +115,18 @@ button:hover {
 	grid-column: 2;  grid-row: span 1;	
 }
 
+.navbar button.send {
+	color: blue;
+	grid-column: 2;  grid-row: span 1;	
+}  
+
+.navbar button.angry {
+	color: red;
+	grid-column: 2;  grid-row: span 1;	
+}  
 /* Change the color of links on hover */
 .navbar button:hover {
-  background-color: #999;
+  background-color: #555;
   color: #AAA;
 }
 
