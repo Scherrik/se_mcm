@@ -28,12 +28,13 @@ The main goal of this project is to connect people in the nearby environment on-
 
 The project is split into two main paths, frontend and backend development. State-of-the-art web technologies like html and javascript are used in the frontend in contrast to the backend where c++ is used.
 
-Planned services provided by the application are:
+####Planned services provided by the application are:
 
-	* Exchange (text) messages:
-		Of course it's the essential part for a messenger project.
-	* Provide a list of chat participants for each user
-	* Set own username on-the-fly
+* Exchange (text) messages:
+	Of course it's the essential part for a messenger project.
+* Provide a list of chat participants for each user
+* Set own username on-the-fly
+* Get information about the health status of the µC
 
 
 ### 1.3 Definitions, Acronyms and Abbreviations (Erik S)
