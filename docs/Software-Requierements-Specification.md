@@ -18,7 +18,7 @@
 
 ## 1. Introduction
 
-### 1.1 Purpose (Marcel)
+### 1.1 Purpose (Marcel done)
 This Software Requirements Specification (SRS) describes all specifications for our Project "MC-Messenger". 
 It includes an overview about this project, its vision, requirements and their specific use-cases. 
 
@@ -33,7 +33,7 @@ It includes an overview about this project, its vision, requirements and their s
 | UC          | Use Case                               |
 
 
-### 1.4 References
+### 1.4 References (done)
 
 | Title                                                              | Date       | Publishing organization   |
 | -------------------------------------------------------------------|:----------:| ------------------------- |
@@ -46,7 +46,7 @@ The following chapter provides an overview of this project with vision and Overa
     
 ## 2. Overall Description
 
-### 2.1 Vision (Erik G)
+### 2.1 Vision (Marcel, done)
 Humans have the need to communicate. Today most of the communication is done via messenging services on the internet. If we can’t directly communicate verbaly we heavily dependent on good and fast internet services.
 But: We also find ourselfes in environments where we are not allowed to speak or the situation makes it very difficult to communciate in private (e.g. school, university, library, industrial fairs, plane/train/bus, disco, loud bar).
 In these situations communication gets impossible if there is no stable internet connection.
@@ -57,7 +57,7 @@ This allows a portable and in almost every environment implementable chat server
 
 ### 2.2 Use Case Diagram (all)
 
-![OUCD](./UseCaseDiagramMCM.png)
+![OUCD](./img/UML_MCM.png)
 
 
 ### 2.3 Technology Stack (Marcel)
