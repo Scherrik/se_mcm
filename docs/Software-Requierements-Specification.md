@@ -93,118 +93,137 @@ This allows a portable and in almost every environment implementable chat server
 This section will explain the different use cases, you could see in the Use Case Diagram, and their functionality.  
 
 #### 3.1.1 Connect to AP
-This function is fundamental for the user to use the application. The user needs to connect to the wifi network without having a technical background or special skills. This should happen as automatically as possible. For mobile phones a QR-Code will be provided which can be scanned to add the wifi to the users phone. As an alternative the user needs to select the wifi manually. The wifi can be configures to be private (with password) or public depending of the purpose and location.
+This function is fundamental for the user to use the application. The user needs to connect to the wifi network without having a technical background or special skills. This should happen as automatically as possible. For mobile phones a QR-Code will be provided which can be scanned to add the wifi to the users phone. As an alternative the user needs to select the wifi manually. The wifi can be configured to be private (with password) or public depending of the purpose and location.
 ##### Postcondition
-- Join Chatroom/Open Website
+- Join chatroom/Open website
+##### Postcondition
+/
 ##### Story points: 1
 
 [Connect to AP TEMP:(Pfad zum MockupBild in Git- screenshot QR code/windows wifi window?)](./use_cases/temp1.md)
 
-#### 3.1.2 Join Chatroom/Open Website
-After connecting to the wifi the user needs to be guided to the Webpage of the Messenger. This can happen automatically on mobile devices. On Laptops or other devices the user may need to open the pange manually. A short and easy to remember url needs to be individually configured on the MC. 
+#### 3.1.2 Join chatroom/Open website
+After connecting to the wifi the user needs to be guided to the webpage of the messenger. This can happen automatically on mobile devices. On laptops or other devices the user may need to open the pange manually. A short and easy to remember url needs to be individually configured on the MC. 
 ##### Precondition:
 - Connect to AP
+#### Postcondition:
+- Choose/Change username
 ##### Story points: 1
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.3 Leave Chatroom
-The user can leave/close a specific chat chatroom by pressing the (X) Button on the top right of the chhat window or closing the browser window.
+#### 3.1.3 Leave chatroom
+The user can leave/close a specific chat chatroom by pressing the (X) Button on the top right of the chat window or by closing the browser window.
 ##### Precondition:
-- Join Chatroom/Open Website
-##### Story points
-1
+- Join chatroom/Open website
+##### Postcondition
+/
+##### Story points: 1
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.4 Reset Session
+#### 3.1.4 Choose/Change username
+After opening the application page the user needs to select a username which will be displayed to other users. The user can also change his username during the session. A carefull evaluation to avoid abuse of this feature may be needed.
+##### Precondition:
+- Join chatroom/Open website
+##### Postcondition
+/
+##### Story points: 2
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.5 Reset session
 THe user will be able to reset his session with a dedicated button or by reloading the page. Resetting means all the chats will be reloaded and the local chatlog will be cleared
 ##### Precondition:
-- Join Chatroom/Open Website
+- Join chatroom/Open website
+##### Postcondition
+/
 ##### Story points: 1
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.5 See Online Users
+#### 3.1.6 See online users
 On the left side of the screen the user can see a list of all the currently online users and their usernames. The list can be minimized with a button.
 ##### Precondition:
-- Join Chatroom/Open Website
+- Join chatroom/Open website
+##### Postcondition
+/
 ##### Story points: 3
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.6 Send Message
-After opening the page and selecting a username the user joins the public chat automatically. The User can type a message in a text box on the buttom and send the message with the "Send" button next or below the chat box.
+#### 3.1.7 Send message
+After opening the page and selecting a username the user joins the public chat automatically. The User can type a message in a text box on the buttom and send the message with the "Send" button next or below the chat box. In the chat of the sender the message is displayed with a different colour and diffferent position in chat.
 ##### Precondition:
-- Join Chatroom/Open Website
-- Choose/Change Username
+- Join chatroom/Open website
+- Choose/Change username
 ##### Postcondition:
-Send private Message
+Send private message
 ##### Story points: 5
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.7 Send private Message
-The user can also send private messages by selecting an online user in the described list on the left. A new chat opens on the right side. The window can also be opened in a seperate Browser Tab. The user can jump between chats by selecting a user or global chat on the left.
+#### 3.1.8 Send private message
+The user can also send private messages by selecting an online user in the described list on the left. A new chat opens on the right side. The window can also be opened in a seperate browser tab. The user can jump between chats by selecting a user or global chat on the left.
 ##### Precondition: 
-- Join Chatroom/Open Website
-- Choose/Change Username
-- Send Message
-- See Online Users
+- Join chatroom/Open website
+- Choose/Change username
+- Send message
+- See online users
+##### Postcondition
+/
 ##### Story points: 5
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.8 Receive Message
-The user can receive messages which are displayed in the correct chatroom. The username of the sending user and a time stamp will be shown next to the message. A chatroom ( the list on the left side of the screen) which has unread messages will will be marked with a colored marking.
+#### 3.1.9 Receive message
+The user can receive messages which are displayed in the correct chatroom. The username of the sending user and a time stamp will be shown next to the message. A chatroom (the list on the left side of the screen) which has unread messages will will be marked with a colored marking.
 ##### Precondition:
-- Join Chatroom/Open Website
-- Choose/Change Username
-- See Online Users
+- Join chatroom/Open website
+- Choose/Change username
+- See online users
 ##### Story points: 6
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.9 Choose/Change Username
-DESCRIPTION
+#### 3.1.10 Vote ban 
+In case of bad behaviour users have the ability to vote ban a misbehaving user. The user can rightclick a name and select "vote to ban". Other users in tis chatroom get a notification and can vote between "yes" and "no".
 ##### Precondition:
-Join Chatroom/Open Website
+- Join chatroom/Open website
 ##### Postcondition
+/
+##### Story points: 3
+
+[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+
+#### 3.1.11 Customize interface
+The user gets the ability to customize his user interface. They can select different modes and colors under the settings tab. The settings can be accessed with the gear button on the top right.  
+##### Precondition:
+- Join chatroom/Open website
+- Select username
+##### Postcondition
+/
 ##### Effort estimation / story points
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.10 Vote Ban 
-DESCRIPTION
+#### 3.1.12 Portable chat-host
+The deliver the independent portable feature the entire services will run on a MicroController (MC). The MC is equipt with a strong portable battery. This battery needs to be monitored and charged regularly.
 ##### Precondition:
-Join Chatroom/Open Website
+/
 ##### Postcondition
-##### Effort estimation / story points
+- Battery-status monitoring
+##### Story points: 2
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Vielleicht bild vom MC? oder weglassen TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
-#### 3.1.11 Customize Interface
-DESCRIPTION
+#### 3.1.13 Battery-status monitoring
+The battery needs to be monitored. There are many options available. A seperat admin gui with password security or information emails in regular intervalls would be possible. A solution is tbd.
 ##### Precondition:
-Join Chatroom/Open Website
+Portable chat-host
 ##### Postcondition
-##### Effort estimation / story points
-
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
-
-#### 3.1.12 Portable Chat-Host
-DESCRIPTION
-##### Precondition:
-##### Postcondition
-##### Effort estimation / story points
-
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
-
-#### 3.1.13 Battery-Status Monitoring
-DESCRIPTION
-##### Precondition:
-##### Postcondition
-##### Effort estimation / story points
+/
+##### Story points: 3
 
 [TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
 
