@@ -244,6 +244,3 @@ The Team Members are:
 - Erik Günther
 - Erik Schneider
 - Tim Nau
-
-<!-- Picture-Link definitions: -->
-[OUCD]: https://github.com/IB-KA/CommonPlayground/blob/master/UseCaseDiagramCP.png "Overall Use Case Diagram"
