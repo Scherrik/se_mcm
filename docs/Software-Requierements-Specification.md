@@ -22,7 +22,7 @@
 This Software Requirements Specification (SRS) document describes all requirements specifications for our Project "MC-Messenger". 
 It includes an overview about this project, its vision, requirements and their specific use-cases. 
 
-### 1.2 Scope (Erik G)
+### 1.2 Scope
 
 The main goal of this project is to connect people in the nearby environment on-the-fly and in a non-binding context. Everybody should be able to easily connect and be part of the Mc_Messenger community without a complicated registration process.
 
@@ -37,7 +37,7 @@ The project is split into two main paths, frontend and backend development. Stat
 * Get information about the health status of the µC
 
 
-### 1.3 Definitions, Acronyms and Abbreviations (Erik S)
+### 1.3 Definitions, Acronyms and Abbreviations
 | Abbrevation | Explanation                            |
 | ----------- | -------------------------------------- |
 | AP          | Access Point (Wifi)                    |
@@ -112,7 +112,7 @@ This function is fundamental for the user to use the application. The user needs
 /
 ##### Story points: 1
 
-[Connect to AP TEMP:(Pfad zum MockupBild in Git- screenshot QR code/windows wifi window?)](./use_cases/temp1.md)
+[Mockup: Connect to AP](./img/Connect_to_AP_MOC.png)
 
 #### 3.1.2 Join chatroom/Open website
 After connecting to the wifi the user needs to be guided to the webpage of the messenger. This can happen automatically on mobile devices. On laptops or other devices the user may need to open the pange manually. A short and easy to remember url needs to be individually configured on the MC. 
@@ -122,7 +122,7 @@ After connecting to the wifi the user needs to be guided to the webpage of the m
 - Choose/Change username
 ##### Story points: 1
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: Join chatroom/Open Website](./img/Open_Website_MOC.png)
 
 #### 3.1.3 Leave chatroom
 The user can leave/close a specific chat chatroom by pressing the (X) Button on the top right of the chat window or by closing the browser window.
@@ -132,7 +132,7 @@ The user can leave/close a specific chat chatroom by pressing the (X) Button on 
 /
 ##### Story points: 1
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: Leave chatroom](./img/Leave_chatroom_MOC.png)
 
 #### 3.1.4 Choose/Change username
 After opening the application page the user needs to select a username which will be displayed to other users. The user can also change his username during the session. A carefull evaluation to avoid abuse of this feature may be needed.
@@ -142,7 +142,7 @@ After opening the application page the user needs to select a username which wil
 /
 ##### Story points: 2
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: Choose/Change username](./img/See_Users_MOC.png)
 
 #### 3.1.5 Reset session
 THe user will be able to reset his session with a dedicated button or by reloading the page. Resetting means all the chats will be reloaded and the local chatlog will be cleared
@@ -152,7 +152,7 @@ THe user will be able to reset his session with a dedicated button or by reloadi
 /
 ##### Story points: 1
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[No Mockup available yet]
 
 #### 3.1.6 See online users
 On the left side of the screen the user can see a list of all the currently online users and their usernames. The list can be minimized with a button.
@@ -162,10 +162,10 @@ On the left side of the screen the user can see a list of all the currently onli
 /
 ##### Story points: 3
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: See online users](./img/See_Users_MOC.png)
 
 #### 3.1.7 Send message
-After opening the page and selecting a username the user joins the public chat automatically. The User can type a message in a text box on the buttom and send the message with the "Send" button next or below the chat box. In the chat of the sender the message is displayed with a different colour and diffferent position in chat.
+After opening the page and selecting a username the user joins the public chat automatically. The User can type a message in a text box on the buttom and send the message with the "Send" button next or below the chat box. The sender gets his message displayed with a @you in front of it.
 ##### Precondition:
 - Join chatroom/Open website
 - Choose/Change username
@@ -173,7 +173,7 @@ After opening the page and selecting a username the user joins the public chat a
 Send private message
 ##### Story points: 5
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: Send message](./img/Send_MOC.png)
 
 #### 3.1.8 Send private message
 The user can also send private messages by selecting an online user in the described list on the left. A new chat opens on the right side. The window can also be opened in a seperate browser tab. The user can jump between chats by selecting a user or global chat on the left.
@@ -186,17 +186,17 @@ The user can also send private messages by selecting an online user in the descr
 /
 ##### Story points: 5
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: Send private message](./img/Send_Private_Message_MOC.png)
 
 #### 3.1.9 Receive message
-The user can receive messages which are displayed in the correct chatroom. The username of the sending user and a time stamp will be shown next to the message. A chatroom (the list on the left side of the screen) which has unread messages will will be marked with a colored marking.
+The user can receive messages which are displayed in the correct chatroom. The username of the sending user and a time stamp will be shown next to the message. A chatroom (the list next to the chat window) which has unread messages will be marked with a colored marking.
 ##### Precondition:
 - Join chatroom/Open website
 - Choose/Change username
 - See online users
 ##### Story points: 6
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[Mockup: Receive message](./img/Receive_message_MOC.png)
 
 #### 3.1.10 Vote ban 
 In case of bad behaviour users have the ability to vote ban a misbehaving user. The user can rightclick a name and select "vote to ban". Other users in tis chatroom get a notification and can vote between "yes" and "no".
@@ -206,7 +206,7 @@ In case of bad behaviour users have the ability to vote ban a misbehaving user. 
 /
 ##### Story points: 3
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[No mockup available yet]
 
 #### 3.1.11 Customize interface
 The user gets the ability to customize his user interface. They can select different modes and colors under the settings tab. The settings can be accessed with the gear button on the top right.  
@@ -217,7 +217,7 @@ The user gets the ability to customize his user interface. They can select diffe
 /
 ##### Effort estimation / story points
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[No Mockup available yet]
 
 #### 3.1.12 Portable chat-host
 The deliver the independent portable feature the entire services will run on a MicroController (MC). The MC is equipt with a strong portable battery. This battery needs to be monitored and charged regularly.
@@ -227,17 +227,15 @@ The deliver the independent portable feature the entire services will run on a M
 - Battery-status monitoring
 ##### Story points: 2
 
-[Vielleicht bild vom MC? oder weglassen TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
-
 #### 3.1.13 Battery-status monitoring
-The battery needs to be monitored. There are many options available. A seperat admin gui with password security or information emails in regular intervalls would be possible. A solution is tbd.
+This is an administration use case. The battery needs to be monitored. There are many options available. A seperat admin gui with password security or information emails in regular intervalls would be possible. A solution is tbd.
 ##### Precondition:
 Portable chat-host
 ##### Postcondition
 /
 ##### Story points: 3
 
-[TEMP: Link zum Mockup oder direkt einfügen](./use_cases/temp1.md)
+[No mockup available yet]
 
 ## 4. Supporting Information
 For any further information you can contact the MC-Messenger Team or check our [Blog](https://semcmessenger.wordpress.com). 
