@@ -174,6 +174,9 @@ Send private message
 ##### Story points: 5
 
 [Mockup: Send message](./img/Send_MOC.png)
+##### Activity Diagram:
+![OUCD](./img/ActivitySendMessage.png)
+
 
 #### 3.1.8 Send private message
 The user can also send private messages by selecting an online user in the described list. A new chat opens on the right side. The window can also be opened in a seperate browser tab. The user can jump between chats by selecting a user or global chat on the left.
@@ -195,6 +198,8 @@ The user can receive messages which are displayed in the correct chatroom. The u
 - Choose/Change username
 - See online users
 ##### Story points: 6
+##### Activity Diagram:
+![OUCD](./img/ActivityReceiveMessage.png)
 
 [Mockup: Receive message](./img/Receive_Messages_MOC.png)
 
@@ -207,6 +212,9 @@ In case of bad behaviour users have the ability to vote ban a misbehaving user. 
 ##### Story points: 3
 
 [No mockup available yet]
+
+##### Activity Diagram:
+![OUCD](./img/Activity_diagram_voteban.png)
 
 #### 3.1.11 Customize interface
 The user gets the ability to customize his user interface. They can select different modes and colors under the settings tab. The settings can be accessed with the gear button on the top right.  
