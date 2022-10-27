@@ -155,7 +155,7 @@ THe user will be able to reset his session with a dedicated button or by reloadi
 [No Mockup available yet]
 
 #### 3.1.6 See online users
-On the left side of the screen the user can see a list of all the currently online users and their usernames. The list can be minimized with a button.
+On the top (or costumizable on the left) of the screen the user can see a list of all the currently online users and their usernames. The list can be minimized with a button.
 ##### Precondition:
 - Join chatroom/Open website
 ##### Postcondition
@@ -176,7 +176,7 @@ Send private message
 [Mockup: Send message](./img/Send_MOC.png)
 
 #### 3.1.8 Send private message
-The user can also send private messages by selecting an online user in the described list on the left. A new chat opens on the right side. The window can also be opened in a seperate browser tab. The user can jump between chats by selecting a user or global chat on the left.
+The user can also send private messages by selecting an online user in the described list. A new chat opens on the right side. The window can also be opened in a seperate browser tab. The user can jump between chats by selecting a user or global chat on the left.
 ##### Precondition: 
 - Join chatroom/Open website
 - Choose/Change username
@@ -196,7 +196,7 @@ The user can receive messages which are displayed in the correct chatroom. The u
 - See online users
 ##### Story points: 6
 
-[Mockup: Receive message](./img/Receive_message_MOC.png)
+[Mockup: Receive message](./img/Receive_Messages_MOC.png)
 
 #### 3.1.10 Vote ban 
 In case of bad behaviour users have the ability to vote ban a misbehaving user. The user can rightclick a name and select "vote to ban". Other users in tis chatroom get a notification and can vote between "yes" and "no".
