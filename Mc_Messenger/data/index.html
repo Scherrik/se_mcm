@@ -9,35 +9,38 @@
 		<script defer src='js/main.js' type='text/javascript'></script>
 	</head>
 	<body onload="init()">
-			<div class="tile tile-container column side">
-				<p>
-					<input type="text" class="tile" value="erik89">
-					<button class="tile" onclick="sendName(this.previousElementSibling.text)">Set name</button>
-				</p>
-				<div>
-					Users online (2/3)
-					<ul>
-						<li style="color: green">Scherrik</li>
-						<li style="color: green">Marcel_Cellus</li>
-						<li style="color: yellow">Destrix</li>
-					</ul>
-				</div>
+		<div class="frame" id="frame">
+
+			<div class="statusbar headline">MC-Messenger
+					<div id="lines" onclick="showmenu()"></div>	
 			</div>
-			<div class="tile column middle" id="msg_box">
-				<h2>Welcome to Mc_Messenger</h2>
-				<p>Nearfield communication made easy!</p>
-				<br>
-				<div class="message"><b>You</b>@10/26/2022 12:43: Hello together!</div>
-				<br>
-				<div class="message"><b>Destrix</b>@10/26/2022 12:43: Hi!</div>
-				<br>
-				<div class="message"><b>You</b>@10/26/2022 12:43 (<b>private</b>): <b>@Scherrik</b> Why are you always so late to the lectures? :D</div>
+
+			<div class="users ">Users
+				<button onclick="adduser()">Add</button>
+				<button onclick="removeuser()">Remove</button>
+				<input type="text" id="testuser"><br>
+				<div id="userlist"></div>
 			</div>
-			<div class="placeholder"></div>
-		<div class="navbar">
-				<textarea class="tile tile-3x4 msgbox" onkeypress="keyPress(event)" id="msg_field"></textarea>
-				<button class="tile tile-1x4 send far" onclick="sendMessage()">&#xf1d8;</button>
-				<button class="tile tile-1x4 angry far" onclick="sendMessage()">&#xf556;</button>
+
+			<div class="chat_box" id="chat_box">Chatbox</div>
+
+			<div class="msg_box" id="msg_box">
+				<textarea class="msg_input"></textarea>
+				<button class="msg_send far">&#xf1d8;</button>
+				<button class="msg_angry far">&#xf556;</button>
+			</div>
+			<div class="menu" id="menu">
+				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)"><button class="menu_button" onclick="expand_menu(id)">Votes</button></div>
+				<div class="menu_votes_content menu_entry">Content of Votes</div>
+
+				<div class="menu_leader menu_entry" id="menu_leader" onclick="expand_menu(id)"><button class="menu_button" onclick="expand_menu(id)">Leader</button></div>
+				<div class="menu_leader_content menu_entry">Content of Leader</div>
+				
+				<div class="menu_files menu_entry" id="menu_files" onclick="expand_menu(id)"><button class="menu_button" onclick="expand_menu(id)">Files</button></div>
+				<div class="menu_leader_content menu_entry">Content of Files</div>
+
+				<div class="menu_sysinfo menu_entry" id="sysinfo">sysinfo</div>
+			</div>
 		</div>
 	</body>
 </html>
