@@ -2,7 +2,7 @@
 #ifndef LINKEDLIST_HPP
 #define LINKEDLIST_HPP
 
-
+#include <cstddef>
 
 template <class T>
 class Node

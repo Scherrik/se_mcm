@@ -8,6 +8,11 @@ class Message
 private:
 protected:
 public:
+	enum {
+		SERVER,
+		CLIENT,
+		BROADCAST
+	} type;
     //ctor
     Message();
     //dtor
