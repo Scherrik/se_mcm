@@ -1,9 +1,0 @@
-version: '3.9'
-services:
-  apache:
-    image: httpd:latest
-    container_name: mc-messenger
-    ports:
-    - '8080:80'
-    volumes:
-    - ./Mc_Messenger/data:/usr/local/apache2/htdocs
