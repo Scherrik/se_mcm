@@ -1,42 +1,58 @@
 var soc;
+const db = new Map();
 function init(){
 	soc = new WebSocket('ws://' + window.location.hostname + '/ws');
 	soc.onmessage = function(event) {
-		document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString() + " " + event.data;
-		
-		/*
+
 		// Send messages as JSON String is possibly the way to go?!
-		var edata = event.data;
-		var json_obj = JSON.parse(edata);
-		*/
+		var json_obj = JSON.parse(event.data);
+		if(json_obj["type"].contains("msg")){
+			console.log(json_obj);
+			printMessage(json_obj);
+		}
+		else if(json_obj["type"].contains("db")){
+			console.log(json_obj);
+			syncdb(json_obj);
+		}
 	}
+	
 	
 	/*
 	soc.onopen = function(ev){
 		soc.send("T" + Math.round((new Date()).getTime() / 1000));
 	}
 	*/
-	
-	
 }
 
-function keyPress(event){
-	if(event.charCode === 13){
-		if(event.shiftKey){
-			event.preventDefault();
-			sendMessage();
-		}
-	}
+function syncdb(json_obj){
+	console.log();
+	//Code to sync database
+}
+
+function printMessage(json_obj){
+	document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString()  + " " + json_obj["sender"] + " " + json_obj["data"]["msg"];
 }
 
 function sendMessage(){
-	let msg = document.getElementById("msg_field").value;
-	document.getElementById("msg_field").value = "";
+	let msg = document.getElementById("msg_input").value;
+	document.getElementById("msg_input").value = "";
 	if(msg === ""){
 		console.log("Empty message, nothing to do...");
+		return;
 	}
 	console.log(msg);
-	soc.send(msg);
+
+	//define variables
+	let obj ={
+		"sender":username,
+		"receiver":receiver,
+		"data":{
+			"msg":msg,
+			"flags":flags,
+			"color":color,
+		}
+	}
+	soc.send(JSON.stringify(obj));
 }
 
 function sendName(name){
@@ -81,3 +97,22 @@ function removeuser(){
 function expand_menu(selector){
 	document.getElementById("menu").classList.toggle(selector + "_show");
 }
+function test_message(){
+	var msg = document.getElementById("msg_input").value;
+	msg = msg.replaceAll("\n","<br>");
+	document.getElementById("msg_input").value = "";
+	console.log(msg);
+	document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString() + " " + msg;
+}
+
+var input = document.getElementById("msg_input");
+input.addEventListener("keypress", function(event){
+	if(event.key == "Enter" && event.shiftKey){
+		event.preventDefault();
+		input.value = input.value + "\r\n";
+	}
+	else if(event.keyCode == 13){
+			event.preventDefault();
+			test_message();
+	}
+});
