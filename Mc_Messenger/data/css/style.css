@@ -47,7 +47,8 @@ body{
 			outline: black solid 0px;
 			box-shadow: inset 1px 1px 7px black;
 			padding: 20px;
-			overflow: hidden;
+			overflow-x: hidden;
+			overflow-y: scroll;
 }
 .msg_box { grid-area: 3 / 2 / 4 / 3;
 			outline: black solid 0px;

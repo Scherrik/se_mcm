@@ -15,7 +15,11 @@ function init(){
 			syncdb(json_obj);
 		}
 	}
-	
+
+	// Default Var
+	username = "Default"; // + Userid
+	color = "black";
+	username_colored = username.fontcolor(color);
 	
 	/*
 	soc.onopen = function(ev){
@@ -52,6 +56,7 @@ function sendMessage(){
 			"color":color,
 		}
 	}
+	console.log(obj);
 	soc.send(JSON.stringify(obj));
 }
 
@@ -60,19 +65,11 @@ function sendName(name){
 	soc.send(name);
 }
 
-function darkmode(){
-	document.body.classList.toggle("dark-mode");
-	var test = document.querySelectorAll(".tile");
-	test.forEach(x => x.classList.toggle("dark-mode"));
-}
-function angrymode(){
-	document.body.classList.toggle("angry-mode");
-	var test = document.querySelectorAll(".tile");
-	test.forEach(x => x.classList.toggle("angry-mode"));
-}
-
 function showmenu(){
 	document.getElementById("frame").classList.toggle("adjustframe");
+}
+function expand_menu(selector){
+	document.getElementById("menu").classList.toggle(selector + "_show");
 }
 
 function adduser(){
@@ -87,22 +84,10 @@ function adduser(){
 	}
 	
 }
-
 function removeuser(){
 	var username = document.getElementById("testuser").value;
 	var entry = document.getElementById(username);
 	entry.remove();
-}
-
-function expand_menu(selector){
-	document.getElementById("menu").classList.toggle(selector + "_show");
-}
-function test_message(){
-	var msg = document.getElementById("msg_input").value;
-	msg = msg.replaceAll("\n","<br>");
-	document.getElementById("msg_input").value = "";
-	console.log(msg);
-	document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString() + " " + msg;
 }
 
 var input = document.getElementById("msg_input");
@@ -116,3 +101,31 @@ input.addEventListener("keypress", function(event){
 			test_message();
 	}
 });
+
+function test_message(){
+	var msg = document.getElementById("msg_input").value;
+	console.log(msg);
+	msg = String(msg.replaceAll("\n","<br>")).fontcolor(color);
+	document.getElementById("msg_input").value = "";
+	document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString() + " " + username_colored + ": " + msg;
+}
+
+//color selector + update color
+var color = document.getElementById("user_color");
+color.addEventListener("change", function(event){
+	color = event.target.value;
+	console.log("Color updated: " + color);
+	username_colored = username.fontcolor(color);
+});
+
+//not in use
+function darkmode(){
+	document.body.classList.toggle("dark-mode");
+	var test = document.querySelectorAll(".tile");
+	test.forEach(x => x.classList.toggle("dark-mode"));
+}
+function angrymode(){
+	document.body.classList.toggle("angry-mode");
+	var test = document.querySelectorAll(".tile");
+	test.forEach(x => x.classList.toggle("angry-mode"));
+}
