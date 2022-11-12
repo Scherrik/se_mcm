@@ -73,6 +73,18 @@ void ConnectionHandler::initServer(const char* hostname)
 		request->send(response);
 	});
 	
+	server.on("/css/regular.css", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/css/regular.css"), PSTR("text/css"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
+	
+	server.on("/fonts/fa-regular-400.woff2", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/fonts/fa-regular-400.woff2"), PSTR("font/woff2"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
+	
 	server.on("/js/main.js", HTTP_GET, [](AsyncWebServerRequest *request){
 		auto response = request->beginResponse(LittleFS, PSTR("/js/main.js"), PSTR("text/js"));
 		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
