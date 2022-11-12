@@ -11,6 +11,7 @@ struct User {
 	std::string pk;
 	std::string name;
 	
+	/*
 	union {
 		uint8_t flags;
 		struct {
@@ -18,22 +19,34 @@ struct User {
 			uint8_t isAngry:1;
 			uint8_t isHungry:1;
 		};
-	};	
+	};
+	*/ 	
 };
 
 class UserDatabase 
 {
 private:
+	static UserDatabase* m_instance;
+
 	LinkedList<User> users;
-protected:
-public:
+    
     //ctor
     UserDatabase();
     //dtor
     ~UserDatabase();
+protected:
+public:
+	static UserDatabase* const instance(){
+		if(m_instance == nullptr){
+			m_instance = new UserDatabase();
+		}
+		return m_instance;
+	}
+    
+    void add(int cid);
+    void remove(int cid);
     
     void add(const User& user);
     void update(const User& user);
-    void remove(int cid);
 };
 #endif //USERDATABASE_HPP

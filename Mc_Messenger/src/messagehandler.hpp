@@ -2,18 +2,41 @@
 #ifndef MESSAGEHANDLER_HPP
 #define MESSAGEHANDLER_HPP
 
+#include "message.hpp"
+
 
 class MessageHandler 
 {
 private:
-protected:
-public:
-    //ctor
+	static MessageHandler* m_instance;
+	
+	//ctor
     MessageHandler();
     //dtor
     ~MessageHandler();
-        
-    //inherited functions
+    
+protected:
+public:
+    
+    static MessageHandler* const instance(){
+		if(m_instance == nullptr) m_instance = new MessageHandler();
+		return m_instance;
+	}
+    
+    
+    template <class MessageEnum>
+    const char* createMessage(MessageEnum e)
+    {
+		switch(e)
+		{
+			case Message::CHAT:
+			return "CHAT MESSAGE";
+			case Message::POLL:
+			return "POLL MESSAGE";
+			case Message::DATABASE:
+			return "DB MESSAGE";
+		}
+	}
 
 };
 #endif //MESSAGEHANDLER_HPP

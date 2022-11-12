@@ -9,10 +9,10 @@ private:
 protected:
 public:
 	enum {
-		SERVER,
-		CLIENT,
-		BROADCAST
-	} type;
+		CHAT,
+		POLL,
+		DATABASE
+	};
     //ctor
     Message();
     //dtor

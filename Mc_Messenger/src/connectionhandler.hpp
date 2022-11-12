@@ -22,7 +22,7 @@
 class ConnectionHandler 
 {
 private:
-	static ConnectionHandler* s_connhandle;
+	static ConnectionHandler* m_instance;
 
 	//AsyncWebServer server;
 	//AsyncWebSocket ws;
@@ -42,8 +42,8 @@ private:
 protected:
 public:
 	static ConnectionHandler* const instance(){
-		if(s_connhandle == nullptr) s_connhandle = new ConnectionHandler();
-		return s_connhandle;
+		if(m_instance == nullptr) m_instance = new ConnectionHandler();
+		return m_instance;
 	}
     //ctor
     //

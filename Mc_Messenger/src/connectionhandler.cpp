@@ -1,9 +1,10 @@
 /*generated file connectionhandler.cpp*/
 #include "connectionhandler.hpp"
+#include "messagehandler.hpp"
 
 #define FS_FORMAT_ON_FAILURE true
 
-ConnectionHandler* ConnectionHandler::s_connhandle = nullptr;
+ConnectionHandler* ConnectionHandler::m_instance = nullptr;
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
@@ -20,6 +21,7 @@ void /*ConnectionHandler::*/notFound(AsyncWebServerRequest *request) {
 void /*ConnectionHandler::*/onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *payload, size_t len){
 	if(type == WS_EVT_CONNECT){
         log_d("Websocket client connection received");
+        ws.text(client->id(), MessageHandler::instance()->createMessage(Message::DATABASE));
     } else if(type == WS_EVT_DISCONNECT){
         log_d("Client disconnected");
     } else if(type == WS_EVT_DATA){
