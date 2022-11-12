@@ -70,6 +70,15 @@ body{
 	grid-area: 2 / 2 / 3 / 3;
 }
 
+p.msg_block{
+	margin: 4px;
+}
+
+p.msg_block:hover{
+	background: darkgrey;
+	cursor: pointer;
+}
+
 
 /* Menu button */
 #lines { 

@@ -1,65 +1,109 @@
-var soc;
+
+const FLAG_TEST_LOCAL = true;
+
 const db = new Map();
+var soc;
+
+class User {
+	constructor(id, pkey, name, color) {
+		this.id = id;
+		this.pkey = pkey;
+		this.name = name;
+		this.color = color;
+		this.isAngry = false;
+	}
+	static EmptyInstance(){
+		return new User(-1, "", "Default", "black");
+	}
+	static InstanceWNameAndColor(name, color){
+		return new User(-1, "", name, color);
+	} 
+}
+const myUser = User.EmptyInstance();
+
+class MessageHandler{
+	constructor(){
+	}
+	
+	create(rcvr, msg, flags){
+		return {
+			"sender": myUser.name,
+			"receiver": rcvr,
+			"type": "msg",
+			"data":{
+				"msg": msg,
+				"flags": flags,
+				"color": myUser.color,
+			}
+		};
+	}
+	
+	print(obj){
+		let box = document.getElementById("chat_box");
+		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
+												 + obj["sender"].fontcolor(obj["data"]["color"]) + ": " 
+												 + obj["data"]["msg"].replace("\n", "<br>")
+												 + "</p>";
+		
+		box.scrollTop = box.scrollHeight;
+	
+	}
+	send(){
+		let msg = document.getElementById("msg_input").value;
+		
+		if(isEmpty(msg)){
+			console.log("Empty message, nothing to do...");
+			return;
+		}
+		document.getElementById("msg_input").value = "";
+		
+		if(FLAG_TEST_LOCAL){
+			test_message(msg);
+		}
+		
+		console.log(msg);
+		let obj = messageHandler.create("Default", msg, 0);
+		console.log(obj);
+		soc.send(JSON.stringify(obj));
+	}
+	syncDB(obj){
+		console.log();
+		//Code to sync database
+	}
+}
+const messageHandler = new MessageHandler();
+Object.freeze(messageHandler);
+//export default messageHandler;
+
+function isEmpty(str){
+	return (!str || str.trim().length === 0);
+}
+
 function init(){
 	soc = new WebSocket('ws://' + window.location.hostname + '/ws');
 	soc.onmessage = function(event) {
-
-		// Send messages as JSON String is possibly the way to go?!
+		console.debug("MSG: " + event.data);
+		// Send messages as JSON String is possibly the way to go?! Yes it is!
 		var json_obj = JSON.parse(event.data);
-		if(json_obj["type"].contains("msg")){
-			console.log(json_obj);
-			printMessage(json_obj);
+		switch (json_obj["type"]) {
+			case "db":
+				console.log(json_obj);
+				messageHandler.syncDB(json_obj);
+			break;
+			case "msg":
+				console.log(json_obj);
+				messageHandler.print(json_obj);
+			break;
+			case "poll":
+			break;
+			default:
+			break;
 		}
-		else if(json_obj["type"].contains("db")){
-			console.log(json_obj);
-			syncdb(json_obj);
-		}
+		
 	}
-
-	// Default Var
-	username = "Default"; // + Userid
-	color = "black";
-	username_colored = username.fontcolor(color);
-	
-	/*
-	soc.onopen = function(ev){
-		soc.send("T" + Math.round((new Date()).getTime() / 1000));
-	}
-	*/
 }
 
-function syncdb(json_obj){
-	console.log();
-	//Code to sync database
-}
-
-function printMessage(json_obj){
-	document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString()  + " " + json_obj["sender"] + " " + json_obj["data"]["msg"];
-}
-
-function sendMessage(){
-	let msg = document.getElementById("msg_input").value;
-	document.getElementById("msg_input").value = "";
-	if(msg === ""){
-		console.log("Empty message, nothing to do...");
-		return;
-	}
-	console.log(msg);
-
-	//define variables
-	let obj ={
-		"sender":username,
-		"receiver":receiver,
-		"data":{
-			"msg":msg,
-			"flags":flags,
-			"color":color,
-		}
-	}
-	console.log(obj);
-	soc.send(JSON.stringify(obj));
-}
-
+// Do we need this function?
 function sendName(name){
 	console.log(name);
 	soc.send(name);
@@ -92,30 +136,25 @@ function removeuser(){
 
 var input = document.getElementById("msg_input");
 input.addEventListener("keypress", function(event){
-	if(event.key == "Enter" && event.shiftKey){
+	if(event.key == "Enter"){
 		event.preventDefault();
-		input.value = input.value + "\r\n";
-	}
-	else if(event.keyCode == 13){
-			event.preventDefault();
-			test_message();
+		if(event.shiftKey){
+			input.value = input.value + "\n";
+		} else {
+			messageHandler.send();
+		}
 	}
 });
 
-function test_message(){
-	var msg = document.getElementById("msg_input").value;
-	console.log(msg);
-	msg = String(msg.replaceAll("\n","<br>")).fontcolor(color);
-	document.getElementById("msg_input").value = "";
-	document.getElementById("chat_box").innerHTML += "<br>" + (new Date()).toLocaleTimeString() + " " + username_colored + ": " + msg;
+function test_message(msg){	
+	messageHandler.print( messageHandler.create(myUser.name, msg, 0) );
 }
 
 //color selector + update color
-var color = document.getElementById("user_color");
-color.addEventListener("change", function(event){
-	color = event.target.value;
-	console.log("Color updated: " + color);
-	username_colored = username.fontcolor(color);
+var colorPicker = document.getElementById("user_color");
+colorPicker.addEventListener("change", function(event){
+	myUser.color = event.target.value;
+	console.log("Color updated: " + myUser.color);
 });
 
 //not in use
