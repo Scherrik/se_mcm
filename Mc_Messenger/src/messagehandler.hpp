@@ -4,7 +4,6 @@
 
 #include "message.hpp"
 
-
 class MessageHandler 
 {
 private:
@@ -15,6 +14,7 @@ private:
     //dtor
     ~MessageHandler();
     
+    const char* createDBMessage();    
 protected:
 public:
     
@@ -34,7 +34,7 @@ public:
 			case Message::POLL:
 			return "POLL MESSAGE";
 			case Message::DATABASE:
-			return "DB MESSAGE";
+			return createDBMessage();
 		}
 	}
 

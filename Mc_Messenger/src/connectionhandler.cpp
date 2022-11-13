@@ -1,6 +1,7 @@
 /*generated file connectionhandler.cpp*/
 #include "connectionhandler.hpp"
 #include "messagehandler.hpp"
+#include "userdatabase.hpp"
 
 #define FS_FORMAT_ON_FAILURE true
 
@@ -21,16 +22,24 @@ void /*ConnectionHandler::*/notFound(AsyncWebServerRequest *request) {
 void /*ConnectionHandler::*/onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *payload, size_t len){
 	if(type == WS_EVT_CONNECT){
         log_d("Websocket client connection received");
+        UserDatabase::instance()->add(client->id(), "Default");
         ws.text(client->id(), MessageHandler::instance()->createMessage(Message::DATABASE));
+        //TODO Add user to database
     } else if(type == WS_EVT_DISCONNECT){
         log_d("Client disconnected");
+        //TODO Remove user from database
     } else if(type == WS_EVT_DATA){
         AwsFrameInfo* info = (AwsFrameInfo*)arg;
         if(info->final && info->index == 0 && info->len == len){
             if(info->opcode == WS_TEXT){
                 payload[len] = 0;
                 log_d("%s", payload);
+                //TODO Execute message type dependent tasks
+                
+                 
+                
                 ws.textAll((const char*)payload);
+                
             }
         }
     }

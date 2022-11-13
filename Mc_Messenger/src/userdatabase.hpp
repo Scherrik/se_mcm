@@ -4,7 +4,10 @@
 
 #include "Arduino.h"
 #include <string>
-#include "linkedlist.hpp"
+#include <map>
+//#include "linkedlist.hpp"
+
+#define UDB_DATA_LEN 256
 
 struct User {
 	int client_id;
@@ -28,8 +31,8 @@ class UserDatabase
 private:
 	static UserDatabase* m_instance;
 
-	LinkedList<User> users;
-    
+	//LinkedList<User> users;
+    std::map<uint32_t, std::string> client_list;
     //ctor
     UserDatabase();
     //dtor
@@ -43,10 +46,12 @@ public:
 		return m_instance;
 	}
     
-    void add(int cid);
-    void remove(int cid);
+    inline const std::map<uint32_t, std::string>& get() { return client_list; }
     
-    void add(const User& user);
-    void update(const User& user);
+    void add(uint32_t cid, const char* data);
+    void remove(uint32_t cid);
+    
+    //void add(const User& user);
+    //void update(const User& user);
 };
 #endif //USERDATABASE_HPP
