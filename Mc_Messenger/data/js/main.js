@@ -58,7 +58,7 @@ class MessageHandler{
 		document.getElementById("msg_input").value = "";
 		
 		if(FLAG_TEST_LOCAL){
-			test_message(msg);
+			test_message("[LOCAL]" + msg);
 		}
 		
 		console.log(msg);
