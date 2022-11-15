@@ -15,11 +15,11 @@
 					<div id="lines" onclick="showmenu()"></div>	
 			</div>
 
-			<div class="users ">Users
+			<div class="users ">
 				<button onclick="adduser()">Add</button>
 				<button onclick="removeuser()">Remove</button>
-				<input type="text" id="testuser"><br>
-				<div id="userlist"></div>
+				<input type="text" id="testuser" style="width: 100%;"><br>
+				<div class="userlist" id="userlist"></div>
 			</div>
 
 			<div class="chat_box" id="chat_box"></div>
@@ -27,7 +27,7 @@
 			<div class="msg_box" id="msg_box">
 				<textarea class="msg_input" id="msg_input" cols="20"></textarea>
 				<button class="msg_send far" onclick="messageHandler.send()">&#xf1d8;</button>
-				<button class="msg_angry far">&#xf556;</button>
+				<button class="msg_angry far" onclick="angrymode()">&#xf556;</button>
 			</div>
 			<div class="menu" id="menu">
 				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)">

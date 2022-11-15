@@ -117,20 +117,29 @@ function expand_menu(selector){
 }
 
 function adduser(){
-	var userlist = document.getElementById("userlist");
-	var username = document.getElementById("testuser").value;
+	let userlist = document.getElementById("userlist");
+	let username = document.getElementById("testuser").value;
 	if (username != ""){
-		var entry = document.createElement("div");
+		let entry = document.createElement("div");
 		entry.classList.add("userentry");
 		entry.id = username;
 		entry.textContent = username;
+		entry.addEventListener("click", function(event){
+			let input_str = String(input.value);
+			if(input.value.startsWith("@") == false){
+				input.value = "@" + entry.id + " " + input.value;
+			}else{
+				input.value = input_str.substring(input_str.substring(0,input_str.indexOf(" ")).length + 1);
+				input.value = "@" + entry.id + " " + input.value;
+			}
+		})
 		userlist.appendChild(entry);
 	}
-	
 }
+
 function removeuser(){
-	var username = document.getElementById("testuser").value;
-	var entry = document.getElementById(username);
+	let username = document.getElementById("testuser").value;
+	let entry = document.getElementById(username);
 	entry.remove();
 }
 
@@ -164,7 +173,8 @@ function darkmode(){
 	test.forEach(x => x.classList.toggle("dark-mode"));
 }
 function angrymode(){
-	document.body.classList.toggle("angry-mode");
-	var test = document.querySelectorAll(".tile");
-	test.forEach(x => x.classList.toggle("angry-mode"));
+	document.body.classList.toggle("angrymode");
+	document.getElementById("chat_box").classList.toggle("angrymode");
+	document.getElementById("msg_input").classList.toggle("angrymode");
+	document.getElementById("frame").classList.toggle("angryshake");
 }
