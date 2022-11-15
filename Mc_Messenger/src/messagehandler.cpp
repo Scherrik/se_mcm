@@ -22,7 +22,7 @@ const char* MessageHandler::createDBMessage(){
 	StaticJsonDocument<UDB_DATA_LEN> doc;
 	for (std::map<uint32_t,std::string>::iterator it=udb.begin(); it!=udb.end(); ++it){
 		log_d("%d: %s", it->first, it->second);
-		doc[(int)it->first] = it->second;
+		doc[std::to_string(it->first)] = it->second;
 	}
 	std::string str;
 	serializeJson(doc, str);

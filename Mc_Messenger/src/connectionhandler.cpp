@@ -95,7 +95,13 @@ void ConnectionHandler::initServer(const char* hostname)
 	});
 	
 	server.on("/js/main.js", HTTP_GET, [](AsyncWebServerRequest *request){
-		auto response = request->beginResponse(LittleFS, PSTR("/js/main.js"), PSTR("text/js"));
+		auto response = request->beginResponse(LittleFS, PSTR("/js/main.js"), PSTR("text/javascript"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
+	
+	server.on("/js/nacl.js", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/js/nacl.js"), PSTR("text/javascript"));
 		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
 		request->send(response);
 	});
