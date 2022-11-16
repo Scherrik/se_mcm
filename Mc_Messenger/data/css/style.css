@@ -159,3 +159,33 @@ p.msg_block:hover{
 	background: darkgray;
 	outline: black solid 0px;
 }
+
+
+/* TESTING AREA */
+/* User proposals as overlay for  message input, but dont know how */
+#dropdown {
+  position: fixed;
+  display: none;
+  width: 10%;
+  height: 10%;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Word count at the bottom of the message input field */
+#charcount {
+  position: absolute;
+  display: block;
+  width: 40px;
+  height: 13px;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.1);
+  color: #FFF;
+  font-size: 10px;
+  z-index: 2;
+  cursor: pointer;
+  justify-self: center;
+  justify-content: center;
+}

@@ -10,6 +10,7 @@ class User {
 		this.keys = nacl.box.keyPair();
 		this.name = name;
 		this.color = color;
+		this.flags = 0;
 	}
 }
 const myUser = new User();
@@ -29,8 +30,8 @@ class MessageHandler{
 	/* Data API Definition:
 	 * 	Message:
 	 * 		{
-	 * 			"sid": sid,			// sender
-	 * 			"rid": [rid,...],	// receiver list
+	 * 			"sid": sid,			// sender (id) 
+	 * 			"rid": [rid,...],	// receiver list (ids)
 	 * 			"typ": 0,			//type 0 = server(not encrypted), type 2 = message(encrypted), type 3 = poll(encrypted)
 	 * 			"pk": "...",
 	 * 			//Data NOT ENCRYPTED 
@@ -52,14 +53,15 @@ class MessageHandler{
 	 * 			} 	//data type poll
 	 * 		}
 	 * */
-	createHeader(receiver_list, type){
+	createFrame(receiver_list, type){
 		return {
 			"sid": myUser.name,
 			"rid": receiver_list,
-			"typ": 0,			//type 0 = server(not encrypted), type 2 = message(encrypted), type 3 = poll(encrypted)
-			"da": {}
+			"typ": typeMap.get(type),			//type 0 = server(not encrypted), type 2 = message(encrypted), type 3 = poll(encrypted)
+			"da": []
 		};
 	}
+	
 	createServerMessage(msg){
 		switch(msg["msg_type"]){
 			case "poll":
@@ -70,41 +72,23 @@ class MessageHandler{
 			return "DEFAULT";
 		}
 	}
-	createEncryptedMessage(msg){
-		return "SECRET";
-	}
-	createMessage(msg){
-		return {
-			"pl": msg["payload"],			//payload
-			"fl": msg["flags"],				//client flags (sender)
-			"cl": myUser.color				//client name color (sender)
-		}
-	}
-	createPoll(msg){
-		return {
-			"qu": msg["question"],
-			"an": msg["answers"]
-		}
-	}
 	
 	
-	create(receiver_list, msgObj, type){
-		this.encryptPayload(msgObj);
-		let result = this.createHeader(receiver_list, type);
+	create(msgObj, type){
+		let result = {}
 		switch(type){
 			case "srv":
-				result["da"] = this.createServerMessage(msgObj); 
-			break;
+				return this.createServerMessage(msgObj); 
 			case "msg":
-				result["da"]["pl"] = msgObj; 
-				result["da"]["fl"] = 0;
-				result["da"]["cl"] = myUser.color;
+				result["pl"] = msgObj; 
+				result["fl"] = myUser.flags;
+				result["cl"] = myUser.color;
 			break;
 			case "poll":
-				result["da"] = this.createPoll(msgObj); 
+				result = this.createPoll(msgObj); 
 			break;
 			default:
-				result["da"] = "WRONG TYPE " + type;
+				result = "WRONG TYPE " + type;
 				console.log(result["da"]);
 			break;
 		}
@@ -112,18 +96,28 @@ class MessageHandler{
 	}
 	
 	encryptPayload(msg){
-		this.encryptPayload(msgObj);
-		console.log(myUser.keys);
 		var secretKey  = myUser.keys.secretKey;
 		var publicKey  = myUser.keys.publicKey;
 		let nonce = new Uint8Array(nacl.box.nonceLength);
-		console.log(typeof msg);
 		let message = nacl.util.decodeUTF8(msg);
-		console.log(nacl.box(message, nonce, publicKey, secretKey))
-		return;
+		let result = nacl.box(message, nonce, publicKey, secretKey);
+		return result;
+	}
+	
+	decryptPayload(obj){
+		let nonce = new Uint8Array(nacl.box.nonceLength);
+		let ui8a = Uint8Array.from(obj["da"]);
+		var secretKey  = myUser.keys.secretKey;
+		var publicKey  = myUser.keys.publicKey;
+		
+		// TODO get public key either from database or from the initial message
+		
+		let decPayload = nacl.util.encodeUTF8(nacl.box.open(ui8a, nonce, publicKey, secretKey))
+		obj["da"] = JSON.parse(decPayload);
 	}
 	
 	print(obj){
+		console.debug("PRINT CALL");
 		console.log(obj);
 		let box = document.getElementById("chat_box");
 		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
@@ -132,35 +126,65 @@ class MessageHandler{
 												 + "</p>";
 		
 		box.scrollTop = box.scrollHeight;
-	
 	}
 	
 	send(){
-		let value = document.getElementById("msg_input").value;
-		const msg = {
-			"pl": value,
-			"fl": myUser.flags,
-			"cl": myUser.color
-		};
-		if(isEmpty(msg["pl"])){
+		console.debug("SEND CALL");
+		let msg = document.getElementById("msg_input").value;
+		
+		if(isEmpty(msg)){
 			console.log("Empty message, nothing to do...");
 			return;
 		}
 		document.getElementById("msg_input").value = "";
 		
+		console.debug("MSG 1");
 		console.log(msg);
+		console.debug("MSG 2");
+		console.log(msg);
+		let frame = messageHandler.createFrame("Default", "msg");
+		let enc = JSON.stringify(messageHandler.create(msg, "msg"));
+		console.log(typeof frame["da"]);
+		enc = this.encryptPayload(enc);
+		console.log(enc);
+		enc.forEach(ele => frame["da"].push(ele));
+		//frame["da"].push(enc);
+		console.log(enc);
+		console.log(frame["da"]);
+		let jsonFrame = JSON.stringify(frame);
+		console.log(jsonFrame);
+		soc.send(jsonFrame);
+		
 		if(FLAG_TEST_LOCAL){
-			test_message(msg);
+			this.extract(JSON.parse(jsonFrame));
 		}
-		console.log(msg);
-		let obj = messageHandler.create("Default", msg, "msg");
-		console.log(obj);
-		soc.send(JSON.stringify(obj));
 	}
 		
 	syncDB(obj){
-	console.log();
-	//Code to sync database
+		console.log();
+		//Code to sync database
+	}
+	
+	extract(json_obj){
+		console.debug("EXTRACT CALL");
+		console.log(json_obj["typ"]);
+		switch (json_obj["typ"]) {
+			//Server message
+			case 0:
+				
+			break;
+			//Chat message
+			case 2:
+				this.decryptPayload(json_obj);
+				this.print(json_obj);
+			break;
+			//Poll
+			case 3:
+			break;
+			default:
+			console.log("DEFAULT NOTHING TODO...");
+			break;
+		}
 	}
 }
 const messageHandler = new MessageHandler();
@@ -177,21 +201,7 @@ function init(){
 		console.debug("MSG: " + event.data);
 		// Send messages as JSON String is possibly the way to go?! Yes it is!
 		var json_obj = JSON.parse(event.data);
-		switch (json_obj["typ"]) {
-			case "db":
-				console.log(json_obj);
-				messageHandler.syncDB(json_obj);
-			break;
-			case "msg":
-				console.log(json_obj);
-				messageHandler.print(json_obj);
-			break;
-			case "poll":
-			break;
-			default:
-			break;
-		}
-		
+		messageHandler.extract(json_obj);		
 	}
 }
 
@@ -227,7 +237,9 @@ function removeuser(){
 }
 
 var input = document.getElementById("msg_input");
-input.addEventListener("keypress", function(event){
+var wcount = document.getElementById("charcount");
+input.addEventListener("keydown", function(event){
+	wcount.innerHTML = String(input.value.length).padStart(3, '0') + "/500";
 	if(event.key == "Enter"){
 		event.preventDefault();
 		if(event.shiftKey){
@@ -239,7 +251,7 @@ input.addEventListener("keypress", function(event){
 });
 
 function test_message(msg){	
-	messageHandler.print( messageHandler.create(myUser.name, msg["pl"], "msg") );
+	messageHandler.print( messageHandler.create(myUser.name, msg, "msg") );
 }
 
 //color selector + update color
