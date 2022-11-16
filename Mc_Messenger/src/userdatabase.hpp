@@ -7,7 +7,8 @@
 #include <map>
 //#include "linkedlist.hpp"
 
-#define UDB_DATA_LEN 256
+#define UDB_DATA_LEN 1024
+#define PUBKEY_LEN	32
 
 struct User {
 	int client_id;
@@ -26,13 +27,15 @@ struct User {
 	*/ 	
 };
 
+typedef uint8_t t_pkey[PUBKEY_LEN];
+
 class UserDatabase 
 {
 private:
 	static UserDatabase* m_instance;
 
 	//LinkedList<User> users;
-    std::map<uint32_t, std::string> client_list;
+    std::map<uint32_t, t_pkey> client_list;
     //ctor
     UserDatabase();
     //dtor
@@ -46,12 +49,11 @@ public:
 		return m_instance;
 	}
     
-    inline const std::map<uint32_t, std::string>& get() { return client_list; }
+    inline const std::map<uint32_t, t_pkey>& get() { return client_list; }
     
-    void add(uint32_t cid, const char* data);
+    void add(uint32_t cid);
     void remove(uint32_t cid);
+    void update(uint32_t cid, uint8_t* pkey);
     
-    //void add(const User& user);
-    //void update(const User& user);
 };
 #endif //USERDATABASE_HPP

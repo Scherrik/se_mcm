@@ -1,8 +1,11 @@
 /*generated file messagehandler.hpp*/
 #ifndef MESSAGEHANDLER_HPP
 #define MESSAGEHANDLER_HPP
-
+#include <Arduino.h>
+#include <string>
 #include "message.hpp"
+
+#define JSON_BUF_LEN	1200
 
 class MessageHandler 
 {
@@ -14,7 +17,7 @@ private:
     //dtor
     ~MessageHandler();
     
-    const char* createDBMessage();    
+    void createDBMessage(std::string& dest, uint32_t requestId);    
 protected:
 public:
     
@@ -24,17 +27,21 @@ public:
 	}
     
     
+    bool handleFrame(uint8_t *buf);
+    
     template <class MessageEnum>
-    const char* createMessage(MessageEnum e)
+    void createMessage(MessageEnum e, std::string& dest, uint32_t requestId = 0)
     {
 		switch(e)
 		{
+			/*
 			case Message::CHAT:
-			return "CHAT MESSAGE";
+			dest = "CHAT MESSAGE";
+			*/ 
 			case Message::POLL:
-			return "POLL MESSAGE";
+			dest = "POLL MESSAGE";
 			case Message::DATABASE:
-			return createDBMessage();
+			createDBMessage(dest, requestId);
 		}
 	}
 

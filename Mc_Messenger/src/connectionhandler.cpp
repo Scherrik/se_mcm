@@ -19,15 +19,17 @@ void /*ConnectionHandler::*/notFound(AsyncWebServerRequest *request) {
     request->send(404, "text/plain", "Not found");
 }
 
-void /*ConnectionHandler::*/onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *payload, size_t len){
+void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *payload, size_t len){
 	if(type == WS_EVT_CONNECT){
         log_d("Websocket client connection received");
-        UserDatabase::instance()->add(client->id(), "Default");
-        ws.text(client->id(), MessageHandler::instance()->createMessage(Message::DATABASE));
-        //TODO Add user to database
+        std::string tmp;
+        MessageHandler::instance()->createMessage(Message::DATABASE, tmp, client->id());
+        ws.text(client->id(), tmp.c_str());
+        log_d("TEXT SEND %s", tmp.c_str());
+        UserDatabase::instance()->add(client->id());
     } else if(type == WS_EVT_DISCONNECT){
         log_d("Client disconnected");
-        //TODO Remove user from database
+        UserDatabase::instance()->remove(client->id());
     } else if(type == WS_EVT_DATA){
         AwsFrameInfo* info = (AwsFrameInfo*)arg;
         if(info->final && info->index == 0 && info->len == len){
@@ -36,9 +38,12 @@ void /*ConnectionHandler::*/onWsEvent(AsyncWebSocket * server, AsyncWebSocketCli
                 log_d("%s", payload);
                 //TODO Execute message type dependent tasks
                 
-                 
+				if(!MessageHandler::instance()->handleFrame(payload)){
+					log_d("ROUTE MESSAGE");
+					ws.textAll((const char*)payload);
+				}
                 
-                ws.textAll((const char*)payload);
+                //ws.textAll((const char*)payload);
                 
             }
         }
@@ -106,8 +111,8 @@ void ConnectionHandler::initServer(const char* hostname)
 		request->send(response);
 	});
 	
-	server.on("/js/nacl.util.js", HTTP_GET, [](AsyncWebServerRequest *request){
-		auto response = request->beginResponse(LittleFS, PSTR("/js/nacl.util.js"), PSTR("text/javascript"));
+	server.on("/js/nacl-util.js", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/js/nacl-util.js"), PSTR("text/javascript"));
 		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
 		request->send(response);
 	});

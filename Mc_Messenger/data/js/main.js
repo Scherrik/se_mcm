@@ -1,5 +1,5 @@
 
-const FLAG_TEST_LOCAL = true;
+const FLAG_TEST_LOCAL = false;
 
 const IS_ANGRY = 1;
 const IS_HUNGRY = 2;
@@ -68,7 +68,7 @@ class MessageHandler{
 			"da": []
 		};
 	}
-	
+	/*
 	createServerMessage(msg){
 		switch(msg["msg_type"]){
 			case "poll":
@@ -79,7 +79,7 @@ class MessageHandler{
 			return "DEFAULT";
 		}
 	}
-	
+	*/
 	
 	create(msgObj, type){
 		let result = {}
@@ -96,19 +96,19 @@ class MessageHandler{
 			break;
 			default:
 				result = "WRONG TYPE " + type;
-				console.log(result["da"]);
+				console.error(result);
 			break;
 		}
 		return result;
 	}
 	
-	encryptPayload(msg){
+	encryptPayload(msg, rcvrPkey){
 		var secretKey  = myUser.keys.secretKey;
 		// TODO get counter part public key either from database or from the initial message
-		var publicKey  = myUser.keys.publicKey;
+		//var publicKey  = myUser.keys.publicKey;
 		let nonce = new Uint8Array(nacl.box.nonceLength);
 		let message = nacl.util.decodeUTF8(msg);
-		let result = nacl.box(message, nonce, publicKey, secretKey);
+		let result = nacl.box(message, nonce, rcvrPkey, secretKey);
 		return result;
 	}
 	
@@ -119,22 +119,31 @@ class MessageHandler{
 		
 		// TODO get counter part public key either from database or from the initial message
 		var publicKey  = myUser.keys.publicKey;
-		
-		let decPayload = nacl.util.encodeUTF8(nacl.box.open(ui8a, nonce, publicKey, secretKey))
+		let obox = nacl.box.open(ui8a, nonce, publicKey, secretKey);
+		console.log(obox);
+		let decPayload = nacl.util.encodeUTF8(obox);
 		obj["da"] = JSON.parse(decPayload);
 	}
 	
 	print(obj){
+		//console.log(userDB.get(obj.sid));
+		
 		let box = document.getElementById("chat_box");
+		/*
+		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
+												 + userDB.get(obj.sid).name.fontcolor(obj["da"]["cl"]) + ": " 
+												 + obj["da"]["pl"].replace("\n", "<br>")
+												 + "</p>";*/
+		
 		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
 												 + obj["sid"].fontcolor(obj["da"]["cl"]) + ": " 
 												 + obj["da"]["pl"].replace("\n", "<br>")
 												 + "</p>";
-		
 		box.scrollTop = box.scrollHeight;
 	}
 	
 	send(){
+		console.log("Send message");
 		let msg = document.getElementById("msg_input").value;
 		
 		if(isEmpty(msg)){
@@ -142,13 +151,21 @@ class MessageHandler{
 			return;
 		}
 		document.getElementById("msg_input").value = "";
+		document.getElementById("charcount").innerHTML = "000/500";
 		
-		let frame = messageHandler.createFrame("Default", "msg");
+		/*
+		 * TODO Extract name from message and determine id(s) from belonging user 
+		 */ 
+		
+		let frame = messageHandler.createFrame(myUser.id, "msg");
+		frame["da"] = messageHandler.create(msg, "msg")
+		/* Encryption part
 		let enc = JSON.stringify(messageHandler.create(msg, "msg"));
-		enc = this.encryptPayload(enc);
+		enc = this.encryptPayload(enc, myUser.keys.publicKey ); //Has to be replaced by receiver public keys
 		enc.forEach(ele => frame["da"].push(ele));
+		*/
 		let jsonFrame = JSON.stringify(frame);
-		
+		soc.send(jsonFrame);
 		if(FLAG_TEST_LOCAL){
 			this.extract(JSON.parse(jsonFrame));
 		}
@@ -161,26 +178,44 @@ class MessageHandler{
 	
 	extract(json_obj){
 		switch (json_obj["typ"]) {
-			//Server message
+			//Server message on init
 			case 0:
+				console.log("Received srv message");
+				if(json_obj["yid"]){
+					myUser.id = json_obj["yid"];
+				}
+				userDB.set(myUser.id, myUser);
+				//Foreach entry in incoming frame db create entry in local DB
 				
-			break;
+				
+				var obj = this.createFrame(-1, "srv");
+				myUser.keys.publicKey.forEach(ele => obj["da"].push(ele));
+				console.log(obj);
+				console.log(JSON.stringify(obj));
+				soc.send(JSON.stringify(obj));
+				break;
+			// poll result sent from server
+			case 1:
+				
+				break;
 			//Chat message
 			case 2:
-				this.decryptPayload(json_obj);
-				console.log(json_obj["da"]);
+				//this.decryptPayload(json_obj);
+				//console.log(json_obj["da"]);
 				if(json_obj["da"]["fl"] & IS_ANGRY){
 					angrymode();
 					setTimeout(function(){ angrymode(); }, 5000);
 				}
+				console.log(json_obj.sid);
+				console.log(userDB);
 				this.print(json_obj);
-			break;
+				break;
 			//Poll
 			case 3:
-			break;
+				break;
 			default:
-			console.log("DEFAULT NOTHING TODO...");
-			break;
+				console.log("DEFAULT NOTHING TODO...");
+				break;
 		}
 	}
 }
@@ -251,6 +286,11 @@ input.addEventListener("keydown", function(event){
 		if(event.shiftKey){
 			input.value = input.value + "\n";
 		} else {
+			if(event.ctrlKey){
+				myUser.flags |= IS_ANGRY;
+			} else {
+				myUser.flags &= ~IS_ANGRY;
+			}
 			messageHandler.send();
 		}
 	}
