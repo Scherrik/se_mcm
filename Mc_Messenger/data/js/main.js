@@ -1,6 +1,9 @@
 
 const FLAG_TEST_LOCAL = true;
 
+const IS_ANGRY = 1;
+const IS_HUNGRY = 2;
+
 const db = new Map();
 var soc;
 
@@ -10,10 +13,14 @@ class User {
 		this.keys = nacl.box.keyPair();
 		this.name = name;
 		this.color = color;
-		this.flags = 0;
+		this.flags = 1;
+		this.sendCount = 0;
+		this.rcvdCount = 0;
 	}
 }
 const myUser = new User();
+
+const userDB = new Map();
 
 const typeMap = new Map();
 
@@ -97,6 +104,7 @@ class MessageHandler{
 	
 	encryptPayload(msg){
 		var secretKey  = myUser.keys.secretKey;
+		// TODO get counter part public key either from database or from the initial message
 		var publicKey  = myUser.keys.publicKey;
 		let nonce = new Uint8Array(nacl.box.nonceLength);
 		let message = nacl.util.decodeUTF8(msg);
@@ -108,20 +116,18 @@ class MessageHandler{
 		let nonce = new Uint8Array(nacl.box.nonceLength);
 		let ui8a = Uint8Array.from(obj["da"]);
 		var secretKey  = myUser.keys.secretKey;
-		var publicKey  = myUser.keys.publicKey;
 		
-		// TODO get public key either from database or from the initial message
+		// TODO get counter part public key either from database or from the initial message
+		var publicKey  = myUser.keys.publicKey;
 		
 		let decPayload = nacl.util.encodeUTF8(nacl.box.open(ui8a, nonce, publicKey, secretKey))
 		obj["da"] = JSON.parse(decPayload);
 	}
 	
 	print(obj){
-		console.debug("PRINT CALL");
-		console.log(obj);
 		let box = document.getElementById("chat_box");
 		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
-												 + obj["sid"].fontcolor(obj["da"]["clr"]) + ": " 
+												 + obj["sid"].fontcolor(obj["da"]["cl"]) + ": " 
 												 + obj["da"]["pl"].replace("\n", "<br>")
 												 + "</p>";
 		
@@ -129,7 +135,6 @@ class MessageHandler{
 	}
 	
 	send(){
-		console.debug("SEND CALL");
 		let msg = document.getElementById("msg_input").value;
 		
 		if(isEmpty(msg)){
@@ -138,22 +143,11 @@ class MessageHandler{
 		}
 		document.getElementById("msg_input").value = "";
 		
-		console.debug("MSG 1");
-		console.log(msg);
-		console.debug("MSG 2");
-		console.log(msg);
 		let frame = messageHandler.createFrame("Default", "msg");
 		let enc = JSON.stringify(messageHandler.create(msg, "msg"));
-		console.log(typeof frame["da"]);
 		enc = this.encryptPayload(enc);
-		console.log(enc);
 		enc.forEach(ele => frame["da"].push(ele));
-		//frame["da"].push(enc);
-		console.log(enc);
-		console.log(frame["da"]);
 		let jsonFrame = JSON.stringify(frame);
-		console.log(jsonFrame);
-		soc.send(jsonFrame);
 		
 		if(FLAG_TEST_LOCAL){
 			this.extract(JSON.parse(jsonFrame));
@@ -166,8 +160,6 @@ class MessageHandler{
 	}
 	
 	extract(json_obj){
-		console.debug("EXTRACT CALL");
-		console.log(json_obj["typ"]);
 		switch (json_obj["typ"]) {
 			//Server message
 			case 0:
@@ -176,6 +168,11 @@ class MessageHandler{
 			//Chat message
 			case 2:
 				this.decryptPayload(json_obj);
+				console.log(json_obj["da"]);
+				if(json_obj["da"]["fl"] & IS_ANGRY){
+					angrymode();
+					setTimeout(function(){ angrymode(); }, 5000);
+				}
 				this.print(json_obj);
 			break;
 			//Poll
@@ -201,7 +198,7 @@ function init(){
 		console.debug("MSG: " + event.data);
 		// Send messages as JSON String is possibly the way to go?! Yes it is!
 		var json_obj = JSON.parse(event.data);
-		messageHandler.extract(json_obj);		
+		messageHandler.extract(json_obj);	
 	}
 }
 

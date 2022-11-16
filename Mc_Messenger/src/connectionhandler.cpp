@@ -105,6 +105,12 @@ void ConnectionHandler::initServer(const char* hostname)
 		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
 		request->send(response);
 	});
+	
+	server.on("/js/nacl.util.js", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/js/nacl.util.js"), PSTR("text/javascript"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
 
 	// Maybe to share (small) files with each other
   	server.onFileUpload(handleUpload);
