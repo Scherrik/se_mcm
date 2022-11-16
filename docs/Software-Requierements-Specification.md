@@ -71,7 +71,7 @@ This allows a portable and in almost every environment implementable chat server
 
 ### 2.2 Use Case Diagram
 
-![OUCD](./img/UML_MCM.png)
+![OUCD](./UseCases/UML_MCM_Use_Case_Diagram.png)
 
 ### 2.3 Technology Stack
 
@@ -112,7 +112,7 @@ This function is fundamental for the user to use the application. The user needs
 /
 ##### Story points: 1
 
-[Mockup: Connect to AP](./img/Connect_to_AP_MOC.png)
+[Mockup: Connect to AP](./UseCases/mockups/Connect_to_AP_MOC.png)
 
 #### 3.1.2 Join chatroom/Open website
 After connecting to the wifi the user needs to be guided to the webpage of the messenger. This can happen automatically on mobile devices. On laptops or other devices the user may need to open the pange manually. A short and easy to remember url needs to be individually configured on the MC. 
@@ -122,7 +122,7 @@ After connecting to the wifi the user needs to be guided to the webpage of the m
 - Choose/Change username
 ##### Story points: 1
 
-[Mockup: Join chatroom/Open Website](./img/Open_Website_MOC.png)
+[Mockup: Join chatroom/Open Website](./UseCases/mockups/Open_Website_MOC.png)
 
 #### 3.1.3 Leave chatroom
 The user can leave/close a specific chat chatroom by pressing the (X) Button on the top right of the chat window or by closing the browser window.
@@ -132,7 +132,7 @@ The user can leave/close a specific chat chatroom by pressing the (X) Button on 
 /
 ##### Story points: 1
 
-[Mockup: Leave chatroom](./img/Leave_chatroom_MOC.png)
+[Mockup: Leave chatroom](./UseCases/mockups/Leave_chatroom_MOC.png)
 
 #### 3.1.4 Choose/Change username
 After opening the application page the user needs to select a username which will be displayed to other users. The user can also change his username during the session. A carefull evaluation to avoid abuse of this feature may be needed.
@@ -142,7 +142,7 @@ After opening the application page the user needs to select a username which wil
 /
 ##### Story points: 2
 
-[Mockup: Choose/Change username](./img/See_Users_MOC.png)
+[Mockup: Choose/Change username](./UseCases/mockups/See_Users_MOC.png)
 
 #### 3.1.5 Reset session
 THe user will be able to reset his session with a dedicated button or by reloading the page. Resetting means all the chats will be reloaded and the local chatlog will be cleared
@@ -162,7 +162,7 @@ On the top (or costumizable on the left) of the screen the user can see a list o
 /
 ##### Story points: 3
 
-[Mockup: See online users](./img/See_Users_MOC.png)
+[Mockup: See online users](./UseCases/mockups/See_Users_MOC.png)
 
 #### 3.1.7 Send message
 After opening the page and selecting a username the user joins the public chat automatically. The User can type a message in a text box on the buttom and send the message with the "Send" button next or below the chat box. The sender gets his message displayed with a @you in front of it.
@@ -173,9 +173,9 @@ After opening the page and selecting a username the user joins the public chat a
 Send private message
 ##### Story points: 5
 
-[Mockup: Send message](./img/Send_MOC.png)
+[Mockup: Send message](./UseCases/mockups/Send_MOC.png)
 ##### Activity Diagram:
-![OUCD](./img/ActivitySendMessage.png)
+![OUCD](./ActivityDiagrams/ActivitySendMessage.png)
 
 
 #### 3.1.8 Send private message
@@ -189,7 +189,7 @@ The user can also send private messages by selecting an online user in the descr
 /
 ##### Story points: 5
 
-[Mockup: Send private message](./img/Send_Private_Message_MOC.png)
+[Mockup: Send private message](./UseCases/mockups/Send_Private_Message_MOC.png)
 
 #### 3.1.9 Receive message
 The user can receive messages which are displayed in the correct chatroom. The username of the sending user and a time stamp will be shown next to the message. A chatroom (the list next to the chat window) which has unread messages will be marked with a colored marking.
@@ -199,9 +199,9 @@ The user can receive messages which are displayed in the correct chatroom. The u
 - See online users
 ##### Story points: 6
 ##### Activity Diagram:
-![OUCD](./img/ActivityReceiveMessage.png)
+![OUCD](./ActivityDiagrams/ActivityReceiveMessage.png)
 
-[Mockup: Receive message](./img/Receive_Messages_MOC.png)
+[Mockup: Receive message](./UseCases/mockups/Receive_Messages_MOC.png)
 
 #### 3.1.10 Vote ban 
 In case of bad behaviour users have the ability to vote ban a misbehaving user. The user can rightclick a name and select "vote to ban". Other users in tis chatroom get a notification and can vote between "yes" and "no".
@@ -214,7 +214,7 @@ In case of bad behaviour users have the ability to vote ban a misbehaving user. 
 [No mockup available yet]
 
 ##### Activity Diagram:
-![OUCD](./img/Activity_diagram_voteban.png)
+![OUCD](./ActivityDiagrams/Activity_diagram_voteban.png)
 
 #### 3.1.11 Customize interface
 The user gets the ability to customize his user interface. They can select different modes and colors under the settings tab. The settings can be accessed with the gear button on the top right.  
@@ -223,7 +223,7 @@ The user gets the ability to customize his user interface. They can select diffe
 - Select username
 ##### Postcondition
 /
-##### Effort estimation / story points
+##### Story points: 2
 
 [No Mockup available yet]
 
