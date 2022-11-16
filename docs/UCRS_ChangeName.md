@@ -45,7 +45,7 @@ Thehe following chapter shows the flow of events for this specific feature in th
     
 ## 2. Flows of Events
 
-![OUCD](./img/sd_changename.png)
+![OUCD](./SequenzDiagrams/Sequence_Diagram_ChangeName.png)
 
 ## 3. Supporting Information
 For any further information you can contact the MC-Messenger Team or check our [Blog](https://semcmessenger.wordpress.com). 
