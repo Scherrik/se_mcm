@@ -1,7 +1,7 @@
 body{
 	margin: 0%;
 	font-family: 'FontAwesome', Arial, Helvetica, sans-serif;
-	background: gray;
+	background: linear-gradient(rgb(75, 75, 75),darkgray);
 }
 
 .frame {
@@ -12,7 +12,7 @@ body{
 	grid-template-rows: 5fr 80fr 10fr;
 	grid-column-gap: 3px;
 	grid-row-gap: 3px;
-	background: gray;
+	background: transparent;
 	transition: 0.5s;
 }
 
