@@ -1,5 +1,5 @@
 
-const FLAG_TEST_LOCAL = false;
+const FLAG_TEST_LOCAL = true;
 
 const IS_ANGRY = 1;
 const IS_HUNGRY = 2;

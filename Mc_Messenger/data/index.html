@@ -18,9 +18,6 @@
 			</div>
 
 			<div class="users ">
-				<button onclick="adduser()">Add</button>
-				<button onclick="removeuser()">Remove</button>
-				<input type="text" id="testuser" style="width: 100%;"><br>
 				<div class="userlist" id="userlist"></div>
 			</div>
 
@@ -47,10 +44,13 @@
 					<div class="placeholder"></div>
 					<button class="menu_button" onclick="expand_menu(id)">Files</button></div>
 				<div class="menu_leader_content menu_entry">Content of Files</div>
-
-				<div class="menu_sysinfo menu_entry" id="sysinfo">
-					<input type="color" id="user_color">
-				</div>
+			</div>
+			<div class="menu_settings menu_entry" id="settings">
+				Usercolor: <input type="color" id="user_color"><br>
+				User:
+				<button onclick="adduser()">Add</button>
+				<button onclick="removeuser()">Remove</button>
+				<input type="text" id="testuser" style="width: 100%;"><br>
 			</div>
 		</div>
 	</body>
