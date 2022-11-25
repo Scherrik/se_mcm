@@ -245,6 +245,9 @@ function sendName(name){
 
 function showmenu(){
 	document.getElementById("frame").classList.toggle("adjustframe");
+	document.getElementById("menu_line1").classList.toggle("l1");
+	document.getElementById("menu_line3").classList.toggle("l3");
+	document.getElementById("menu_line2").classList.toggle("l2");
 }
 function expand_menu(selector){
 	document.getElementById("menu").classList.toggle(selector + "_show");

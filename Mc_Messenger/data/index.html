@@ -14,7 +14,11 @@
 		<div class="frame" id="frame">
 
 			<div class="statusbar headline">MC-Messenger
-					<div id="lines" onclick="showmenu()"></div>	
+					<div id="lines" onclick="showmenu()">
+						<div id="menu_line1" class="menu_line"></div>
+						<div id="menu_line2" class="menu_line"></div>
+						<div id="menu_line3" class="menu_line"></div>
+					</div>
 			</div>
 
 			<div class="users ">
@@ -25,7 +29,7 @@
 
 			<div class="msg_box" id="msg_box">
 				<div id="charcount"></div>
-				<textarea class="msg_input" id="msg_input" cols="20"></textarea>
+				<textarea class="msg_input" id="msg_input" autofocus="true" wrap="hard" cols="20"></textarea>
 				<button class="msg_send far" onclick="messageHandler.send()">&#xf1d8;</button>
 				<button class="msg_angry far" onclick="angrymode()">&#xf556;</button>
 			</div>
