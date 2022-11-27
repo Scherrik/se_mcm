@@ -16,7 +16,7 @@ ConnectionHandler::ConnectionHandler()
 }
 
 void /*ConnectionHandler::*/notFound(AsyncWebServerRequest *request) {
-    request->send(404, "text/plain", "Not found");
+    request->redirect("/");
 }
 
 void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *payload, size_t len){
@@ -116,6 +116,18 @@ void ConnectionHandler::initServer(const char* hostname)
 		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
 		request->send(response);
 	});
+	
+	server.on("/js/message.js", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/js/message.js"), PSTR("text/javascript"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
+	
+	server.on("/js/user.js", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/js/user.js"), PSTR("text/javascript"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
 
 	// Maybe to share (small) files with each other
   	server.onFileUpload(handleUpload);
@@ -145,6 +157,10 @@ void ConnectionHandler::init(const char* ssid, const char* hostname)
 	initAP(ssid);
 	initServer(hostname);
 	initOTA(hostname);
+}
+
+void ConnectionHandler::update(){
+	ArduinoOTA.handle();
 }
 
 //EOF
