@@ -8,6 +8,8 @@
 		<link rel="stylesheet" type="text/css" href="css/regular.css">
 		<script defer src='js/nacl.js' type='text/javascript'></script>
 		<script defer src='js/nacl-util.js' type='text/javascript'></script>
+		<script defer src='js/message.js' type='text/javascript'></script>
+		<script defer src='js/user.js' type='text/javascript'></script>
 		<script defer src='js/main.js' type='text/javascript'></script>
 	</head>
 	<body onload="init()">
@@ -30,7 +32,7 @@
 			<div class="msg_box" id="msg_box">
 				<div id="charcount"></div>
 				<textarea class="msg_input" id="msg_input" autofocus="true" wrap="hard" cols="20"></textarea>
-				<button class="msg_send far" onclick="messageHandler.send()">&#xf1d8;</button>
+				<button class="msg_send far" onclick="MessageHandle.sendMessage()">&#xf1d8;</button>
 				<button class="msg_angry far" onclick="angrymode()">&#xf556;</button>
 			</div>
 			<div class="menu" id="menu">
@@ -50,7 +52,8 @@
 				<div class="menu_leader_content menu_entry">Content of Files</div>
 			</div>
 			<div class="menu_settings menu_entry" id="settings">
-				Usercolor: <input type="color" id="user_color"><br>
+				Name: <input type="text" onchange="udb.me.name = this.value; MessageHandle.sendMetaChange()" id="user_name"><br>
+				Color: <input type="color" id="user_color"><br>
 				User:
 				<button onclick="adduser()">Add</button>
 				<button onclick="removeuser()">Remove</button>
