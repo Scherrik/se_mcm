@@ -1,4 +1,4 @@
-const FLAG_TEST_LOCAL = true;
+const FLAG_TEST_LOCAL = false;
 
 const IS_ANGRY = 1;
 const IS_HUNGRY = 2;
@@ -18,10 +18,9 @@ class User {
 	}
 }
 
-
-
 class UserDB {
 	constructor(){
+		this.dbHostToken = false;
 		this.me = { 
 			id: -1, 
 			name: "Default", 
@@ -41,25 +40,63 @@ class UserDB {
 	}
 	
 	getNameList(){
-		var a = [];
-		this.others.forEach((values, keys) => {
-			a.push(values.name);
-		})
-		return a;
+		return [...this.others.values()];
 	}
 	
-	getId(name){
+	getIdByName(name){
+		return [...this.others.values()].find(([key,val]) => name == value)[0];
+	}
+	
+	toObject(){
+		// TODO Add groups to database
+		var out = {}
+		out[this.me.id] = { 
+			na: this.me.name,
+			cl: this.me.color,
+			pk: bytesToString(this.me.keys.publicKey)
+		};
 		this.others.forEach((values, keys) => {
-			if(name === values.name){
-				return keys;
-			}
+			out[keys] = {
+				na: values.name,
+				cl: values.color,
+				pk: bytesToString(values.pk)
+			};
 		})
-		return -1;
+		return out;
+	}
+	
+	toString(){
+		return JSON.stringify(this.toObject());
+	}
+	
+	updateUser(uid, obj){
+		this.others.set(uid, obj);
+		
+		var event = new Event('change');
+		//this.dispatchEvent(event);
+	}
+	
+	updateDB(obj){
+		this.others.clear();
+		console.log("DB UPDATE");
+		console.log(obj);
+		for( let key in obj ){
+			if(obj.hasOwnProperty(key)){
+				obj[key]["pk"] = stringToBytes(obj[key]["pk"]);
+				this.others.set(Number(key), obj[key]);
+			}
+		}
+		//var event = new Event('change');
+		//this.dispatchEvent(event);
+	}
+	
+	setHostToken(b){
+		this.dbHostToken = b;
 	}
 }
 
-const udb = new UserDB();
-Object.freeze(udb);
+var udb = new UserDB();
 /*
+Object.freeze(udb);
 export default udb;
 */
