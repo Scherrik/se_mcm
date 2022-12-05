@@ -10,6 +10,7 @@ function init(){
 		var json_obj = JSON.parse(event.data);
 		MessageHandle.processIncomingMessage(json_obj);
 	}
+	udb.getNameList().forEach(adduser);
 }
 
 function showmenu(){
@@ -21,10 +22,14 @@ function showmenu(){
 function expand_menu(selector){
 	document.getElementById("menu").classList.toggle(selector + "_show");
 }
-
-function adduser(){
-	let userlist = document.getElementById("userlist");
+//used for manual add/remove button
+function addTestUser(){
 	let username = document.getElementById("testuser").value;
+	adduser(username);
+}
+function adduser(username){
+	console.log("User " + username + " added.")
+	let userlist = document.getElementById("userlist");
 	if (username != ""){
 		let entry = document.createElement("div");
 		entry.classList.add("userentry");
