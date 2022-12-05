@@ -3,21 +3,34 @@
 #define MESSAGEHANDLER_HPP
 #include <Arduino.h>
 #include <string>
+#include <vector>
 #include "message.hpp"
 
 #define JSON_BUF_LEN	1200
+#define TYPE_SEARCH_MAX 100
+
+#define BROADC_ADDR	0xFFFF
+
+struct header_t {
+	uint32_t sid;
+	std::vector<uint32_t> rid;
+	uint8_t type;
+};
 
 class MessageHandler 
 {
 private:
 	static MessageHandler* m_instance;
 	
+	uint32_t dbReqId;
+	
 	//ctor
     MessageHandler();
     //dtor
     ~MessageHandler();
     
-    void createDBMessage(std::string& dest, uint32_t requestId);    
+    size_t createHelloMessage(uint8_t* buf, uint32_t requestId);
+    void createDBReqMessage(std::string& dest, uint32_t requestId, const char* pkey = "");
 protected:
 public:
     
@@ -28,20 +41,33 @@ public:
     
     
     bool handleFrame(uint8_t *buf);
+    uint8_t  getType(uint8_t *buf, size_t len);
+    size_t getReceiverList(uint8_t*buf, size_t len, uint8_t* receiver);
+    
+    inline uint32_t getDBRequester() { return dbReqId; }
+    
+    bool extractHeader(uint8_t* buf, header_t& header);
     
     template <class MessageEnum>
-    void createMessage(MessageEnum e, std::string& dest, uint32_t requestId = 0)
+    size_t createMessage(MessageEnum e, uint8_t* buf, uint32_t requestId = 0)
     {
 		switch(e)
 		{
+			case Message::HELLO_CLIENT:
+			return createHelloMessage(buf, requestId);
+			break;
 			/*
-			case Message::CHAT:
-			dest = "CHAT MESSAGE";
-			*/ 
 			case Message::POLL:
 			dest = "POLL MESSAGE";
-			case Message::DATABASE:
-			createDBMessage(dest, requestId);
+			break;
+			case Message::DB_SYNC:
+			dbReqId = requestId;
+			createHelloMessage(dest, requestId);
+			break;
+			*/
+			default:
+			
+			break; 
 		}
 	}
 

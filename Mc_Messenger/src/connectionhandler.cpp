@@ -20,12 +20,15 @@ void /*ConnectionHandler::*/notFound(AsyncWebServerRequest *request) {
 }
 
 void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *payload, size_t len){
+	auto msgHandler = MessageHandler::instance();
+	
+	
 	if(type == WS_EVT_CONNECT){
         log_d("Websocket client connection received");
-        std::string tmp;
-        MessageHandler::instance()->createMessage(Message::DATABASE, tmp, client->id());
-        ws.text(client->id(), tmp.c_str());
-        log_d("TEXT SEND %s", tmp.c_str());
+        uint8_t outbuf[100];
+        size_t resp_len = msgHandler->createMessage(Message::HELLO_CLIENT, outbuf, client->id());
+        ws.text(client->id(), outbuf, resp_len);
+        log_d("TEXT SEND %s", outbuf);
         UserDatabase::instance()->add(client->id());
     } else if(type == WS_EVT_DISCONNECT){
         log_d("Client disconnected");
@@ -35,14 +38,77 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
         if(info->final && info->index == 0 && info->len == len){
             if(info->opcode == WS_TEXT){
                 payload[len] = 0;
-                log_d("%s", payload);
                 //TODO Execute message type dependent tasks
+                //int msgType = msgHandler->getType(payload, len);
+                //uint32_t rid;
+                //uint8_t rcvr[8];
+                //size_t rlen = 0;
+                //log_d("MSG_TYPE: %d", msgType);
+                //std::string tmp;
+                header_t header;
                 
-				if(!MessageHandler::instance()->handleFrame(payload)){
+                if(!msgHandler->extractHeader(payload, header)) { 
+					log_w("Something went wrong, couldn't extract header");
+					return;
+				}
+                log_d("%s", payload);
+                
+                if(header.rid.size() == 0){
+					log_w("NO RECEIVER SET, RETURN...");
+					return;
+				}
+                
+				if(header.rid.size() == 1 && header.rid[0] == BROADC_ADDR)
+				{
+					ws.textAll(payload, len);
+				}
+				else {
+					for (std::vector<uint32_t>::iterator i = header.rid.begin(); i != header.rid.end(); ++i){
+						ws.text((*i), payload, len);
+					}
+				}
+                /*
+                switch(header.type){
+					case Message::HELLO_WORLD:
+						
+						if(header.rid.size() == 1 && header.rid[0] == BROADC_ADDR)
+						{
+							ws.textAll(payload, len);
+						}
+						else {
+							for (std::vector<uint32_t>::iterator i = header.rid.begin(); i != header.rid.end(); ++i){
+								ws.text((*i), payload, len);
+							}
+						}
+						break;
+					case Message::DB_SYNC:
+						// Nothing to do
+						//log_d("RLEN %d | RC[0] %d", len, rcvr[0]);
+						//rlen = msgHandler->getReceiverList(payload, len, rcvr);
+						//ws.text(rcvr[0], (char*)payload);
+						break;
+					case Message::CHAT_MESSAGE:
+						// TODO Forward chat messages, identify receiver
+						if(header.rid[0] == BROADC_ADDR)
+						{
+							ws.textAll(payload, len);
+						} 
+						else {
+							for (std::vector<uint32_t>::iterator i = header.rid.begin(); i != header.rid.end(); ++i){
+								ws.text((*i), payload, len);
+							}
+						}
+						break;
+					default:
+						break;
+				}
+                */
+                /*
+				MessageHandler::instance()->handleFrame(payload)){
 					log_d("ROUTE MESSAGE");
 					ws.textAll((const char*)payload);
 				}
-                
+                */
                 //ws.textAll((const char*)payload);
                 
             }

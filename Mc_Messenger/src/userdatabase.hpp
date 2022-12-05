@@ -4,27 +4,16 @@
 
 #include "Arduino.h"
 #include <string>
-#include <map>
+#include <vector>
 //#include "linkedlist.hpp"
 
 #define UDB_DATA_LEN 1024
+#define MAX_CLIENTS	32
 #define PUBKEY_LEN	32
 
 struct User {
-	int client_id;
-	std::string pk;
-	std::string name;
-	
-	/*
-	union {
-		uint8_t flags;
-		struct {
-			uint8_t isActive:1;
-			uint8_t isAngry:1;
-			uint8_t isHungry:1;
-		};
-	};
-	*/ 	
+	uint32_t id = 0xFFFFFFFF;
+	std::string pkey = "";
 };
 
 typedef uint8_t t_pkey[PUBKEY_LEN];
@@ -35,7 +24,11 @@ private:
 	static UserDatabase* m_instance;
 
 	//LinkedList<User> users;
-    std::map<uint32_t, t_pkey> client_list;
+    //std::map<uint32_t, t_pkey> client_list;
+    
+    //uint32_t client_list[MAX_CLIENTS];
+    std::vector<uint32_t> client_list;
+    User currentResponsible;
     //ctor
     UserDatabase();
     //dtor
@@ -49,11 +42,13 @@ public:
 		return m_instance;
 	}
     
-    inline const std::map<uint32_t, t_pkey>& get() { return client_list; }
+    inline const std::vector<uint32_t>& getList() { return client_list; }
     
-    void add(uint32_t cid);
-    void remove(uint32_t cid);
-    void update(uint32_t cid, uint8_t* pkey);
+    bool add(uint32_t cid);
+    void updateCurrentResponsible(uint32_t cid, const std::string &pkey);
+    bool remove(uint32_t cid);
+    
+    inline const User* getCurrentResponsible(){ return &currentResponsible; }
     
 };
 #endif //USERDATABASE_HPP
