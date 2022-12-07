@@ -121,6 +121,11 @@ For each significant class in the package, include its name, brief description, 
 This section describes the system's decomposition into lightweight processes (single threads of control) and heavyweight processes (groupings of lightweight processes). Organize the section by groups of processes that communicate or interact. Describe the main modes of communication between processes, such as message passing, interrupts, and rendezvous.
 -->
 
+We modeled the process of sending a message in the following sequenze diagram in a component level. 
+
+![OUCD](./SequenceDiagrams/Component_Sequence_Diagram.png)
+
+
 ## 7. Deployment View
 
 <!--
