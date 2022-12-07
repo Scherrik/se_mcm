@@ -59,7 +59,7 @@ The document shows and discusses the architectural design decisions of the softw
 | -------------------------------------------------------------------|:----------:| ------------------------- |
 | [WordPress Blog](https://semcmessenger.wordpress.com)              | 06.10.2022 | MC-Messenger Team         | 
 | [GitHub](https://github.com/Scherrik/se_mcm)                       | 06.10.2022 | MC-Messenger Team         |
-|[ASR_Modifiability](https://github.com/Scherrik/se_mcm/blob/c77ece8d6b5c69fa801a9e2bd8e8148fc561fe00/docs/Architecture%20Significant%20Requirements%20(ASR)/Architecture%20Design%20and%20Tactics.md) | 07.12.2022 | MC-Messenger Team |
+| [ASR_Modifiability](./ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md) | 07.12.2022 | MC-Messenger Team |
 
 ### 1.5 Overview
 
@@ -77,7 +77,11 @@ This section describes what software architecture is for the current system, and
 This section describes the software requirements and objectives that have some significant impact on the architecture, for example, safety, security, privacy, use of an off-the-shelf product, portability, distribution, and reuse. It also captures the special constraints that may apply: design and implementation strategy, development tools, team structure, schedule, legacy code, and so on.
 -->
 
-![OUCD](docs/Architecture Significant Requirements (ASR)/Utility Tree mcm.png)
+In the following table/tree you can find our results of the discussion which requirements have a big impact on our architecture. Of all this requirements we picked modifiability to discuss further. You cand find the results in section 11.
+
+[11. Quality](#11-quality)   
+
+![OUCD](./ArchitectureSignificantRequirements/Utility_Tree_mcm.png)
 
 ## 4. Use-Case View
 
@@ -163,7 +167,8 @@ A description of how the software architecture contributes to all capabilities (
 Our main goal and discussed tactics focuss on modifiability. 
 
 We used the provided checklist and discussed how we need to implement certain features to achieve the desired goal. You can find the whole ASR document on github.
-[ASR_Modifiability](https://github.com/Scherrik/se_mcm/blob/c77ece8d6b5c69fa801a9e2bd8e8148fc561fe00/docs/Architecture%20Significant%20Requirements%20(ASR)/Architecture%20Design%20and%20Tactics.md)
+
+[ASR_Modifiability](./ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md)
 
 We focused on the following points:
 
