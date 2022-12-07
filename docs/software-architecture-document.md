@@ -140,7 +140,7 @@ This section describes the overall structure of the implementation model, the de
 
 The following package diagram shows the layered structure of our software on a package level. It is not final! It will be refactored and simplified in the future!
 
-![OUCD](./PackageDiagrams/Layer_Structure_Package_Diagram_OLD.png)
+![OUCD](./PackageDiagrams/Layer_Structure_Package_Diagram_NEW.png)
 
 ### 8.1 Overview
 
