@@ -2,6 +2,7 @@
 ## Members: Marcel Fischer, Erik Günther, Erik Schneider, Tim Nau
 ## Statistics of efforts
 ### Hours per person, and the major contributions per person
+![OUCD](/docs/JiraStatistics/time_required_per_person.png "Required time per person")
 #### Major contributions per person
 - Marcel Fischer: Use-Case-Design,...
 - Erik Günther: Back-End Design, Microcontroller-Setup,...
@@ -9,7 +10,17 @@
 - Tim Nau: Front-End-Development, Design-Review,...
 
 ### Hours per workflow
+
+![OUCD](/docs/JiraStatistics/time_required_per_workflow.png  "Estimated time per workflow")
+
+![OUCD](/docs/JiraStatistics/time_required_per_workflow.png  "Required time per workflow")
+
 ### Hours per phase
+
+![OUCD](/docs/JiraStatistics/time_estimated_per_phase.png  "Estimated time per phase")
+
+![OUCD](/docs/JiraStatistics/time_required_per_phase.png  "Required time per phase")
+
 ## Overall use case diagram
 
 ![OUCD](/docs/UseCases/UML_MCM_Use_Case_Diagram_2022_marked.drawio.png)
