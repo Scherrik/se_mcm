@@ -11,7 +11,7 @@
 
 ### Hours per workflow
 
-![OUCD](/docs/JiraStatistics/time_required_per_workflow.png  "Estimated time per workflow")
+![OUCD](/docs/JiraStatistics/time_estimated_per_workflow.png  "Estimated time per workflow")
 
 ![OUCD](/docs/JiraStatistics/time_required_per_workflow.png  "Required time per workflow")
 
