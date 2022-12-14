@@ -6,9 +6,9 @@ const IS_HUNGRY = 2;
 class User {
 	constructor(id=-1, name="Default", color="black", pkey="") {
 		this.id = id;
-		this.name = name;
-		this.color = color;
-		this.flags = 1;
+		this.na = name;
+		this.cl = color;
+		this.fl = 1;
 		this.sendCount = 0;
 		this.rcvdCount = 0;
 	}
@@ -23,19 +23,19 @@ class UserDB {
 		this.dbHostToken = false;
 		this.me = { 
 			id: -1, 
-			name: "Default", 
-			color: "black", 
+			na: "Default", 
+			cl: "black", 
 			keys: nacl.box.keyPair(),
-			flags: 0
+			fl: 0
 		}
 		
 		this.others = new Map();
 		
 		if(FLAG_TEST_LOCAL){
-			this.others.set(1, {name: "Hans", color: "black"});
-			this.others.set(2, {name: "Magnus", color: "black"});
-			this.others.set(3, {name: "Kennedy", color: "black"});
-			this.others.set(4, {name: "Atomfried Jesus", color: "black"});
+			this.others.set(1, {na: "Hans",   			cl: "black"});
+			this.others.set(2, {na: "Magnus", 			cl: "black"});
+			this.others.set(3, {na: "Kennedy", 			cl: "black"});
+			this.others.set(4, {na: "Atomfried Jesus",  cl: "black"});
 		}
 	}
 	
@@ -51,14 +51,14 @@ class UserDB {
 		// TODO Add groups to database
 		var out = {}
 		out[this.me.id] = { 
-			na: this.me.name,
-			cl: this.me.color,
+			na: this.me.na,
+			cl: this.me.cl,
 			pk: bytesToString(this.me.keys.publicKey)
 		};
 		this.others.forEach((values, keys) => {
 			out[keys] = {
-				na: values.name,
-				cl: values.color,
+				na: values.na,
+				cl: values.cl,
 				pk: bytesToString(values.pk)
 			};
 		})
@@ -72,7 +72,7 @@ class UserDB {
 	updateUser(uid, obj){
 		this.others.set(uid, obj);
 		
-		var event = new Event('change');
+		adduser(uid, obj);
 		//this.dispatchEvent(event);
 	}
 	
@@ -86,8 +86,8 @@ class UserDB {
 				this.others.set(Number(key), obj[key]);
 			}
 		}
-		//var event = new Event('change');
-		//this.dispatchEvent(event);
+		
+		updateUserlist();
 	}
 	
 	setHostToken(b){

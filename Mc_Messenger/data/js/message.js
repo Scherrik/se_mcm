@@ -106,11 +106,11 @@ class MessageHandler{
 		switch(type){
 			case "message":
 				result["pl"] = msgObj;
-				result["fl"] = udb.me.flags;
+				result["fl"] = udb.me.fl;
 			break;
 			case "meta-info":
-				result["na"] = udb.me.name;
-				result["cl"] = udb.me.color;
+				result["na"] = udb.me.na;
+				result["cl"] = udb.me.cl;
 			break;
 			case "server-poll":
 				// Not implemented yet
@@ -205,7 +205,7 @@ class MessageHandler{
 				//setTimeout(function(){ 
 					console.log("add new user to db");
 					console.log(stringToBytes(json_obj["da"]["pk"]));
-					udb.updateUser(json_obj["sid"], { name: "Default." + json_obj["sid"], color: "black", pk: stringToBytes(json_obj["da"]["pk"])})
+					udb.updateUser(json_obj["sid"], { na: "Default." + json_obj["sid"], cl: "black", pk: stringToBytes(json_obj["da"]["pk"])})
 				//}, 300);
 				break;
 			case "db-sync":
@@ -225,11 +225,11 @@ class MessageHandler{
 				console.log(udb.others);
 				let sid = json_obj.sid;
 				if(sid === udb.me.id) {
-					json_obj["name"] = "You";
-					json_obj["color"] = udb.me.color;
+					json_obj["na"] = "You";
+					json_obj["cl"] = udb.me.cl;
 				} else {
-					json_obj["name"] = udb.others.get(sid).name;
-					json_obj["color"] = udb.others.get(sid).color;
+					json_obj["na"] = udb.others.get(sid).na;
+					json_obj["cl"] = udb.others.get(sid).cl;
 				}
 				this.print(json_obj);
 				break;
@@ -239,8 +239,8 @@ class MessageHandler{
 					udb.updateUser(
 							json_obj.sid,
 							{
-							  name: json_obj["da"]["na"], 
-							  color: json_obj["da"]["cl"] 
+							  na: json_obj["da"]["na"], 
+							  cl: json_obj["da"]["cl"] 
 							}
 					)
 					//udb.others.get(sid).name = json_obj["da"]["na"];
@@ -301,7 +301,7 @@ class MessageHandler{
 												 + "</p>";*/
 		
 		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
-												 + obj["name"].fontcolor(obj["color"]) + ": " 
+												 + obj["na"].fontcolor(obj["cl"]) + ": " 
 												 + obj["da"]["pl"].replace("\n", "<br>")
 												 + "</p>";
 		box.scrollTop = box.scrollHeight;

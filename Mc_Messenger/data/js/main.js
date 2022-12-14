@@ -2,15 +2,22 @@ function isEmpty(str){
 	return (!str || str.trim().length === 0);
 }
 
+async function extract(blob){
+	(blob.text().then(
+		value => MessageHandle.processIncomingMessage(JSON.parse(value))));
+}
+
 function init(){
 	soc = new WebSocket('ws://' + window.location.hostname + '/ws');
 	soc.onmessage = function(event) {
-		console.debug("MSG: " + event.data);
+		extract(event.data);
+		//const text = event.data.text();
+		//console.debug(text);
 		// Send messages as JSON String is possibly the way to go?! Yes it is!
-		var json_obj = JSON.parse(event.data);
-		MessageHandle.processIncomingMessage(json_obj);
+		//var json_obj = JSON.parse(text);
+		//MessageHandle.processIncomingMessage(json_obj);
 	}
-	udb.getNameList().forEach(adduser);
+	//udb.getNameList().forEach(adduser);
 	//overlay();
 }
 
@@ -28,7 +35,40 @@ function addTestUser(){
 	let username = document.getElementById("testuser").value;
 	adduser(username);
 }
+
+function updateUserlist(){
+	console.log("UPDATE UL IN FRONTEND");
+	console.log(udb);
+	
+	udb.others.forEach(function(value, key){
+		adduser(key, value);
+	});
+}
+
+function adduser(id, user){
+	console.log("USER ADD");
+	console.log(user)
+	let userlist = document.getElementById("userlist");
+	userlist.innerHTML = "";
+	
+	let entry = document.createElement("div");
+	entry.classList.add("userentry");
+	entry.id = id;
+	entry.innerHTML = user["na"].fontcolor(user["cl"]);
+	entry.addEventListener("click", function(event){
+		let input_str = String(input.value);
+		if(input.value.startsWith("@") == false){
+			input.value = "@" + entry.id + " " + input.value;
+		}else{
+			input.value = input_str.substring(input_str.substring(0,input_str.indexOf(" ")).length + 1);
+			input.value = "@" + entry.id + " " + input.value;
+		}
+	})
+	userlist.appendChild(entry);
+}
+/*
 function adduser(username){
+	
 	console.log("User " + username + " added.")
 	let userlist = document.getElementById("userlist");
 	if (username != ""){
@@ -48,7 +88,7 @@ function adduser(username){
 		userlist.appendChild(entry);
 	}
 }
-
+*/
 function removeuser(){
 	let username = document.getElementById("testuser").value;
 	let entry = document.getElementById(username);
@@ -65,9 +105,9 @@ input.addEventListener("keydown", function(event){
 			input.value = input.value + "\n";
 		} else {
 			if(event.ctrlKey){
-				udb.me.flags |= IS_ANGRY;
+				udb.me.fl |= IS_ANGRY;
 			} else {
-				udb.me.flags &= ~IS_ANGRY;
+				udb.me.fl &= ~IS_ANGRY;
 			}
 			MessageHandle.sendMessage();
 		}
@@ -77,8 +117,8 @@ input.addEventListener("keydown", function(event){
 //color selector + update color
 var colorPicker = document.getElementById("user_color");
 colorPicker.addEventListener("change", function(event){
-	udb.me.color = event.target.value;
-	console.log("Color updated: " + udb.me.color);
+	udb.me.cl = event.target.value;
+	console.log("Color updated: " + udb.me.cl);
 	MessageHandle.sendMetaChange();
 });
 

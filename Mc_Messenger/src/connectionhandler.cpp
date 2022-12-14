@@ -24,7 +24,7 @@ void onWsEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventT
         log_d("Websocket client connection received");
         uint8_t outbuf[100];
         size_t resp_len = MessageHandler::instance()->createMessage(Message::HELLO_CLIENT, outbuf, client->id());
-        ws.text(client->id(), outbuf, resp_len);
+        ws.binary(client->id(), outbuf, resp_len);
         log_d("TEXT SEND %s", outbuf);
         UserDatabase::instance()->add(client->id());
     } else if(type == WS_EVT_DISCONNECT){
@@ -144,11 +144,11 @@ void ConnectionHandler::flush(){
         uint8_t* payload = message_queue.front().data;
 		if(header.rid.size() == 1 && header.rid[0] == BROADC_ADDR)
 		{
-			ws.textAll(payload, size);
+			ws.binaryAll(payload, size);
 		}
 		else {
 			for (std::vector<uint32_t>::iterator i = header.rid.begin(); i != header.rid.end(); ++i){
-				ws.text((*i), payload, size);
+				ws.binary((*i), payload, size);
 			}
 		}
 		log_d("SENT: %s", message_queue.front().data);
@@ -200,6 +200,12 @@ void ConnectionHandler::initServer(const char* hostname)
 	
 	server.on("/css/regular.css", HTTP_GET, [](AsyncWebServerRequest *request){
 		auto response = request->beginResponse(LittleFS, PSTR("/css/regular.css"), PSTR("text/css"));
+		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
+		request->send(response);
+	});
+	
+	server.on("/css/frame.css", HTTP_GET, [](AsyncWebServerRequest *request){
+		auto response = request->beginResponse(LittleFS, PSTR("/css/frame.css"), PSTR("text/css"));
 		//response->addHeader(PSTR("Content-Encoding"), PSTR("gzip"));
 		request->send(response);
 	});
