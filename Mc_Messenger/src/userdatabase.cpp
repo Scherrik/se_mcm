@@ -4,6 +4,7 @@
 UserDatabase* UserDatabase::m_instance = nullptr;
 //ctor
 UserDatabase::UserDatabase()
+: client_list(std::vector<uint32_t>())
 {
 }
 
@@ -12,18 +13,29 @@ UserDatabase::~UserDatabase()
 {
 }
 
-void UserDatabase::add(uint32_t cid){
-	client_list[cid][0] = 0;
-}
-void UserDatabase::remove(uint32_t cid){
-	client_list.erase(cid);
+bool UserDatabase::add(uint32_t cid){
+	if ( std::find(client_list.begin(), client_list.end(), cid) != client_list.end() )
+		return false;
+	client_list.push_back(cid);
+	return true;
 }
 
-void UserDatabase::update(uint32_t cid, uint8_t* pkey){
-	if(!pkey) return;	
-	for(uint8_t u = 0; u < PUBKEY_LEN; u++){
-		client_list[cid][u] = pkey[u];
-	}
+void UserDatabase::updateCurrentResponsible(uint32_t cid, const std::string &pkey){	
+	currentResponsible.id = cid;
+	currentResponsible.pkey = pkey;
 }
+
+bool UserDatabase::remove(uint32_t cid){
+	for (std::vector<uint32_t>::iterator it = client_list.begin(); it != client_list.end();)
+    {
+        if (*it == cid){
+            it = client_list.erase(it);
+            return true;
+        }   
+        ++it;
+    }
+    return false;
+}
+
 
 //EOF

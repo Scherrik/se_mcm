@@ -9,9 +9,14 @@ private:
 protected:
 public:
 	enum {
-		CHAT,
+		HELLO_CLIENT = 1,
+		HELLO_WORLD = 2,
+		DB_SYNC = 3,
+		SERVER_POLL = 4,
+		CHAT_MESSAGE = 128,
+		META_INFO,
 		POLL,
-		DATABASE
+		FILE
 	};
     //ctor
     Message();

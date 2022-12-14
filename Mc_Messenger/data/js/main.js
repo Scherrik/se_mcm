@@ -8,7 +8,7 @@ function init(){
 		console.debug("MSG: " + event.data);
 		// Send messages as JSON String is possibly the way to go?! Yes it is!
 		var json_obj = JSON.parse(event.data);
-		MessageHandle.extract(json_obj);
+		MessageHandle.processIncomingMessage(json_obj);
 	}
 	udb.getNameList().forEach(adduser);
 	//overlay();

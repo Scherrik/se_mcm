@@ -18,6 +18,12 @@
 #include <ArduinoOTA.h>
 #include <ESPAsyncWebServer.h>
 #include <FS.h>
+#include <queue>
+
+struct buffer_t {
+	size_t size;
+	uint8_t* data;
+};
 
 class ConnectionHandler 
 {
@@ -25,6 +31,10 @@ private:
 	static ConnectionHandler* m_instance;
 
 	ConnectionHandler();
+	
+	std::queue<buffer_t> message_queue;
+	void pop();
+	void flush();
 	
 	void initFS();
 	void initAP(const char* ssid);
@@ -37,6 +47,8 @@ public:
 		return m_instance;
 	}
     
+	void addMessageToQueue(uint8_t* buf, size_t len);
+	
     void init(const char* ssid = "mcm", const char* hostname = "mcm");
     void update();
     

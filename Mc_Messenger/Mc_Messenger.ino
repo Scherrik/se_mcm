@@ -6,5 +6,5 @@ void setup() {
 }
 
 void loop() {
-	//ConnectionHandler::instance()->update();
+	ConnectionHandler::instance()->update();
 }

@@ -1,4 +1,4 @@
-const BROADC_ADDR = 0xFF;
+const BROADC_ADDR = 0xFFFF;
 
 
 //const db = new Map();
@@ -6,11 +6,42 @@ var soc;
 
 const typeMap = new Map();
 
-typeMap.set('srv', 0);
-typeMap.set('msg', 2);
-typeMap.set('meta', 3);
-typeMap.set('poll', 4);
-typeMap.set('file', 5);
+// 
+typeMap.set('hello-client', 1);
+typeMap.set('hello-world', 2);
+typeMap.set('db-sync', 3);
+//typeMap.set('pk-exchange', 3);
+typeMap.set('server-poll', 4);
+typeMap.set('message', 128);
+typeMap.set('meta-info', 129);
+typeMap.set('poll', 130);
+typeMap.set('file', 131);
+
+function typeToString(id){
+	for (const [key, value] of typeMap) {
+		if(value == id) return key;
+	}
+	return "NO TYPE FOUND";
+	//return [...typeMap.values()].find(([key,val]) => id == value)[0];
+}
+
+function bytesToString(bytes) {
+    var chars = [];
+    for(var i = 0, n = bytes.length; i < n;) {
+        chars.push(((bytes[i++] & 0xff) << 8) | (bytes[i++] & 0xff));
+    }
+    return String.fromCharCode.apply(null, chars);
+}
+
+// https://codereview.stackexchange.com/a/3589/75693
+function stringToBytes(str) {
+    var bytes = [];
+    for(var i = 0, n = str.length; i < n; i++) {
+        var char = str.charCodeAt(i);
+        bytes.push(char >>> 8, char & 0xFF);
+    }
+    return bytes;
+}
 
 class MessageHandler{
 	constructor(){
@@ -69,20 +100,27 @@ class MessageHandler{
 	}
 	*/
 	
-	create(type, msgObj = {}){
+	createPayload(type, msgObj = {}){
 		let result = {}
+		console.log("CREATE " + type + " Message");
 		switch(type){
-			case "srv":
-				// Not implemented yet
-				result = this.createServerMessage(msgObj); 
-			break;
-			case "msg":
+			case "message":
 				result["pl"] = msgObj;
 				result["fl"] = udb.me.flags;
 			break;
-			case "meta":
+			case "meta-info":
 				result["na"] = udb.me.name;
 				result["cl"] = udb.me.color;
+			break;
+			case "server-poll":
+				// Not implemented yet
+				result = this.createServerMessage(msgObj); 
+			break;
+			case "db-sync":
+				result["db"] = udb.toObject(); 
+			break;
+			case "hello-world":
+				result["pk"] = bytesToString(udb.me.keys.publicKey); 
 			break;
 			case "poll":
 				result["qu"] = msgObj.question;
@@ -96,6 +134,127 @@ class MessageHandler{
 		return result;
 	}
 	
+	processIncomingMessage(json_obj){
+		
+		let type = typeToString(json_obj["typ"]);
+		console.log("RECEIVED " + type + " Message");
+		switch (type) {
+			//Server message on init
+			case "hello-client":
+				console.log("hello_client received");
+				udb.me.id = json_obj["yid"];
+				let db_size = json_obj["dbs"];
+				var obj = {}
+				if(db_size == 0){
+					udb.setHostToken(true);
+				} else {
+					// send hello_world
+					console.log("send hello_world");
+					obj = this.createFrame("hello-world", [BROADC_ADDR]);
+					obj["da"] = this.createPayload("hello-world");
+					console.log(JSON.stringify(obj));
+					soc.send(JSON.stringify(obj));	
+				}
+				
+				return;
+								
+				/*
+				console.log("Received srv message");
+				if(json_obj["yid"]){
+					udb.me.id = json_obj["yid"];
+				}
+				// counter part client info: id, pkey
+				if(json_obj["cpa"]){
+					udb.updateUser(json_obj["cpa"]["id"], 
+									{ "pkey": json_obj["cpa"]["pk"] }
+								);
+				} else {
+					console.log("No other participants here, you're first!");
+					// TODO Create broadcast keypair (for encryption)
+				}
+				
+				
+				// Send public keys
+				var obj = this.createFrame("db_init", -1);
+				obj["da"] = udb.me.keys.publicKey;
+				console.log(obj);
+				console.log(JSON.stringify(obj));
+				soc.send(JSON.stringify(obj));
+				*/ 
+				break;
+			// user database
+			case "hello-world":
+				if(json_obj["sid"] == udb.me.id) return;
+				console.log("hello-world received");
+				if(udb.dbHostToken){
+					console.log("got token, send hello_world response and db");
+					var obj = this.createFrame("hello-world", [json_obj["sid"]]);
+					obj["da"] = this.createPayload("hello-world");
+					soc.send(JSON.stringify(obj));
+					obj = this.createFrame("db-sync", [json_obj["sid"]]);
+					obj["da"] = this.createPayload("db-sync");
+					var json = JSON.stringify(obj)
+					console.log(json);
+					setTimeout(function(){ 
+						soc.send(json);
+						console.log("Removed db host token");
+						udb.dbHostToken = false;
+						console.log("done");
+					}, 250);
+				}
+				//setTimeout(function(){ 
+					console.log("add new user to db");
+					console.log(stringToBytes(json_obj["da"]["pk"]));
+					udb.updateUser(json_obj["sid"], { name: "Default." + json_obj["sid"], color: "black", pk: stringToBytes(json_obj["da"]["pk"])})
+				//}, 300);
+				break;
+			case "db-sync":
+				udb.dbHostToken = true;
+				udb.updateDB(json_obj["da"]["db"]);
+				console.log("Now I'm new db host provider");
+				break;
+			//Chat message
+			case "message":
+				//this.decryptPayload(json_obj);
+				//console.log(json_obj["da"]);
+				if(json_obj["da"]["fl"] & IS_ANGRY){
+					angrymode();
+					setTimeout(function(){ angrymode(); }, 5000);
+				}
+				console.log(json_obj);
+				console.log(udb.others);
+				let sid = json_obj.sid;
+				if(sid === udb.me.id) {
+					json_obj["name"] = "You";
+					json_obj["color"] = udb.me.color;
+				} else {
+					json_obj["name"] = udb.others.get(sid).name;
+					json_obj["color"] = udb.others.get(sid).color;
+				}
+				this.print(json_obj);
+				break;
+			//Meta change
+			case "meta-info":
+				if(json_obj.sid !== udb.me.id) {
+					udb.updateUser(
+							json_obj.sid,
+							{
+							  name: json_obj["da"]["na"], 
+							  color: json_obj["da"]["cl"] 
+							}
+					)
+					//udb.others.get(sid).name = json_obj["da"]["na"];
+					//udb.others.get(sid).color = json_obj["da"]["cl"];
+				}
+				break;
+			//Poll
+			case 130:
+				break;
+			default:
+				console.log("DEFAULT NOTHING TODO...");
+				break;
+		}
+	}
 	encryptPayload(msg, rcvrPkey){
 		var secretKey  = udb.me.keys.secretKey;
 		// TODO get counter part public key either from database or from the initial message
@@ -163,8 +322,8 @@ class MessageHandler{
 		 * TODO Extract name from message and determine id(s) from belonging user 
 		 */ 
 		
-		let frame = this.createFrame("msg", BROADC_ADDR/* Has to be replaced by real receiver list */);
-		frame["da"] = this.create("msg", msg);
+		let frame = this.createFrame("message", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
+		frame["da"] = this.createPayload("message", msg);
 		/* Encryption part
 		let enc = JSON.stringify(messageHandler.create(msg, "msg"));
 		enc = this.encryptPayload(enc, myUser.keys.publicKey ); //Has to be replaced by receiver public keys
@@ -178,8 +337,8 @@ class MessageHandler{
 	}
 	
 	sendMetaChange(){
-		let frame = this.createFrame("meta", BROADC_ADDR);
-		frame["da"] = this.create("meta");
+		let frame = this.createFrame("meta-info", [BROADC_ADDR]);
+		frame["da"] = this.createPayload("meta-info");
 		
 		let jsonFrame = JSON.stringify(frame);
 		soc.send(jsonFrame);
@@ -193,72 +352,6 @@ class MessageHandler{
 		//Code to sync database
 	}
 	
-	extract(json_obj){
-		switch (json_obj["typ"]) {
-			//Server message on init
-			case 0:
-				console.log("Received srv message");
-				if(json_obj["yid"]){
-					udb.me.id = json_obj["yid"];
-				}
-				//userDB.set(myUser.id, myUser);
-				//Foreach entry in incoming frame db create entry in local DB
-				
-				
-				var obj = this.createFrame(-1, typeMap.get("srv"));
-				obj["da"] = udb.me.keys.publicKey;
-				//udb.me.keys.publicKey.forEach(ele => obj["da"].push(ele));
-				console.log(obj);
-				console.log(JSON.stringify(obj));
-				soc.send(JSON.stringify(obj));
-				break;
-			// poll result sent from server
-			case 1:
-				
-				break;
-			//Chat message
-			case 2:
-				//this.decryptPayload(json_obj);
-				//console.log(json_obj["da"]);
-				if(json_obj["da"]["fl"] & IS_ANGRY){
-					angrymode();
-					setTimeout(function(){ angrymode(); }, 5000);
-				}
-				console.log(json_obj);
-				console.log(udb.others);
-				let sid = json_obj.sid;
-				if(sid === udb.me.id) {
-					json_obj["name"] = "You";
-					json_obj["color"] = udb.me.color;
-				} else {
-					json_obj["name"] = udb.others.get(sid).name;
-					json_obj["color"] = udb.others.get(sid).color;
-				}
-				this.print(json_obj);
-				break;
-			//Meta change
-			case 3:
-				if(json_obj.sid !== udb.me.id) {
-					console.log("update value");
-					udb.others.set(
-							json_obj.sid,
-							{ 
-							  name: json_obj["da"]["na"], 
-							  color: json_obj["da"]["cl"] 
-							}
-					)
-					//udb.others.get(sid).name = json_obj["da"]["na"];
-					//udb.others.get(sid).color = json_obj["da"]["cl"];
-				}
-				break;
-			//Poll
-			case 4:
-				break;
-			default:
-				console.log("DEFAULT NOTHING TODO...");
-				break;
-		}
-	}
 }
 
 const MessageHandle = new MessageHandler();
