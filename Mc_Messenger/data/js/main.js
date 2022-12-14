@@ -11,6 +11,7 @@ function init(){
 		MessageHandle.extract(json_obj);
 	}
 	udb.getNameList().forEach(adduser);
+	//overlay();
 }
 
 function showmenu(){
@@ -73,10 +74,6 @@ input.addEventListener("keydown", function(event){
 	}
 });
 
-function test_message(msg){	
-	MessageHandle.print( MessageHandle.create("msg", msg) );
-}
-
 //color selector + update color
 var colorPicker = document.getElementById("user_color");
 colorPicker.addEventListener("change", function(event){
@@ -85,15 +82,24 @@ colorPicker.addEventListener("change", function(event){
 	MessageHandle.sendMetaChange();
 });
 
-//not in use
-function darkmode(){
-	document.body.classList.toggle("dark-mode");
-	var test = document.querySelectorAll(".tile");
-	test.forEach(x => x.classList.toggle("dark-mode"));
-}
 function angrymode(){
 	document.body.classList.toggle("angrymode");
 	document.getElementById("chat_box").classList.toggle("angrymode");
 	document.getElementById("msg_input").classList.toggle("angrymode");
 	document.getElementById("frame").classList.toggle("angryshake");
+}
+
+function check_usrname(){
+	let name = String(document.getElementById("login_name").value);
+	if(name.includes(" ") == true){console.log("Leerzeichen")};
+}
+function overlay() {
+	var background = document.getElementById("pubg");
+	background.style.display = "block";
+
+	window.onclick = function(event) {
+		if (event.target == background) {
+			background.style.display = "none";
+		}
+	}
 }
