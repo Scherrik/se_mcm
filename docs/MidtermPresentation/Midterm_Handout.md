@@ -4,10 +4,10 @@
 ### Hours per person, and the major contributions per person
 ![OUCD](/docs/JiraStatistics/time_required_per_person.png "Required time per person")
 #### Major contributions per person
-- Marcel Fischer: Use-Case-Design,...
-- Erik Günther: Back-End Design, Microcontroller-Setup,...
-- Erik Schneider: Front-End Design, Web-Design & Development,...
-- Tim Nau: Front-End-Development, Design-Review,...
+- Marcel Fischer: Use-Case-Design, Project manager
+- Erik Günther: Back-End Design, Microcontroller-Setup
+- Erik Schneider: Front-End Design, Web-Design & Development
+- Tim Nau: Front-End-Development, Design-Review
 
 ### Hours per workflow
 
