@@ -14,6 +14,17 @@
 	- [Technology Stack](#23-technology-stack)
 - [Specific Requirements](#3-specific-requirements)
     - [Functionality](#31-functionality)
+    - [Usability](#32-usability)
+    - [Reliability](#33-reliability)
+    - [Performance](#34-performance)
+    - [Supportability](#35-supportability)
+    - [Design Constraints](#36-design-constraints)
+    - [Online User Documentation and Help System Requirements](#37-on-line-user-documentation-and-help-system-requirements)
+    - [Purchased Components](#38-purchased-components)
+    - [Interfaces](#39-interfaces)
+    - [Licensing Requirements](#310-licensing-requirements)
+    - [Legal, Copyright And Other Notices](#311-legal-copyright-and-other-notices)
+    - [Applicable Standards](#312-applicable-standards)
 - [Supporting Information](#4-supporting-information)
 
 ## 1. Introduction
@@ -244,6 +255,56 @@ Portable chat-host
 ##### Story points: 3
 
 [No mockup available yet]
+
+### 3.2 Usability
+The application is planned to be user friendly and as intuitive as possible. There should not be any additional user documentation needed.
+
+#### 3.2.1 Easy to navigate
+The app should be easy to navigate and similar to common designs of messengers. The GUI should be intuitiva and not cause any frustration.
+
+### 3.3 Reliability
+
+#### 3.3.1 Availability
+
+#### 3.3.2 Defect Rate
+
+### 3.4 Performance
+
+#### 3.4.1 Capacity
+
+#### 3.4.2 Storage 
+
+#### 3.4.3 App perfomance / Response time
+
+### 3.5 Supportability
+
+#### 3.5.1 Coding Standards
+
+#### 3.5.2 Testing Strategy
+
+### 3.6 Design Constraints
+
+### 3.7 On-line User Documentation and Help System Requirements
+The usage of the app should be as intuitive as possible so it won't need any further documentation. If the user needs some help we will implement a "Help"-Button in the App which includes a FAQ and a formular to contact the developement team.
+
+### 3.8 Purchased Components
+
+### 3.9 Interfaces
+
+#### 3.9.1 User Interfaces
+
+#### 3.9.2 Hardware Interfaces
+(n/a)
+
+#### 3.9.3 Software Interfaces
+
+#### 3.9.4 Communication Interfaces
+
+### 3.10 Licensing Requirements
+
+### 3.11 Legal, Copyright, and Other Notices
+
+### 3.12 Applicable Standards
 
 ## 4. Supporting Information
 For any further information you can contact the MC-Messenger Team or check our [Blog](https://semcmessenger.wordpress.com). 
