@@ -24,12 +24,10 @@ Version 1.0
 - [8. Implementation View](#8-implementation-view)
 - [8.1 Overview](#81-overview)     
 - [8.2 Layers](#82-layers)     
-- [9. Data View (optional)](#9-data-view-(optional))     
+- [9. Data View](#9-data-view)     
 - [10. Size and Performance](#10-size-and-performance)               
 - [11. Quality](#11-quality)               
 - [12. Supporting Information](#12-supporting-information)
-  
-Software Architecture Document
 
 ## 1. Introduction
 
@@ -66,10 +64,19 @@ The document shows and discusses the architectural design decisions of the softw
 This document summarizes the analysis and design discussions and decissions. It recaps back to the use-case analyzis and class design and concludes to the architecutural decisions which follow out of the ASR. 
 
 ## 2. Architectural Representation
-
 <!--
 This section describes what software architecture is for the current system, and how it is represented. Of the **Use-Case**, **Logical**, **Process**, **Deployment**, and **Implementation Views**, it enumerates the views that are necessary, and for each view, explains what types of model elements it contains.
 -->
+THe project will you a Layered architecture (open layers) :
+Our software consists of several layers that need to be passed while sending and receiving a message or data. (Similar to the ISO/OSI model)
+1. Frontend
+2. Client-Backend: (scripts, js)
+3. Backend
+(and from 3. back to 1. when data is send from the server to a client)
+
+It also is Event-driven: (mediator in form of backend)
+Event: user input (message, namechange, colour, etc)
+Server manages: flow, encapsulation of the header, check the database, forward to receivers
 
 ## 3. Architectural Goals and Constraints
 
@@ -102,9 +109,9 @@ This section illustrates how the software actually works by giving a few selecte
 
 <hr style="border:2px solid black">
 
-# 4.1.2 How to connect to the Application - Use-Case-Realization Specification (UCRS) 
+## 4.1.2 How to connect to the Application - Use-Case-Realization Specification (UCRS) 
 
-## 1. Introduction
+### 1. Introduction
 
 ### 1.1 Purpose
 This Use-Case-Realization Specification (UCRS) document describes how a specific function of the application will work.
@@ -133,16 +140,16 @@ It includes an overview about the feature and a sequence diagram to visualize th
 ### 1.5 Overview
 Thehe following chapter shows the flow of events for this specific feature in the form of a sequence diagram.
     
-## 2. Flows of Events
+### 2. Flows of Events
 
 ![OUCD](./SequenceDiagrams/Sequence_Diagram_ChangeName.png)
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------->
 <hr style="border:2px solid black">
 
-# 4.1.2 How to connect to the Application - Use-Case-Realization Specification (UCRS) 
+## 4.1.2 How to connect to the Application - Use-Case-Realization Specification (UCRS) 
 
-## 1. Introduction
+### 1. Introduction
 
 ### 1.1 Purpose
 This Use-Case-Realization Specification (UCRS) document describes how a specific function of the application will work.
@@ -173,7 +180,7 @@ It includes an overview about the feature and a sequence diagram to visualize th
 ### 1.5 Overview
 Thehe following chapter shows the flow of events for this specific feature in the form of a sequence diagram.
     
-## 2. Flows of Events
+### 2. Flows of Events
 
 ![OUCD](./SequenceDiagrams/Sequence_Diagram_Connection.png)
 
@@ -181,10 +188,37 @@ Thehe following chapter shows the flow of events for this specific feature in th
 <hr style="border:2px solid black">
 
 ## 5. Logical View
-
 <!--
 This section describes the architecturally significant parts of the design model, such as its decomposition into subsystems and packages. And for each significant package, its decomposition into classes and class utilities. You should introduce architecturally significant classes and describe their responsibilities, as well as a few very important relationships, operations, and attributes.
 -->
+
+### 5.1 Overview
+<!--
+This subsection describes the overall decomposition of the design model in terms of its package hierarchy and layers.
+-->
+The application follows a simple layered structure:
+
+1. Frontend
+2. Client-Backend: (scripts, js)
+3. Backend
+
+The focus on this capter will be the backend. It is the only part which uses components and classes.
+
+
+### 5.2 Architecturally Significant Design Packages
+<!--
+For each significant package, include a subsection with its name, its brief description, and a diagram with all significant classes and packages contained within the package.
+
+For each significant class in the package, include its name, brief description, and, optionally a description of some of its major responsibilities, operations and attributes.
+-->
+
+### 5.2.1 Frontend
+The frontend only consists of Plan HTML, CSS. Classes will not be used. The frontend only displays the data to the user in a specific way.
+
+### 5.2.2 Client-Backend
+The Client-Backend simply packages a request in a Json file and sends it to the server. Received json files will be evaluated and given to the frontend to be displayed.
+
+### 5.2.3 Backend
 
 ![OUCD](./ClassDiagrams/ClassDiagram_Backend.png)
 
@@ -203,19 +237,7 @@ The functions in 4.2 and 4.3 decrypt the message-part of the frame with the priv
 
 - The ConnectionHandler is called which sends the Message or the sends the updated user information with the function sendMessage to the clients.
 
-### 5.1 Overview
 
-<!--
-This subsection describes the overall decomposition of the design model in terms of its package hierarchy and layers.
--->
-
-### 5.2 Architecturally Significant Design Packages
-
-<!--
-For each significant package, include a subsection with its name, its brief description, and a diagram with all significant classes and packages contained within the package.
-
-For each significant class in the package, include its name, brief description, and, optionally a description of some of its major responsibilities, operations and attributes.
--->
 
 ## 6. Process View
 
@@ -259,7 +281,7 @@ For each layer, include a subsection with its name, an enumeration of the subsys
 #### 8.2.6 Filesystem
 #### 8.2.7 Hardware Control
 
-## 9. Data View (optional)
+## 9. Data View
 <!--
 A description of the persistent data storage perspective of the system. This section is optional if there is little or no persistent data, or the translation between the Design Model and the Data Model is trivial.
 -->
