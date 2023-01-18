@@ -263,48 +263,67 @@ The application is planned to be user friendly and as intuitive as possible. The
 The app should be easy to navigate and similar to common designs of messengers. The GUI should be intuitiva and not cause any frustration.
 
 ### 3.3 Reliability
+Reliability is very important requirement for this app. Battery runtime and connection stability are the important Refinements.
 
 #### 3.3.1 Availability
+The server of the messenger should be available 95% of the time. Planable downtime should be scheduled during times of low user numbers. Battery outage and connection overload needs to be handled accordingly.
 
 #### 3.3.2 Defect Rate
+At the moment no chat logs are planned. Only usernames would be lost in case of a defect because maessages are saved on the local browser of the user. A defect needs to be avoided but does not have a big inpact on the loss of data. 
 
 ### 3.4 Performance
 
-#### 3.4.1 Capacity
+#### 3.4.1 Response times
+The latency of a message beeing send and received should be as low as possible by the network speed. If the latency gets to a high because to many messages are sent a "spam filter" or "slow mode" will be active to limit the amount of messages a user can send in a specific time frame.
 
-#### 3.4.2 Storage 
+#### 3.4.2 Amount of users
+The amount of users should be very high. Currently the hardware of the mc is limiting this number below 10. This needs to be evaluated and can hopefully be solved.
 
-#### 3.4.3 App perfomance / Response time
+#### 3.4.3 Storage 
+Storage is limeted on the mc. Therefore only usernames and ids will be saved on the mc. Chats will only be saved o nthe currently receving clients.
 
 ### 3.5 Supportability
 
 #### 3.5.1 Coding Standards
+The code will be written after the most common clean code standards. Variables and methods are named after there function. This makes the code more readable and easier to understand. 
 
-#### 3.5.2 Testing Strategy
 
 ### 3.6 Design Constraints
+Plain HTML, CSS and JS will be used which makes the code independent from special framworks or libraries.
+The C++ code for the backend is specialised for the specific MC. If a change of the MC is made the code needs to be updated.
 
 ### 3.7 On-line User Documentation and Help System Requirements
-The usage of the app should be as intuitive as possible so it won't need any further documentation. If the user needs some help we will implement a "Help"-Button in the App which includes a FAQ and a formular to contact the developement team.
+The messenger is planned to be very intuitive. No user documentation is planned. A "report a bug" button may be implemented. 
 
 ### 3.8 Purchased Components
+Microcontroller: ESP32
 
 ### 3.9 Interfaces
 
 #### 3.9.1 User Interfaces
+Following user interfaces will be implemented:
+- Username selection
+- Main GUI
+- Poll window and settings to change colours and more
+- List of connected usernames
+- Chat window, text box to write global and private messages
 
 #### 3.9.2 Hardware Interfaces
-(n/a)
+The application will run on a ESP32 (ESP32 Wi-Fi & Bluetooth MCU I Espressif Systems).
 
 #### 3.9.3 Software Interfaces
+The backend software will be written with Arduino IDE with ESP SDK (Language: C++ Dialect (Arduino))
+THe frontend will be written with HTML, CSS and JS. This should be supported by every modern device.
 
 #### 3.9.4 Communication Interfaces
+The frontend and server will communicate via JSON files and HTTP protocol.
 
 ### 3.10 Licensing Requirements
 
 ### 3.11 Legal, Copyright, and Other Notices
-
+na 
 ### 3.12 Applicable Standards
+THe messenger will be implemented using clean code standard and naming conventions.
 
 ## 4. Supporting Information
 For any further information you can contact the MC-Messenger Team or check our [Blog](https://semcmessenger.wordpress.com). 
