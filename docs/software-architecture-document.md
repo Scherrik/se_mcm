@@ -51,7 +51,7 @@ The document shows and discusses the architectural design decisions of the softw
 | MC          | MicroController                        |
 | SAD         | Software Architecture Document         |
 | tbd         | to be decided                          |
-
+| UC          | Use Case                               |
 
 ### 1.4 References
 
@@ -88,18 +88,120 @@ In the following table/tree you can find our results of the discussion which req
 <!--
 This section lists use cases or scenarios from the use-case model if they represent some significant, central functionality of the final system, or if they have a large architectural coverage - they exercise many architectural elements, or if they stress or illustrate a specific, delicate point of the architecture.
 -->
+![OUCD](./UseCases/UML_MCM_Use_Case_Diagram.png)
 
 ### 4.1 Use-Case Realizations
 
 <!--
 This section illustrates how the software actually works by giving a few selected use-case (or scenario) realizations, and explains how the various design model elements contribute to their functionality.
 -->
+### 4.1.1 Component Sequence Diagram: Send a message
+
+![OUCD](./SequenceDiagrams/Component_Sequence_Diagram.png)
+<!---------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<hr style="border:2px solid black">
+
+# 4.1.2 How to connect to the Application - Use-Case-Realization Specification (UCRS) 
+
+## 1. Introduction
+
+### 1.1 Purpose
+This Use-Case-Realization Specification (UCRS) document describes how a specific function of the application will work.
+It includes an overview about the feature and a sequence diagram to visualize the flow of events. 
+
+### 1.2 Scope
+
+ This document shows how change of username will be handled by the server and its subsystem UserDB.
+
+### 1.3 Definitions, Acronyms and Abbreviations
+| Abbrevation | Explanation                            |
+| ----------- | -------------------------------------- |
+| AP          | Access Point (Wifi)                    |
+| MC          | MicroController                        |
+| tbd         | to be decided                          |
+| UC          | Use Case                               |
+
+### 1.4 References
+
+| Title                                                              | Date       | Publishing organization   |
+| -------------------------------------------------------------------|:----------:| ------------------------- |
+| [WordPress Blog](https://semcmessenger.wordpress.com)              | 06.10.2022 | MC-Messenger Team         | 
+| [GitHub](https://github.com/Scherrik/se_mcm)                       | 06.10.2022 | MC-Messenger Team         |
+
+
+### 1.5 Overview
+Thehe following chapter shows the flow of events for this specific feature in the form of a sequence diagram.
+    
+## 2. Flows of Events
+
+![OUCD](./SequenceDiagrams/Sequence_Diagram_ChangeName.png)
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------->
+<hr style="border:2px solid black">
+
+# 4.1.2 How to connect to the Application - Use-Case-Realization Specification (UCRS) 
+
+## 1. Introduction
+
+### 1.1 Purpose
+This Use-Case-Realization Specification (UCRS) document describes how a specific function of the application will work.
+It includes an overview about the feature and a sequence diagram to visualize the flow of events. 
+
+### 1.2 Scope
+
+ This document shows how the connection to the AP and the opening of the application website will work.
+
+
+### 1.3 Definitions, Acronyms and Abbreviations
+| Abbrevation | Explanation                            |
+| ----------- | -------------------------------------- |
+| AP          | Access Point (Wifi)                    |
+| MC          | MicroController                        |
+| tbd         | to be decided                          |
+| UC          | Use Case                               |
+
+
+### 1.4 References
+
+| Title                                                              | Date       | Publishing organization   |
+| -------------------------------------------------------------------|:----------:| ------------------------- |
+| [WordPress Blog](https://semcmessenger.wordpress.com)              | 06.10.2022 | MC-Messenger Team         | 
+| [GitHub](https://github.com/Scherrik/se_mcm)                       | 06.10.2022 | MC-Messenger Team         |
+
+
+### 1.5 Overview
+Thehe following chapter shows the flow of events for this specific feature in the form of a sequence diagram.
+    
+## 2. Flows of Events
+
+![OUCD](./SequenceDiagrams/Sequence_Diagram_Connection.png)
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------->
+<hr style="border:2px solid black">
 
 ## 5. Logical View
 
 <!--
 This section describes the architecturally significant parts of the design model, such as its decomposition into subsystems and packages. And for each significant package, its decomposition into classes and class utilities. You should introduce architecturally significant classes and describe their responsibilities, as well as a few very important relationships, operations, and attributes.
 -->
+
+![OUCD](./ClassDiagrams/ClassDiagram_Backend.png)
+
+- The ConnectionHandler receives the message string and the ip address of the sending client.
+
+- The MessageHandler is called. This class extracts the HeaderByte. This HeaderByte holds a flag. This flag defines if the message-string contains a text-message, a new user, a namechange etc. The function extractPublicKey extracts a public key from the message-string. This public key defines the recipient of the message. This can be the server, a public message to everyone or a private message to s specific user.
+
+- The class UserFacade is called. This class delegates to the specific UserClasses depending of the HeaderByte information. Those following functions interact with the user database.
+
+- The class UserReader is responsible for reading the UserAddress from the database with matches with the public key.
+
+- The class UserWriter is called if the HeaderByte specifes a change of userdata. A function changeUserData is called which forwards the changes to the database.
+
+- The class UserAdder adds a new User to the Database. This also depends on the HeaderByte information.
+The functions in 4.2 and 4.3 decrypt the message-part of the frame with the private key of the server and process the information.
+
+- The ConnectionHandler is called which sends the Message or the sends the updated user information with the function sendMessage to the clients.
 
 ### 5.1 Overview
 
@@ -127,61 +229,63 @@ We modeled the process of sending a message in the following sequenze diagram in
 
 
 ## 7. Deployment View
-
 <!--
 This section describes one or more physical network (hardware) configurations on which the software is deployed and run. It is a view of the Deployment Model. At a minimum for each configuration it should indicate the physical nodes (computers, CPUs) that execute the software, and their interconnections (bus, LAN, point-to-point, and so on.) Also include a mapping of the processes of the **Process View** onto the physical nodes.
 -->
+na
 
 ## 8. Implementation View
-
 <!--
 This section describes the overall structure of the implementation model, the decomposition of the software into layers and subsystems in the implementation model, and any architecturally significant components.
 -->
 
+### 8.1 Overview
+<!--
+This subsection names and defines the various layers and their contents, the rules that govern the inclusion to a given layer, and the boundaries between layers. Include a component diagram that shows the relations between layers.
+-->
 The following package diagram shows the layered structure of our software on a package level. It is not final! It will be refactored and simplified in the future!
 
 ![OUCD](./PackageDiagrams/Layer_Structure_Package_Diagram_NEW.png)
 
-### 8.1 Overview
-
-<!--
-This subsection names and defines the various layers and their contents, the rules that govern the inclusion to a given layer, and the boundaries between layers. Include a component diagram that shows the relations between layers.
--->
-
 ### 8.2 Layers
-
 <!--
 For each layer, include a subsection with its name, an enumeration of the subsystems located in the layer, and a component diagram.
 -->
+#### 8.2.1 User Data
+#### 8.2.2 Message Handling
+#### 8.2.3 Connection Handling
+#### 8.2.4 Libraries
+#### 8.2.5 Websocket
+#### 8.2.6 Filesystem
+#### 8.2.7 Hardware Control
 
 ## 9. Data View (optional)
-
 <!--
 A description of the persistent data storage perspective of the system. This section is optional if there is little or no persistent data, or the translation between the Design Model and the Data Model is trivial.
 -->
+The server will save the uesernames and the coresponding ids in a simple json file. NO major database is required.
 
 ## 10. Size and Performance
-
 <!--
 A description of the major dimensioning characteristics of the software that impact the architecture, as well as the target performance constraints.
 -->
+The architecture of the backend server is dependend of the capabilities and compatibilities of the microcontroller. The memory, ram size and network bandwith is also a limiting factor. All components of the software need to work in the limits of the haardware. If the software gets to complex it increases the latency of the messages and loweres the amount of users. 
 
 ## 11. Quality
-
 <!--
 A description of how the software architecture contributes to all capabilities (other than functionality) of the system: extensibility, reliability, portability, and so on. If these characteristics have special significance, for example safety, security or privacy implications, they should be clearly delineated.
 -->
-### Tactics:
 
+### 11.1 Tactics:
 Our main goal and discussed tactics focuss on modifiability. 
 
-We used the provided checklist and discussed how we need to implement certain features to achieve the desired goal. You can find the whole ASR document on github.
+We used the provided checklist and discussed how we need to implement certain features to achieve the desired goal. You can find the whole ASR document on github. 
 
 [ASR_Modifiability](./ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md)
 
-We focused on the following points:
+The document is also appended below:
 
-#### Data model:
+#### 11.1.1 Data model:
 The addition of encryption changes a part of the data model (primarly the database of the backend! The frontend while be mostly unaffected)
 => data abstraction: database attributes (public key etc)
 Theming:
@@ -194,26 +298,26 @@ Tactics to achieve this goals:
 Simple structured and extendible backend database
 Frontend that provides the needed funtions to access the data
 
-#### Choice of Technology
+#### 11.1.2 Choice of Technology
 The backend is plain c++ code.
 => Easy to implement on other hardware if a plattform provides websocket funktionality
 => outsourcing of functions to the client frontend
 
-#### Mapping among architectural elements:
+#### 11.1.3 Mapping among architectural elements:
 Backend – Frontend: where is which process running. Direct execution of js code (no compile/build time).
 The database destributed across front and backend.
 
-### Architectural design choices:
+### 11.2 Architectural design choices:
 Finaly we discussed what architectural designs would suit our project:
 
-#### Layered (open layers):
+#### 11.2.1 Layered (open layers):
 Our software consists of several layers that need to be passed while sending and receiving a message or data. (Similar to the ISO/OSI model)
 1. Frontend
 2. Client-Backend: (scripts, js)
 3. Backend
 (and from 3. back to 1. when data is send fro mthe server to a client)
 
-#### Event-driven: (mediator in form of backend)
+#### 11.2.2 Event-driven: (mediator in form of backend)
 Event: user input (message, namechange, colour, etc)
 Server manages: flow, encapsulation of the header, check the database, forward to receivers
 
