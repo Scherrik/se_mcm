@@ -1,4 +1,4 @@
-const FLAG_TEST_LOCAL = false;
+var FLAG_TEST_LOCAL = false;
 
 const IS_ANGRY = 1;
 const IS_HUNGRY = 2;
