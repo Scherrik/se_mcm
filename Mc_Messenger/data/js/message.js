@@ -332,7 +332,9 @@ class MessageHandler{
 		let jsonFrame = JSON.stringify(frame);
 		soc.send(jsonFrame);
 		if(FLAG_TEST_LOCAL){
-			this.extract(JSON.parse(jsonFrame));
+			frame["na"] = udb.me.na;
+			frame["cl"] = udb.me.cl;
+			this.print(frame);
 		}
 	}
 	
@@ -343,7 +345,10 @@ class MessageHandler{
 		let jsonFrame = JSON.stringify(frame);
 		soc.send(jsonFrame);
 		if(FLAG_TEST_LOCAL){
-			this.extract(JSON.parse(jsonFrame));
+			frame["na"] = udb.me.na;
+			frame["cl"] = udb.me.cl;
+			frame["da"]["pl"] = "Meta-Info change";
+			this.print(frame);
 		}
 	}
 		
