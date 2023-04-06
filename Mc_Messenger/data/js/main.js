@@ -17,6 +17,12 @@ function init(){
 		//var json_obj = JSON.parse(text);
 		//MessageHandle.processIncomingMessage(json_obj);
 	}
+	soc.onerror = function(event){
+		FLAG_TEST_LOCAL = true;	
+	}
+	soc.ondisconnect = function(event){
+		FLAG_TEST_LOCAL = true;	
+	}
 	//udb.getNameList().forEach(adduser);
 	//overlay();
 }
