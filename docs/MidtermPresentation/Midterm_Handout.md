@@ -31,7 +31,7 @@ Our main goal and discussed tactics focuss on modifiability.
 
 We used the provided checklist and discussed how we need to implement certain features to achieve the desired goal. You can find the whole ASR document on github.
 
-[ASR_Modifiability](./ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md)
+[ASR_Modifiability](/docs/ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md)
 
 We focused on the following points:
 
