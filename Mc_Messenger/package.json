@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "http-server": "^14.1.1",
+    "ws": "^8.13.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7",
+    "utf-8-validate": "^6.0.3"
+  },
+  "type": "module",
+  "name": "server",
+  "version": "1.0.0",
+  "main": "wsserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node wsserver.js"
+  },
+  "keywords": [],
+  "author": "MCM Team",
+  "license": "ISC",
+  "description": ""
+}
