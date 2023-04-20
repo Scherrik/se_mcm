@@ -134,7 +134,10 @@ class MessageHandler{
 		return result;
 	}
 	
-	processIncomingMessage(json_obj){
+	processIncomingMessage(json_str){
+		console.log(json_str);
+		let json_obj = JSON.parse(json_str);
+		
 		
 		let type = typeToString(json_obj["typ"]);
 		console.log("RECEIVED " + type + " Message");

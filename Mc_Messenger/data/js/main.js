@@ -4,12 +4,16 @@ function isEmpty(str){
 
 async function extract(blob){
 	(blob.text().then(
-		value => MessageHandle.processIncomingMessage(JSON.parse(value))));
+		value => MessageHandle.processIncomingMessage(value)));
 }
 
 function init(){
-	soc = new WebSocket('ws://' + window.location.hostname + '/ws');
+	const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
+    const port = 8080;
+	soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
+	//soc = new WebSocket('ws://' + window.location.hostname + '/ws');
 	soc.onmessage = function(event) {
+		console.log(event.data.arrayBuffer());
 		extract(event.data);
 		//const text = event.data.text();
 		//console.debug(text);
@@ -104,7 +108,6 @@ function removeuser(){
 var input = document.getElementById("msg_input");
 var wcount = document.getElementById("charcount");
 input.addEventListener("keydown", function(event){
-	wcount.innerHTML = String(input.value.length).padStart(3, '0') + "/500";
 	if(event.key == "Enter"){
 		event.preventDefault();
 		if(event.shiftKey){
@@ -118,6 +121,8 @@ input.addEventListener("keydown", function(event){
 			MessageHandle.sendMessage();
 		}
 	}
+	console.log(event.target);
+	wcount.innerHTML = String(event.target.value.length).padStart(3, '0') + "/500";
 });
 
 //color selector + update color
