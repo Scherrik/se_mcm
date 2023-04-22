@@ -1,4 +1,4 @@
-import { createServer } from 'https';
+import { createServer } from 'http';
 import { readFileSync } from 'fs';
 import { WebSocketServer } from 'ws';
 import path from 'path'
@@ -53,7 +53,7 @@ const server = createServer({
   key: readFileSync('cert/privatekey.pem')
 }, requestListener);
 		
-server.listen(8080,'0.0.0.0');
+server.listen(8080,'::');
 
 const wss = new WebSocketServer({ server });
 
