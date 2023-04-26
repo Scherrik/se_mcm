@@ -89,34 +89,9 @@ function adduser(id, user){
 	})
 	userlist.appendChild(entry);
 }
-/*
-function adduser(username){
-	
-	console.log("User " + username + " added.")
-	let userlist = document.getElementById("userlist");
-	if (username != ""){
-		let entry = document.createElement("div");
-		entry.classList.add("userentry");
-		entry.id = username;
-		entry.textContent = username;
-		entry.addEventListener("click", function(event){
-			let input_str = String(input.value);
-			if(input.value.startsWith("@") == false){
-				input.value = "@" + entry.id + " " + input.value;
-			}else{
-				input.value = input_str.substring(input_str.substring(0,input_str.indexOf(" ")).length + 1);
-				input.value = "@" + entry.id + " " + input.value;
-			}
-		})
-		userlist.appendChild(entry);
-	}
-}
-*/
+
 function removeuser(uid){
 	document.getElementById("ul" + uid).remove();
-	//let username = document.getElementById("testuser").value;
-	//let entry = document.getElementById(username);
-	//entry.remove();
 }
 
 var input = document.getElementById("msg_input");
