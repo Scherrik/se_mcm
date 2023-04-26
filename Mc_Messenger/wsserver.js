@@ -59,6 +59,7 @@ const wss = new WebSocketServer({ server });
 
 const BROADC_ADDR = 0xFFFF;
 let id_count = 1;
+var tokenId;
 wss.on('connection', function connection(ws) {
 	console.log("Connection received");
 	ws.on('error', console.error);
@@ -73,13 +74,13 @@ wss.on('connection', function connection(ws) {
 			console.log("BROADCAST MESSAGE");
 			//wss.broadcast(data, {binary:true});
 			wss.clients.forEach(function(client) {
-				console.log(client.id);
 				client.send(data, {binary:true});
 			});
 		} else {
 			console.log("DEDICATED RECEIVER MESSAGE");
-			wss.clients.forEach(client => function(){
-					if(jobj.rid.indexOf(client.id) !== -1){
+			wss.clients.forEach(function(client){
+					console.log(client.id);
+					if(jobj.rid.indexOf(client.id) !== -1 || (jobj.sid == client.id && jobj.typ != 3/*db_sync*/)){
 						client.send(data, {binary:true});
 					}
 				}
@@ -87,8 +88,23 @@ wss.on('connection', function connection(ws) {
 		}
 	});
 	
-	let clsize = wss.clients.size - 1;
+	ws.on('close', function disconnect(){
+		console.log("CONNECTION CLOSED " + ws.id);
+		if(wss.clients.size > 0){
+			if(ws.id == tokenId){
+				let newHost = [...wss.clients].pop();
+				tokenId = newHost.id;
+				newHost.send("{\"sid\": 0, \"rid\": [" + tokenId + "], \"typ\": 5 }", {binary:true});
+			}
+			wss.clients.forEach(function(client) {
+				client.send("{\"sid\": 0, \"rid\": [" + BROADC_ADDR + "], \"typ\": 16, \"cid\":" + ws.id + " }", {binary:true});
+			});
+		}
+	});
+	
+	let clsize = wss.clients.size - 1; // Subtract the own client from the total db size
 	ws.id = id_count++;	
+	tokenId = ws.id;
 	var str = `{"typ":1,"yid":${ws.id},"dbs":${clsize}}`;
 	ws.send(str, {binary: true});
 });

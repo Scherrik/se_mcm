@@ -1,25 +1,22 @@
+// Helper function to determine if a string is empty
 function isEmpty(str){
 	return (!str || str.trim().length === 0);
 }
 
+// Using an async function to handle incoming messages
 async function extract(blob){
 	(blob.text().then(
 		value => MessageHandle.processIncomingMessage(value)));
 }
 
+// Initialize websocket connection and its handlers
 function init(){
 	const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
     const port = 8080;
 	soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
-	//soc = new WebSocket('ws://' + window.location.hostname + '/ws');
 	soc.onmessage = function(event) {
 		console.log(event.data.arrayBuffer());
 		extract(event.data);
-		//const text = event.data.text();
-		//console.debug(text);
-		// Send messages as JSON String is possibly the way to go?! Yes it is!
-		//var json_obj = JSON.parse(text);
-		//MessageHandle.processIncomingMessage(json_obj);
 	}
 	soc.onerror = function(event){
 		FLAG_TEST_LOCAL = true;	
@@ -27,7 +24,7 @@ function init(){
 	soc.ondisconnect = function(event){
 		FLAG_TEST_LOCAL = true;	
 	}
-	//udb.getNameList().forEach(adduser);
+	//userDatabase.getNameList().forEach(adduser);
 	//overlay();
 }
 
@@ -48,23 +45,39 @@ function addTestUser(){
 
 function updateUserlist(){
 	console.log("UPDATE UL IN FRONTEND");
-	console.log(udb);
+	console.log(userDatabase.toString());
 	
-	udb.others.forEach(function(value, key){
+	let userlist = document.getElementById("userlist");
+	userlist.innerHTML = "";
+	
+	userDatabase.others.forEach(function(value, key){
 		adduser(key, value);
 	});
 }
 
 function adduser(id, user){
-	console.log("USER ADD");
+	let entry = document.getElementById("ul"+id);
+	if(entry){
+		if(user["na"] == "Default") {
+			entry.innerHTML = user["na"].fontcolor(user["cl"]) + "." + id;
+		} else {
+			entry.innerHTML = user["na"].fontcolor(user["cl"])
+		}
+		return;
+	}
+	
+	console.log("USER ADD " + id);
 	console.log(user)
 	let userlist = document.getElementById("userlist");
-	userlist.innerHTML = "";
 	
-	let entry = document.createElement("div");
+	entry = document.createElement("div");
 	entry.classList.add("userentry");
-	entry.id = id;
-	entry.innerHTML = user["na"].fontcolor(user["cl"]);
+	entry.id = "ul"+id;
+	if(user["na"] == "Default") {
+		entry.innerHTML = user["na"].fontcolor(user["cl"]) + "." + id;
+	} else {
+		entry.innerHTML = user["na"].fontcolor(user["cl"])
+	}
 	entry.addEventListener("click", function(event){
 		let input_str = String(input.value);
 		if(input.value.startsWith("@") == false){
@@ -99,10 +112,11 @@ function adduser(username){
 	}
 }
 */
-function removeuser(){
-	let username = document.getElementById("testuser").value;
-	let entry = document.getElementById(username);
-	entry.remove();
+function removeuser(uid){
+	document.getElementById("ul" + uid).remove();
+	//let username = document.getElementById("testuser").value;
+	//let entry = document.getElementById(username);
+	//entry.remove();
 }
 
 var input = document.getElementById("msg_input");
@@ -114,9 +128,9 @@ input.addEventListener("keydown", function(event){
 			input.value = input.value + "\n";
 		} else {
 			if(event.ctrlKey){
-				udb.me.fl |= IS_ANGRY;
+				userDatabase.me.fl |= IS_ANGRY;
 			} else {
-				udb.me.fl &= ~IS_ANGRY;
+				userDatabase.me.fl &= ~IS_ANGRY;
 			}
 			MessageHandle.sendMessage();
 		}
@@ -128,8 +142,8 @@ input.addEventListener("keydown", function(event){
 //color selector + update color
 var colorPicker = document.getElementById("user_color");
 colorPicker.addEventListener("change", function(event){
-	udb.me.cl = event.target.value;
-	console.log("Color updated: " + udb.me.cl);
+	userDatabase.me.cl = event.target.value;
+	console.log("Color updated: " + userDatabase.me.cl);
 	MessageHandle.sendMetaChange();
 });
 

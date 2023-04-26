@@ -69,6 +69,11 @@ class UserDB {
 		return JSON.stringify(this.toObject());
 	}
 	
+	removeUser(uid){
+		this.others.delete(uid);
+		removeuser(uid);
+	}
+	
 	updateUser(uid, obj){
 		this.others.set(uid, obj);
 		
@@ -76,7 +81,8 @@ class UserDB {
 		//this.dispatchEvent(event);
 	}
 	
-	updateDB(obj){
+	// Update whole database
+	update(obj){
 		this.others.clear();
 		console.log("DB UPDATE");
 		console.log(obj);
@@ -95,7 +101,7 @@ class UserDB {
 	}
 }
 
-var udb = new UserDB();
+var userDatabase = new UserDB();
 /*
 Object.freeze(udb);
 export default udb;
