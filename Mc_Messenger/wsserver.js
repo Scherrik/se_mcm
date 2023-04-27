@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 
 let indexFile;
+// Serve requested files to connected client
 const requestListener = function (req, res) {
 	let contentType = "text/html";
     console.log(req.url);
