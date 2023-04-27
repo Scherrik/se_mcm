@@ -286,10 +286,10 @@ class MessageHandler{
 	addMessageToChatBox(obj){
 		let box = document.getElementById("chat_box");
 		
-		box.innerHTML += "<p class='msg_block'>" + (new Date()).toLocaleTimeString()  + " " 
-												 + obj["na"].fontcolor(obj["cl"]) + ": " 
+		box.innerHTML += "<div class='msg_block'>" + obj["na"].fontcolor(obj["cl"]) + "   "
+													+ (new Date()).toLocaleTimeString().fontsize("0.5em") + "<br>"
 												 + obj["da"]["pl"].replace("\n", "<br>")
-												 + "</p>";
+												 + "</div>";
 		box.scrollTop = box.scrollHeight;
 	}
 	
