@@ -25,7 +25,7 @@ function init(){
 		FLAG_TEST_LOCAL = true;	
 	}
 	//userDatabase.getNameList().forEach(adduser);
-	//overlay();
+	overlay();
 }
 
 function showmenu(){
@@ -36,11 +36,6 @@ function showmenu(){
 }
 function expand_menu(selector){
 	document.getElementById("menu").classList.toggle(selector + "_show");
-}
-//used for manual add/remove button
-function addTestUser(){
-	let username = document.getElementById("testuser").value;
-	adduser(username);
 }
 
 function updateUserlist(){
@@ -130,16 +125,36 @@ function angrymode(){
 }
 
 function check_usrname(){
-	let name = String(document.getElementById("login_name").value);
-	if(name.includes(" ") == true){console.log("Leerzeichen")};
+	const name_field = document.getElementById("user_name");
+	const name = String(document.getElementById("user_name").value);
+	if(name_field.classList.contains("shake-horizontal")){
+		name_field.classList.remove("shake-horizontal");
+		console.log("removed class");
+	}
+	if(name.includes(" ") || name == ""){
+		name_field.classList.add("shake-horizontal");
+		return false;
+	}else{
+		return true;
+	}
 }
 function overlay() {
 	var background = document.getElementById("pubg");
 	background.style.display = "block";
-
-	window.onclick = function(event) {
-		if (event.target == background) {
+	const start_button = document.getElementById("start_button");
+	const name_field = document.getElementById("user_name");
+	start_button.onclick = function (){
+		if(check_usrname()){
 			background.style.display = "none";
+			userDatabase.me.na = name_field.value;
+			MessageHandle.sendMetaChange();
+		}
+	}
+	window.onclick = function(event) {
+		if (event.target == background && check_usrname()) {
+			background.style.display = "none";
+			userDatabase.me.na = name_field.value;
+			MessageHandle.sendMetaChange();
 		}
 	}
 }
