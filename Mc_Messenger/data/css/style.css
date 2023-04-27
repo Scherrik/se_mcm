@@ -1,5 +1,10 @@
 /* Farb Palette */
 :root {
+	--background_dark: #2b2d31;
+	--msg_input_dark: #383a40;
+	--msg_box_dark: #313338;
+	--font_color: #b4b9bc;
+
 	--onyx: #393d3fff;
 	--white: #fdfdffff;
 	--silver: #c6c5b9ff;
@@ -10,7 +15,7 @@
 body{
 	margin: 0%;
 	font-family: 'FontAwesome', Arial, Helvetica, sans-serif;
-	background: var(--onyx);
+	background: var(--background_dark);
 }
 
 
@@ -28,36 +33,37 @@ button{
 	text-align: center;
 	vertical-align: middle;
 	padding: 10px;
-	color: #c6c5b9ff;
+	color: var(--font_color);
 }
 
 
 .userlist{
-	box-shadow: 0px 0px 7px rgb(31, 31, 31);
-	border-radius: 5px;
+	#box-shadow: 0px 0px 7px rgb(31, 31, 31);
+	#border-radius: 5px;
 	overflow: hidden;
 }
 .userentry{
-	border-bottom: #393d3fff solid 1px;
+	border-bottom: #1e1f22 solid 2px;
 	color: white;
-	padding: 8px;
-	background: #62929eff;
+	padding: 0.1em;
 	margin-bottom: 0px;
-	font-size: 1vmax;
+	font-size: 1.3em;
 }
 .userentry:hover{
-	background: #5a8a96;
+	background: var(--msg_box_dark);
 	cursor: pointer;
 }
 
 
-p.msg_block{
+.msg_block{
 	margin: 4px;
+	margin-bottom: 0.5em;
 	width: max-content;
-	padding-right: 4px;
+	padding: 4px;
+	color: var(--msg_font_color);
 }
-p.msg_block:hover{
-	background: rgba(57, 61, 63, 0.15);
+.msg_block:hover{
+	background: var(--msg_input_dark);
 	cursor: pointer;
 }
 
@@ -76,8 +82,8 @@ p.msg_block:hover{
 	position: sticky;
 	right: -20px;
 	top: -20px;
-	background: #393d3fff;
-	border: #393d3fff solid 20px;
+	background: var(--background_dark);
+	border: var(--background_dark) solid 20px;
 	border-bottom-left-radius: 5px;
 	margin-top: -20px;
 	margin-right: -20px;
@@ -127,7 +133,7 @@ p.msg_block:hover{
 	width: 8px;
 }
 ::-webkit-scrollbar-track {
-	background: #393d3fff;
+	background: var(--background_dark);
 }
 ::-webkit-scrollbar-thumb {
 	background: #282828;
@@ -156,8 +162,8 @@ p.msg_block:hover{
   width: 40px;
   height: 13px;
   bottom: 4px;
-  background-color: rgba(0,0,0,0.1);
-  color: #FFF;
+  bottom: 4px;
+  color: #adadad;
   font-size: 10px;
   z-index: 2;
   cursor: pointer;
