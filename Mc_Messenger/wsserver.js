@@ -20,6 +20,7 @@ const requestListener = function (req, res) {
 		case "/css/style.css":
 		case "/css/regular.css":
 		case "/css/frame.css":
+		case "/css/modal.css":
 		contentType = "text/css";
 		break;
 		case "/js/main.js":
