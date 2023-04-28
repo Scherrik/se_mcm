@@ -75,11 +75,14 @@ function adduser(id, user){
 	}
 	entry.addEventListener("click", function(event){
 		let input_str = String(input.value);
+		
+		let id = Number(entry.id.replace(/\D/g, ""));
+		let name = userDatabase.others.get(id).na;
 		if(input.value.startsWith("@") == false){
-			input.value = "@" + entry.id + " " + input.value;
+			input.value = "@" + name + " " + input.value;
 		}else{
 			input.value = input_str.substring(input_str.substring(0,input_str.indexOf(" ")).length + 1);
-			input.value = "@" + entry.id + " " + input.value;
+			input.value = "@" + name + " " + input.value;
 		}
 	})
 	userlist.appendChild(entry);
