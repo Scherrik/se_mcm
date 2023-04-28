@@ -9,6 +9,33 @@
 	transition: 0.5s;
 }
 
+@media only screen and (max-width: 500px){
+	.statusbar { display: none;
+	}
+	.users{
+		display: none;
+	}
+	.chat_box{
+		grid-area: 1 / 1 / 3 / 3 !important;
+	}
+	.msg_box{
+		grid-area: 3 / 1 / 4 / 3 !important;
+	}
+	.adjustframe{
+		grid-template-columns: 10fr 35fr 40fr !important;
+	}
+	.msg_box{
+		grid-template-columns: 80fr 20fr !important;
+	}
+	.menu_button{
+		font-size: 1em;
+	}
+	.menu_files{
+		display: block !important;
+	}
+}
+
+
 /* used to show menu-bar */
 .adjustframe{
 	grid-template-columns: 10fr 60fr 15fr;
@@ -36,7 +63,7 @@
     background-color: transparent;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: 90% 10%;
+    grid-template-columns: 90fr 10fr;
     grid-template-rows: 3em 3em;
 	padding-block: 3px;
 }
@@ -100,9 +127,10 @@ height: 25%;
 	grid-area: 4/1/5/2;
 }
 
-/* Files menu */
+/* User menu */
 .menu_files{
 	grid-area: 5/1/6/2;
+	display: none;
 }
 .menu_files_show{
 	grid-template-rows: 0fr 0fr 0fr 0fr 10fr 90fr 0fr;

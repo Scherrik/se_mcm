@@ -25,6 +25,7 @@ function init(){
 		FLAG_TEST_LOCAL = true;	
 	}
 	//userDatabase.getNameList().forEach(adduser);
+	viewport_check();
 	overlay();
 }
 
@@ -143,7 +144,7 @@ function check_usrname(){
 }
 function overlay() {
 	var background = document.getElementById("pubg");
-	background.style.display = "block";
+	background.style.display = "flex";
 	const start_button = document.getElementById("start_button");
 	const name_field = document.getElementById("user_name");
 	start_button.onclick = function (){
@@ -160,4 +161,33 @@ function overlay() {
 			MessageHandle.sendMetaChange();
 		}
 	}
+}
+
+function viewport_check() {
+	console.log("Viewport_check")
+	let mobile_viewport = window.matchMedia("(max-width: 500px)");
+	let pc_viewport = window.matchMedia("(min-width: 501px");
+	function mobile_viewport_change(){
+		if (mobile_viewport.matches) {
+			console.log("mobile");
+			var fragment = document.createDocumentFragment();
+			fragment.appendChild(document.getElementById("userlist"));
+			document.getElementById("menu_files_content").appendChild(fragment);
+		}
+	}
+	mobile_viewport.addListener(mobile_viewport_change);
+
+	function pc_viewport_change(){
+		if (pc_viewport.matches) {
+			console.log("pc");
+			var fragment = document.createDocumentFragment();
+			fragment.appendChild(document.getElementById("userlist"));
+			document.getElementById("userlist_parent").appendChild(fragment);
+			expand_menu("menu_files");
+		}
+	}
+	pc_viewport.addListener(pc_viewport_change);
+
+	mobile_viewport_change();
+	pc_viewport_change();
 }

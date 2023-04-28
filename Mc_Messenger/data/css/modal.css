@@ -1,6 +1,8 @@
 /* Pop up background*/
 .pubg {
     display: none;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 1;
     width: 100%;
@@ -11,10 +13,11 @@
 
 .login_pu {
     background-color: var(--background_dark);
-    position: absolute;
     padding: 20px;
     width: 26vw;
+    min-width: 200px;
     height: 26vw;
+    min-height: 200px;
     top: calc(50vh - 13vw);
     left: 37vw;
     text-align: center;
