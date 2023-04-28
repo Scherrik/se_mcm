@@ -60,7 +60,7 @@ button{
 	margin-bottom: 0.5em;
 	width: max-content;
 	padding: 4px;
-	color: var(--msg_font_color);
+	color: var(--font_color);
 }
 .msg_block:hover{
 	background: var(--msg_input_dark);
