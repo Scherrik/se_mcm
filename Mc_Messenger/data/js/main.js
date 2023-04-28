@@ -183,7 +183,7 @@ function viewport_check() {
 			var fragment = document.createDocumentFragment();
 			fragment.appendChild(document.getElementById("userlist"));
 			document.getElementById("userlist_parent").appendChild(fragment);
-			expand_menu("menu_files");
+			document.getElementById("menu").classList.remove("menu_files_show");
 		}
 	}
 	pc_viewport.addListener(pc_viewport_change);
