@@ -1,17 +1,3 @@
-/* Farb Palette */
-:root {
-	--background_dark: #2b2d31;
-	--msg_input_dark: #383a40;
-	--msg_box_dark: #313338;
-	--font_color: #b4b9bc;
-
-	--onyx: #393d3fff;
-	--white: #fdfdffff;
-	--silver: #c6c5b9ff;
-	--steel-teal: #62929eff;
-	--dark-electric-blue: #546a7bff;
-}
-
 body{
 	margin: 0%;
 	font-family: 'FontAwesome', Arial, Helvetica, sans-serif;
