@@ -11,7 +11,8 @@ function expand_menu(selector){
 function angrymode(){
     document.body.classList.toggle("angrymode");
     document.getElementById("chat_box").classList.toggle("angrymode");
-    document.getElementById("msg_input").classList.toggle("angrymode");
+    document.getElementById("msg_input_frame").classList.toggle("angrymode");
+    document.getElementById("lines").classList.toggle("angrymode");
     document.getElementById("frame").classList.toggle("angryshake");
 }
 

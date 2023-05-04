@@ -26,15 +26,7 @@
 			</div>
 		</div>
 		<div class="frame" id="frame">
-			<div class="statusbar headline">MC-Messenger
-				<!--
-					<div id="lines" onclick="showmenu()">
-						<div id="menu_line1" class="menu_line"></div>
-						<div id="menu_line2" class="menu_line"></div>
-						<div id="menu_line3" class="menu_line"></div>
-					</div>
-					-->
-			</div>
+			<div class="statusbar headline">MC-Messenger</div>
 			<div class="users" id="userlist_parent">
 				<div class="userlist" id="userlist"></div>
 			</div>
@@ -47,9 +39,12 @@
 				</div>
 			</div>
 			<div class="msg_box" id="msg_box">
-				<textarea class="msg_input" id="msg_input" autofocus="true" wrap="hard" cols="20"></textarea>
-				<button class="msg_send far" onclick="MessageHandle.sendMessage()">&#xf1d8;</button>
-				<button class="msg_angry far" onclick="angrymode()">&#xf556;</button>
+				<div class="msg_input_frame" id="msg_input_frame">
+					<textarea class="msg_input" id="msg_input" autofocus="true" wrap="hard" cols="20"></textarea>
+					<button class="msg_input_button far" onclick="MessageHandle.sendMessage()">&#xf1d8;</button>
+					<button class="msg_input_button far" onclick="angrymode()">&#xf556;</button>
+				</div>
+
 			</div>
 			<div class="menu" id="menu">
 				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)">
@@ -66,10 +61,6 @@
 			</div>
 			<div class="menu_settings menu_entry" id="settings">
 				<button class="menu_button" onclick="overlay()">Settings</button>
-				<!--
-				Name: <input type="text" onchange="userDatabase.me.na = this.value; MessageHandle.sendMetaChange()" id="user_name2"><br>
-				Color: <input type="color" id="user_color">
-				-->
 			</div>
 		</div>
 	</body>

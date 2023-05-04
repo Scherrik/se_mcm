@@ -302,8 +302,7 @@ class MessageHandler{
 			return;
 		}
 		document.getElementById("msg_input").value = "";
-		document.getElementById("charcount").innerHTML = "000/500";
-		
+
 		/*
 		 * TODO Extract name from message and determine id(s) from belonging user 
 		 */ 
