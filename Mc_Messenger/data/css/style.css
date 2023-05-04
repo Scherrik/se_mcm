@@ -137,23 +137,6 @@ button{
   cursor: pointer;
 }
 
-/* Word count at the bottom of the message input field */
-#charcount {
-  position: absolute;
-  display: block;
-  width: 40px;
-  height: 13px;
-  bottom: 4px;
-  bottom: 4px;
-  color: #adadad;
-  font-size: 10px;
-  z-index: 2;
-  cursor: pointer;
-  justify-self: center;
-  justify-content: center;
-}
-
-
 /*Animations*/
 .angrymode{
 	animation-name: angry;

@@ -84,7 +84,6 @@ function removeuser(uid){
 }
 
 var input = document.getElementById("msg_input");
-var wcount = document.getElementById("charcount");
 input.addEventListener("keydown", function(event){
 	if(event.key == "Enter"){
 		event.preventDefault();
@@ -100,7 +99,6 @@ input.addEventListener("keydown", function(event){
 		}
 	}
 	console.log(event.target);
-	wcount.innerHTML = String(event.target.value.length).padStart(3, '0') + "/500";
 });
 
 //color selector + update color
