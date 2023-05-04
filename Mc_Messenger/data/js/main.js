@@ -1,32 +1,47 @@
-// Helper function to determine if a string is empty
-function isEmpty(str){
-	return (!str || str.trim().length === 0);
-}
-
-// Using an async function to handle incoming messages
-async function extract(blob){
-	(blob.text().then(
-		value => MessageHandle.processIncomingMessage(value)));
-}
-
-// Initialize websocket connection and its handlers
-function init(){
-	const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
-    const port = 8080;
-	soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
-	soc.onmessage = function(event) {
-		console.log(event.data.arrayBuffer());
-		extract(event.data);
-	}
-	soc.onerror = function(event){
-		FLAG_TEST_LOCAL = true;	
-	}
-	soc.ondisconnect = function(event){
-		FLAG_TEST_LOCAL = true;	
-	}
-	//userDatabase.getNameList().forEach(adduser);
+function initUIElements(){
 	viewport_check();
 	overlay();
+}
+
+function initEventHandler(){
+	//TODO
+	document.addEventListener("mh_onconnect", function(e){
+		console.log("ON CONNECT");
+	});
+	document.addEventListener("mh_newuser", function(e){
+		console.log("USER ADD TRIGGERED");
+	});
+	document.addEventListener("mh_dbsync", function(e){
+		console.log("DB SYNC TRIGGERED");
+	});
+	document.addEventListener("mh_message", function(e){
+		console.log("MESSAGE RECEIVED TRIGGERED");
+		console.log(e.detail);
+		addMessageToChatBox(e.detail.msg);
+	});
+	document.addEventListener("mh_metachange", function(e){
+		console.log("META CHANGE TRIGGERED");
+	});
+	document.addEventListener("mh_tokenChange", function(e){
+		console.log("TOKEN CHANGE TRIGGERED");
+	});
+	document.addEventListener("mh_cldisconnect", function(e){
+		console.log("OPPOSITE CLIENT DISCONNECTED");
+	});
+	
+	
+	// UI Element Event Listeners
+	document.querySelector("#btn_send").addEventListener("click", function(e) {
+		let val = document.querySelector("#msg_input").value;
+		console.log("BTN_SEND => " + val);
+		msghandler.sendMessage(val);
+	});
+}
+
+function init(){
+	msghandler.init();
+	initUIElements();
+	initEventHandler();
 }
 
 function showmenu(){
@@ -106,7 +121,7 @@ input.addEventListener("keydown", function(event){
 			} else {
 				userDatabase.me.fl &= ~IS_ANGRY;
 			}
-			MessageHandle.sendMessage();
+			msghandler.sendMessage(input.value);
 		}
 	}
 	console.log(event.target);
@@ -118,7 +133,7 @@ var colorPicker = document.getElementById("user_color");
 colorPicker.addEventListener("change", function(event){
 	userDatabase.me.cl = event.target.value;
 	console.log("Color updated: " + userDatabase.me.cl);
-	MessageHandle.sendMetaChange();
+	msghandler.sendMetaChange();
 });
 
 function angrymode(){
@@ -151,14 +166,14 @@ function overlay() {
 		if(check_usrname()){
 			background.style.display = "none";
 			userDatabase.me.na = name_field.value;
-			MessageHandle.sendMetaChange();
+			msghandler.sendMetaChange();
 		}
 	}
 	window.onclick = function(event) {
 		if (event.target == background && check_usrname()) {
 			background.style.display = "none";
 			userDatabase.me.na = name_field.value;
-			MessageHandle.sendMetaChange();
+			msghandler.sendMetaChange();
 		}
 	}
 }
@@ -190,4 +205,29 @@ function viewport_check() {
 
 	mobile_viewport_change();
 	pc_viewport_change();
+}
+
+
+function addMessageToChatBox(obj){
+	let box = document.getElementById("chat_box");
+	
+	//TODO Create a message from HTML template
+	
+	let msg_block = document.createElement("div");
+	let msg_head = document.createElement("div");
+	let head_name = document.createElement("div");
+	let head_time = document.createElement("div");
+	let payload = document.createElement("div");
+	head_name.classList.add("msg_head_name");
+	head_name.style.color = obj["cl"];
+	head_name.innerText = obj["na"];
+	head_time.classList.add("msg_head_time");
+	head_time.innerHTML = (new Date()).toLocaleTimeString().fontsize("0.5em");
+	msg_block.classList.add("msg_block");
+	payload.innerText = obj["da"]["pl"].replace("\n", "<br>");
+	msg_block.appendChild(head_name);
+	msg_block.appendChild(head_time);
+	msg_block.appendChild(payload);	
+	box.appendChild(msg_block);
+	box.scrollTop = box.scrollHeight;
 }

@@ -1,6 +1,10 @@
+(function(msghandler) {
+//nacl = require("./nacl")
+//nacl.util = require("./nacl-util");
+
+'use strict';
+
 const BROADC_ADDR = 0xFFFF;
-
-
 //const db = new Map();
 var soc;
 
@@ -45,10 +49,35 @@ function stringToBytes(str) {
     return bytes;
 }
 
-class MessageHandler{
-	constructor(){
+// Helper function to determine if a string is empty
+function isEmpty(str){
+	return (!str || str.trim().length === 0);
+}
+
+// Using an async function to handle incoming messages
+async function extract(blob){
+	(blob.text().then(
+		value => msghandler.processIncomingMessage(value)));
+}
+
+// Initialize websocket connection and its handlers
+msghandler.init = function(){
+	const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
+    const port = 8080;
+	soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
+	soc.onmessage = function(event) {
+		extract(event.data);
 	}
-	
+	soc.onerror = function(event){
+		FLAG_TEST_LOCAL = true;	
+	}
+	soc.ondisconnect = function(event){
+		FLAG_TEST_LOCAL = true;	
+		// TODO Try reconnect...
+	}
+}
+
+
 	
 	/* Data API Definition:
 	 * 	Message:
@@ -81,7 +110,7 @@ class MessageHandler{
 	 * 			} 	//data type poll
 	 * 		}
 	 * */
-	createFrame(type, receiver_list){
+	function createFrame(type, receiver_list){
 		// Create the header of a message, which contains:
 		//   - the clients id itself (sid = sender id) 
 		//   - the receiver id (or multiple receiver ids) 
@@ -95,7 +124,7 @@ class MessageHandler{
 		};
 	}
 	
-	createPayload(type, msgObj = {}){
+	function createPayload(type, msgObj = {}){
 		// In dependency of the type of a message,
 		// different named fields will be used as the message payload
 		let result = {}
@@ -137,11 +166,20 @@ class MessageHandler{
 		}
 		return result;
 	}
-	
-	processIncomingMessage(json_str){
+let event = new CustomEvent("mh_newuser", { detail: {}, bubbles: true });	
+let eventMap = new Map();
+eventMap.set("mh_onconnect", new CustomEvent("mh_onconnect", { detail: {} }));
+eventMap.set("mh_newuser", new CustomEvent("mh_newuser", { detail: {} }));
+eventMap.set("mh_dbsync", new CustomEvent("mh_dbsync", { detail: {} }));
+eventMap.set("mh_message", new CustomEvent("mh_message", { detail: {} }));
+eventMap.set("mh_metachange", new CustomEvent("mh_metachange", { detail: {} }));
+eventMap.set("mh_tokenChange", new CustomEvent("mh_tokenChange", {detail: {} }));
+eventMap.set("mh_cldisconnect", new CustomEvent("mh_cldisconnect", {detail: {} }));
+	msghandler.processIncomingMessage = function(json_str){
 		// The incoming message will be interpreted as a JSON obj
 		console.log(json_str);
 		let json_obj = JSON.parse(json_str);
+		let e; // Custom Event
 		// On success the client extracts the header and interprets the message depending on the type
 		
 		let type = typeToString(json_obj["typ"]);
@@ -150,65 +188,83 @@ class MessageHandler{
 			//Server message on init, properties: "yid"=ClientID(yourID), "dbs"=User database size, "
 			case "hello-client":
 				userDatabase.me.id = json_obj["yid"];
+				e = eventMap.get("mh_onconnect");
+				e.detail.id = json_obj["yid"];
 				let db_size = json_obj["dbs"];
-				var obj = {}
+				let resp_obj = {}
 				if(db_size == 0){
 					// Nobody is online, so the client is the host of the session
-					userDatabase.setHostToken(true);
+					//userDatabase.setHostToken(true);
+					e.detail.dbToken = true;
 				} else {
 					// Send a broadcast message to say hello to all other clients
-					obj = this.createFrame("hello-world", [BROADC_ADDR]);
-					obj["da"] = this.createPayload("hello-world");
-					console.log(JSON.stringify(obj));
-					soc.send(JSON.stringify(obj));
+					resp_obj = createFrame("hello-world", [BROADC_ADDR]);
+					resp_obj["da"] = createPayload("hello-world");
+					soc.send(JSON.stringify(resp_obj));
 				}
+				document.dispatchEvent(e);
 				break;
 			case "hello-world":
 				// If the client is the sender of a hello-world message, it can ignore it
 				if(json_obj["sid"] == userDatabase.me.id) return;
-				// Otherwise if the client is the host of the session, 
+				
+				// Send new user 
+				e = eventMap.get("mh_newuser");
+				e.detail.id = json_obj["sid"];
+				e.detail.pk = stringToBytes(json_obj["da"]["pk"]);
+				document.dispatchEvent(e);
+				
+				// If the client is the host of the session, 
 				// it has to respond with a "hello_world" message 
 				// and after a small amount of time respond with a "db-sync" message 
 				// which contains the user database
 				if(userDatabase.dbHostToken){
 					//Preparation of "hello world" and "db-sync" messages"
 					console.log("got token, send hello_world response and db");
-					var obj = this.createFrame("hello-world", [json_obj["sid"]]);
-					obj["da"] = this.createPayload("hello-world");
+					var obj = createFrame("hello-world", [json_obj["sid"]]);
+					obj["da"] = createPayload("hello-world");
 					soc.send(JSON.stringify(obj));
-					obj = this.createFrame("db-sync", [json_obj["sid"]]);
-					obj["da"] = this.createPayload("db-sync");
+					obj = createFrame("db-sync", [json_obj["sid"]]);
+					obj["da"] = createPayload("db-sync");
 					var json = JSON.stringify(obj)
 					console.log(json);
 					setTimeout(function(){ 
 						soc.send(json);
 						// After sending the "db-sync" message, the newly connected client becomes the host of the session, so remove the token
 						console.log("Removed db host token");
-						userDatabase.dbHostToken = false;
+						e = eventMap.get("mh_tokenChange");
+						e.detail.dbToken = false;
+						document.dispatchEvent(e);
 						console.log("done");
 					}, 250);
 				}
-				// New dummy client (with the right id) will be added to the user database
-				console.log("add new user to db");
-				userDatabase.updateUser(json_obj["sid"], { na: "Default", cl: "black", pk: stringToBytes(json_obj["da"]["pk"])})
+				
+				//userDatabase.updateUser(, { na: "Default", cl: "black", pk: stringToBytes(json_obj["da"]["pk"])})
 				break;
 			case "db-sync":
 				// when a new client connects to mcm, he gets this message
-				userDatabase.dbHostToken = true;
-				userDatabase.update(json_obj["da"]["db"]);
+				e = eventMap.get("mh_dbsync");
+				e.detail.dbTok = true;
+				e.detail.db = json_obj["da"]["db"];
+				document.dispatchEvent(e);
 				console.log("Now I'm new db host provider");
 				break;
 			case "token-handover":
+				e = eventMap.get("mh_tokenChange");
+				e.detail.dbToken = true;
+				document.dispatchEvent(e);
 				// Needed if the old host was disconnected, send by server automatically
-				userDatabase.dbHostToken = true;
+				// userDatabase.dbHostToken = true;
 				break;
 			case "byebye-client":
 				// Notification for all other clients about a disconnectiing client
-				userDatabase.removeUser(json_obj["cid"]);
+				e = eventMap.get("mh_cldisconnect");
+				e.detail.cid = json_obj["cid"];
+				document.dispatchEvent(e);
 				break;
 			//Chat message
 			case "message":
-				//this.decryptPayload(json_obj);
+				//decryptPayload(json_obj);
 				// Check if angry flag is set, and if so start angry mode for 5seconds
 				if(json_obj["da"]["fl"] & IS_ANGRY){
 					angrymode();
@@ -225,23 +281,29 @@ class MessageHandler{
 					json_obj["na"] = userDatabase.others.get(sid).na;
 					json_obj["cl"] = userDatabase.others.get(sid).cl;
 				}
-				this.addMessageToChatBox(json_obj);
+				e = eventMap.get("mh_message");
+				e.detail.msg = json_obj;
+				document.dispatchEvent(e);
+				
+				//addMessageToChatBox(json_obj);
 				break;
 			//Meta change
 			case "meta-info":
+				if(json_obj.sid === userDatabase.me.id) return;
 				// A name or color change was recognized and will be written to the user database
-				if(json_obj.sid !== userDatabase.me.id) {
-					userDatabase.updateUser(
-						json_obj.sid,
-						{
-						  na: json_obj["da"]["na"], 
-						  cl: json_obj["da"]["cl"] 
-						}
-					)
-				}
+				userDatabase.updateUser(
+					json_obj.sid,
+					{
+					  na: json_obj["da"]["na"], 
+					  cl: json_obj["da"]["cl"] 
+					}
+				)
+				e = eventMap.get("mh_metachange");
+				e.detail.meta = json_obj;
+				document.dispatchEvent(e);
 				break;
 			//Poll
-			case 130:
+			case "poll":
 				break;
 			default:
 				console.log("DEFAULT NOTHING TODO...");
@@ -249,76 +311,56 @@ class MessageHandler{
 		}
 	}
 	
-	encryptPayload(secretKey, rcvrPubKey, msg){
+	function encryptPayload(secretKey, rcvrPubKey, msg){
 		let nonce = new Uint8Array(nacl.box.nonceLength);
 		let message = nacl.util.decodeUTF8(msg);
 		let result = nacl.box(message, nonce, rcvrPubKey, secretKey);
 		return result;
 	}
 	
-	decryptPayload(secretKey, sndrPubKey, msgUint8_Array){
+	function decryptPayload(secretKey, sndrPubKey, msgUint8_Array){
 		let nonce = new Uint8Array(nacl.box.nonceLength);
 		let ui8a = Uint8Array.from(msgUint8_Array);
 		let obox = nacl.box.open(ui8a, nonce, sndrPubKey, secretKey);
 		return nacl.util.encodeUTF8(obox);
 	}
 	
-	addMessageToChatBox(obj){
-		let box = document.getElementById("chat_box");
-		
-		let msg_block = document.createElement("div");
-		let msg_head = document.createElement("div");
-		let head_name = document.createElement("div");
-		let head_time = document.createElement("div");
-		let payload = document.createElement("div");
-		head_name.classList.add("msg_head_name");
-		head_name.style.color = obj["cl"];
-		head_name.innerText = obj["na"];
-		head_time.classList.add("msg_head_time");
-		head_time.innerHTML = (new Date()).toLocaleTimeString().fontsize("0.5em");
-		msg_block.classList.add("msg_block");
-		payload.innerText = obj["da"]["pl"].replace("\n", "<br>");
-		msg_block.appendChild(head_name);
-		msg_block.appendChild(head_time);
-		msg_block.appendChild(payload);	
-		box.appendChild(msg_block);
-		box.scrollTop = box.scrollHeight;
-	}
-	
-	sendMessage(){
+	msghandler.sendMessage = function(msg){
 		console.log("Send message");
-		let msg = document.getElementById("msg_input").value;
+		//let msg = document.getElementById("msg_input").value;
 		
 		if(isEmpty(msg)){
 			console.log("Empty message, nothing to do...");
 			return;
 		}
-		document.getElementById("msg_input").value = "";
-		document.getElementById("charcount").innerHTML = "000/500";
+		//document.getElementById("msg_input").value = "";
+		//document.getElementById("charcount").innerHTML = "000/500";
 		
 		/*
 		 * TODO Extract name from message and determine id(s) from belonging user 
 		 */ 
 		
-		let frame = this.createFrame("message", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
-		frame["da"] = this.createPayload("message", msg);
+		let frame = createFrame("message", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
+		frame["da"] = createPayload("message", msg);
 		/* Encryption part
 		let enc = JSON.stringify(messageHandler.create(msg, "msg"));
-		enc = this.encryptPayload(enc, myUser.keys.publicKey ); //Has to be replaced by receiver public keys
+		enc = encryptPayload(enc, myUser.keys.publicKey ); //Has to be replaced by receiver public keys
 		enc.forEach(ele => frame["da"].push(ele));
 		*/
 		let jsonFrame = JSON.stringify(frame);
 		soc.send(jsonFrame);
+		/*
 		if(FLAG_TEST_LOCAL){
 			frame["na"] = userDatabase.me.na;
 			frame["cl"] = userDatabase.me.cl;
-			this.addMessageToChatBox(frame);
+			addMessageToChatBox(frame);
 		}
+		*/ 
 	}
 	
-	sendMetaChange(){
-		let frame = this.createFrame("meta-info", [BROADC_ADDR]);
-		frame["da"] = this.createPayload("meta-info");
+	msghandler.sendMetaChange = function(){
+		let frame = createFrame("meta-info", [BROADC_ADDR]);
+		frame["da"] = createPayload("meta-info");
 		
 		let jsonFrame = JSON.stringify(frame);
 		soc.send(jsonFrame);
@@ -326,19 +368,13 @@ class MessageHandler{
 			frame["na"] = userDatabase.me.na;
 			frame["cl"] = userDatabase.me.cl;
 			frame["da"]["pl"] = "Meta-Info change";
-			this.addMessageToChatBox(frame);
+			addMessageToChatBox(frame);
 		}
 	}
-		
-	syncDB(obj){
-		console.log();
-		//Code to sync database
-	}
-	
-}
 
-const MessageHandle = new MessageHandler();
-Object.freeze(MessageHandle);
+})(typeof module !== 'undefined' && module.exports ? module.exports : (self.msghandler = self.msghandler || {}));
+//const MessageHandle = new MessageHandler();
+//Object.freeze(MessageHandle);
 /*
 export default messageHandler; 
 */
