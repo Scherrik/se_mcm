@@ -18,4 +18,5 @@ Message and user functions.
 Jenkins
 
 ## Manage our test cases: Which tests passed (failed on which version?)
-In Jenkins: We tag a test with the last git commit message
+In Jenkins: (We tag a test with the last git commit message)
+Every Build gets a downloadable test report
