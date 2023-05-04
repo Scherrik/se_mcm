@@ -12,7 +12,7 @@
 }
 
 .login_pu {
-    background-color: var(--background_dark);
+    background-color: var(--background);
     padding: 20px;
     width: 26vw;
     min-width: 200px;
@@ -33,7 +33,7 @@
     color: var(--font_color);
     height: 50px;
     width: 70%;
-    background-color: var(--msg_input_dark);
+    background-color: var(--msg_input);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;

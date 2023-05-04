@@ -1,13 +1,12 @@
 /* Farb Palette */
 :root {
-    --background_dark: #d0c8c8;
-    --msg_input_dark: #9a9a9a;
-    --msg_box_dark: #888888;
+    --background: #d0c8c8;
+    --msg_input: #9a9a9a;
+    --msg_box: #888888;
     --font_color: #000000;
-
-    --onyx: #393d3fff;
-    --white: #fdfdffff;
-    --silver: #c6c5b9ff;
-    --steel-teal: #62929eff;
-    --dark-electric-blue: #546a7bff;
+    --box_shadow: #767676;
+    --button_color: #62929eff;
+    --user_divider: #1e1f22;
+    --scrollbar: #282828;
+    --scrollbar_hover: #222;
 }
