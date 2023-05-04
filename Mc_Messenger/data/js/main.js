@@ -26,7 +26,7 @@ function init(){
 	}
 	//userDatabase.getNameList().forEach(adduser);
 	viewport_check();
-	overlay();
+	overlay("login");
 }
 
 function updateUserlist(){

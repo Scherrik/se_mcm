@@ -30,11 +30,24 @@ function check_usrname(){
         return true;
     }
 }
-function overlay() {
+function overlay(type) {
     const background = document.getElementById("pubg");
     background.style.display = "flex";
+    const modal_headline = document.getElementById("modal_headline");
+    const color_theme_input = document.getElementById("color_theme_input");
+
     const start_button = document.getElementById("start_button");
     const name_field = document.getElementById("user_name");
+
+
+    if(type === "login"){
+        modal_headline.innerHTML = "Welcome to MC-Messenger"
+    }else if(type === "settings"){
+        modal_headline.innerHTML = "Settings"
+        color_theme_input.style.display = "flex";
+    }
+
+
     start_button.onclick = function (){
         if(check_usrname()){
             background.style.display = "none";
@@ -82,6 +95,7 @@ function viewport_check() {
 
 function change_color_theme(theme){
     const color_link = document.getElementById("color_theme_link");
+    let color_theme = document.getElementById("color_theme_selector");
     switch (theme){
         case "dark":
             color_link.setAttribute("href", "css/color_themes/dark_theme.css")
@@ -90,6 +104,8 @@ function change_color_theme(theme){
             color_link.setAttribute("href", "css/color_themes/light_theme.css")
             break;
         default:
+            console.log(color_theme.value)
+            change_color_theme(color_theme.value)
             break;
     }
 }

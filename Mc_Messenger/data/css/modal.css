@@ -42,6 +42,18 @@
     border: none;
 }
 
+.color_theme_input{
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.color_theme_selector{
+    background: transparent;
+    color: var(--font_color);
+    width: 30%;
+}
+
 .color_input{
     display: flex;
     align-items: center;

@@ -20,9 +20,14 @@
 	<body onload="init()">
 		<div class="pubg" id="pubg">
 			<div class="login_pu">
-				<h1 class="headline" >Welcome to MC-Messenger</h1>
+				<h1 class="headline" id="modal_headline" >Welcome to MC-Messenger</h1>
 				<input type="text" class="login_input" placeholder="Username" oninput="check_usrname()" id="user_name">
 				<div class="login_input color_input">Color <input type="color" id="user_color"></div>
+				<div class="login_input color_theme_input" id="color_theme_input">Color-Theme
+					<select class="color_theme_selector" name="Color Theme" id="color_theme_selector" onchange="change_color_theme()">
+						<option value="dark">Dark</option>
+						<option value="light">Light</option>
+					</select></div>
 				<div class="login_input start_chatting" id="start_button">Start Chatting</div>
 			</div>
 		</div>
@@ -63,7 +68,7 @@
 				<div class="menu_files_content menu_entry" id="menu_files_content"></div>
 			</div>
 			<div class="menu_settings menu_entry" id="settings">
-				<button class="menu_button" onclick="overlay()">Settings</button>
+				<button class="menu_button" onclick="overlay('settings')">Settings</button>
 			</div>
 		</div>
 	</body>
