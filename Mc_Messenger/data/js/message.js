@@ -248,39 +248,19 @@ class MessageHandler{
 				break;
 		}
 	}
-	encryptPayload(msg, rcvrPkey){
-		var secretKey  = userDatabase.me.keys.secretKey;
-		// TODO get counter part public key either from database or from the initial message
-		//var publicKey  = myUser.keys.publicKey;
+	
+	encryptPayload(secretKey, rcvrPubKey, msg){
 		let nonce = new Uint8Array(nacl.box.nonceLength);
 		let message = nacl.util.decodeUTF8(msg);
-		let result = nacl.box(message, nonce, rcvrPkey, secretKey);
+		let result = nacl.box(message, nonce, rcvrPubKey, secretKey);
 		return result;
 	}
 	
-	decryptPayload(obj){
+	decryptPayload(secretKey, sndrPubKey, msgUint8_Array){
 		let nonce = new Uint8Array(nacl.box.nonceLength);
-		let ui8a = Uint8Array.from(obj["da"]);
-		var secretKey  = userDatabase.me.keys.secretKey;
-		
-		// TODO get counter part public key either from database or from the initial message
-		var publicKey  = userDatabase.me.keys.publicKey;
-		let obox = nacl.box.open(ui8a, nonce, publicKey, secretKey);
-		console.log(obox);
-		let decPayload = nacl.util.encodeUTF8(obox);
-		obj["da"] = JSON.parse(decPayload);
-	}
-	
-	encryptString(str, pkey){
-		/* TODO return encrypted message,
-		 * to encrypt use private key userDatabase.me.keys.secretKey
-		 * */
-	}
-	
-	decryptString(enc_str, pkey){
-		/* TODO return decrypted message
-		 * to decrypt use own private key userDatabase.me.keys.secretKey
-		 */
+		let ui8a = Uint8Array.from(msgUint8_Array);
+		let obox = nacl.box.open(ui8a, nonce, sndrPubKey, secretKey);
+		return nacl.util.encodeUTF8(obox);
 	}
 	
 	addMessageToChatBox(obj){
