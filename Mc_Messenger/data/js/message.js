@@ -266,10 +266,22 @@ class MessageHandler{
 	addMessageToChatBox(obj){
 		let box = document.getElementById("chat_box");
 		
-		box.innerHTML += "<div class='msg_block'>" + obj["na"].fontcolor(obj["cl"]) + "   "
-													+ (new Date()).toLocaleTimeString().fontsize("0.5em") + "<br>"
-												 + obj["da"]["pl"].replace("\n", "<br>")
-												 + "</div>";
+		let msg_block = document.createElement("div");
+		let msg_head = document.createElement("div");
+		let head_name = document.createElement("div");
+		let head_time = document.createElement("div");
+		let payload = document.createElement("div");
+		head_name.classList.add("msg_head_name");
+		head_name.style.color = obj["cl"];
+		head_name.innerText = obj["na"];
+		head_time.classList.add("msg_head_time");
+		head_time.innerHTML = (new Date()).toLocaleTimeString().fontsize("0.5em");
+		msg_block.classList.add("msg_block");
+		payload.innerText = obj["da"]["pl"].replace("\n", "<br>");
+		msg_block.appendChild(head_name);
+		msg_block.appendChild(head_time);
+		msg_block.appendChild(payload);	
+		box.appendChild(msg_block);
 		box.scrollTop = box.scrollHeight;
 	}
 	
