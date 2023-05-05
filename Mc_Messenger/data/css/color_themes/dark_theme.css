@@ -6,9 +6,10 @@
     --font_color: #b4b9bc;
     --box_shadow: #191b1c;
     --button_color: #62929eff;
+    --button_font_color: black;
     --user_divider: #1e1f22;
     --scrollbar: #282828;
     --scrollbar_hover: #222;
-    --logo_fill: #b4b9bc;
+    --logo_fill: #62929eff;
     --logo_stroke: #2b2d31;
 }

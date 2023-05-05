@@ -96,13 +96,14 @@
 	outline: none;
 	height: 100%;
 	width: 100%;
-	color: white;
+	color: var(--font_color);
 }
 
 .msg_input_button {
 	background-color: var(--button_color);
 	border-radius: 10em;
 	padding: 1.2em;
+	color: var(--button_font_color)
 }
 
 

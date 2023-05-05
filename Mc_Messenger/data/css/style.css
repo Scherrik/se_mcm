@@ -26,8 +26,8 @@ button{
 	fill: var(--logo_fill);
 	stroke: var(--logo_stroke);
 	stroke-width: 0px;
-	width: 80%;
-	height:80%;
+	width: 4em;
+	height:4em;
 }
 
 .userlist{
@@ -106,7 +106,7 @@ button{
 .menu_button{
 	width: 80%;
 	height: 75%;
-	color: white;
+	color: var(--button_font_color);
 	background: var(--button_color);
 	border:none;
 	border-top: black solid 0px;

@@ -22,8 +22,9 @@ const requestListener = function (req, res) {
 		case "/css/frame.css":
 		case "/css/modal.css":
 		case "/css/color_themes/dark_theme.css":
+		case "/css/color_themes/dhbw_theme.css":
 		case "/css/color_themes/light_theme.css":
-			contentType = "text/css";
+		contentType = "text/css";
 		break;
 		case "/js/main.js":
 		case "/js/nacl.js":

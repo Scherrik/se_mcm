@@ -103,6 +103,9 @@ function change_color_theme(theme){
         case "light":
             color_link.setAttribute("href", "css/color_themes/light_theme.css")
             break;
+        case "dhbw":
+            color_link.setAttribute("href", "css/color_themes/dhbw_theme.css")
+            break;
         default:
             console.log(color_theme.value)
             change_color_theme(color_theme.value)
