@@ -15,6 +15,11 @@
 		<script defer src='js/main.js' type='text/javascript'></script>
 	</head>
 	<body onload="init()">
+		<template id="msg_template">
+			<div>
+				<!-- TODO -->
+			</div>
+		</template>
 		<div class="pubg" id="pubg">
 			<div class="login_pu">
 				<h1 class="headline" >Welcome to MC-Messenger</h1>
@@ -47,8 +52,8 @@
 			<div class="msg_box" id="msg_box">
 				<div id="charcount"></div>
 				<textarea class="msg_input" id="msg_input" autofocus="true" wrap="hard" cols="20"></textarea>
-				<button class="msg_send far" onclick="MessageHandle.sendMessage()">&#xf1d8;</button>
-				<button class="msg_angry far" onclick="angrymode()">&#xf556;</button>
+				<button class="msg_send far" id="btn_send">&#xf1d8;</button>
+				<button class="msg_angry far" id="btn_angry">&#xf556;</button>
 			</div>
 			<div class="menu" id="menu">
 				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)">
