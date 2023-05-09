@@ -4,6 +4,7 @@ function showmenu(){
     document.getElementById("menu_line3").classList.toggle("l3");
     document.getElementById("menu_line2").classList.toggle("l2");
 }
+
 function expand_menu(selector){
     document.getElementById("menu").classList.toggle(selector + "_show");
 }
@@ -52,14 +53,14 @@ function overlay(type) {
         if(check_usrname()){
             background.style.display = "none";
             userdb.me.na = name_field.value;
-            MessageHandle.sendMetaChange();
+            msghandler.sendMetaChange();
         }
     }
     window.onclick = function(event) {
         if (event.target == background && check_usrname()) {
             background.style.display = "none";
             userdb.me.na = name_field.value;
-            MessageHandle.sendMetaChange();
+            msghandler.sendMetaChange();
         }
     }
 }

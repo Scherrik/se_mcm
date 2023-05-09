@@ -30,8 +30,8 @@ typeMap.set('message', 128);
 typeMap.set('metaInfo', 129);
 typeMap.set('poll', 130);
 typeMap.set('file', 131);
-
 let eventMap = new Map();
+/*
 eventMap.set("mh_onconnect", new CustomEvent("mh_onconnect", { detail: {} }));
 eventMap.set("mh_newuser", new CustomEvent("mh_newuser", { detail: {} }));
 eventMap.set("mh_dbsync", new CustomEvent("mh_dbsync", { detail: {} }));
@@ -40,7 +40,7 @@ eventMap.set("mh_metachange", new CustomEvent("mh_metachange", { detail: {} }));
 eventMap.set("mh_tokenchange", new CustomEvent("mh_tokenChange", {detail: {} }));
 eventMap.set("mh_cldisconnect", new CustomEvent("mh_cldisconnect", {detail: {} }));
 eventMap.set("mh_messagesent", new CustomEvent("mh_messagesent", {detail: {} }));
-
+*/
 function typeToString(id){
 	for (const [key, value] of typeMap) {
 		if(value == id) return key;
@@ -173,10 +173,17 @@ msghandler.processIncomingMessage = function(json_str){
 	console.log(json_str);
 	let json_obj = JSON.parse(json_str);
 	let e; // Custom Event
+	if(!json_obj){
+		return;
+	}
 	// On success the client extracts the header and interprets the message depending on the type
-	
 	let type = typeToString(json_obj["typ"]);
 	console.log("RECEIVED " + type + " Message");
+	
+	// If it's our client which sent the message, we can ignore the message if it's of specific type
+	if(json_obj["sid"] == userdb.me.id && (type == "clientHello" || type == "metaInfo"	))
+		return;
+	
 	switch (type) {
 		//Server message on init, properties: "yid"=ClientID(yourID), "dbs"=User database size, "
 		case "serverHello":
@@ -272,7 +279,6 @@ msghandler.processIncomingMessage = function(json_str){
 			break;
 		//Meta change
 		case "metaInfo":
-			if(json_obj.sid === userdb.me.id) return;
 			// A name or color change was recognized and will be written to the user database
 			/*
 			userdb.updateUser(
