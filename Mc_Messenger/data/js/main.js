@@ -68,10 +68,18 @@ function initEventHandler(){
 	});
 	
 	// UI Element Event Listeners
-	document.querySelector("#btn_send").addEventListener("click", function(e) {
+	document.querySelector("#msgbtn_send").addEventListener("click", function(e) {
 		let val = document.querySelector("#msg_input").value;
 		console.log("BTN_SEND => " + val);
 		msghandler.sendMessage(val);
+	});
+	
+	document.querySelector("#msgbtn_angry").addEventListener("click", function(e) {
+		let val = document.querySelector("#msg_input").value;
+		console.log("BTN_SEND => " + val);
+		userdb.me.fl |= IS_ANGRY;
+		msghandler.sendMessage(val);
+		userdb.me.fl &= ~IS_ANGRY;
 	});
 	
 	document.querySelector("#msg_input").addEventListener("keydown", function(event){

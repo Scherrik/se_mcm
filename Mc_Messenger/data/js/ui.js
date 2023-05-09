@@ -51,14 +51,14 @@ function overlay(type) {
     start_button.onclick = function (){
         if(check_usrname()){
             background.style.display = "none";
-            userDatabase.me.na = name_field.value;
+            userdb.me.na = name_field.value;
             MessageHandle.sendMetaChange();
         }
     }
     window.onclick = function(event) {
         if (event.target == background && check_usrname()) {
             background.style.display = "none";
-            userDatabase.me.na = name_field.value;
+            userdb.me.na = name_field.value;
             MessageHandle.sendMetaChange();
         }
     }
