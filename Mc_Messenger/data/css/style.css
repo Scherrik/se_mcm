@@ -1,21 +1,7 @@
-/* Farb Palette */
-:root {
-	--background_dark: #2b2d31;
-	--msg_input_dark: #383a40;
-	--msg_box_dark: #313338;
-	--font_color: #b4b9bc;
-
-	--onyx: #393d3fff;
-	--white: #fdfdffff;
-	--silver: #c6c5b9ff;
-	--steel-teal: #62929eff;
-	--dark-electric-blue: #546a7bff;
-}
-
 body{
 	margin: 0%;
 	font-family: 'FontAwesome', Arial, Helvetica, sans-serif;
-	background: var(--background_dark);
+	background: var(--background);
 }
 
 
@@ -36,21 +22,26 @@ button{
 	color: var(--font_color);
 }
 
+.logo{
+	fill: var(--logo_fill);
+	stroke: var(--logo_stroke);
+	stroke-width: 0px;
+	width: 4em;
+	height:4em;
+}
 
 .userlist{
-	#box-shadow: 0px 0px 7px rgb(31, 31, 31);
-	#border-radius: 5px;
 	overflow: hidden;
 }
 .userentry{
-	border-bottom: #1e1f22 solid 2px;
+	border-bottom: var(--user_divider) solid 2px;
 	color: white;
 	padding: 0.1em;
 	margin-bottom: 0px;
 	font-size: 1.3em;
 }
 .userentry:hover{
-	background: var(--msg_box_dark);
+	background: var(--msg_box);
 	cursor: pointer;
 }
 
@@ -60,18 +51,16 @@ button{
 	margin-bottom: 0.5em;
 	width: max-content;
 	padding: 4px;
-	color: var(--msg_font_color);
+	color: var(--font_color);
 }
 .msg_block:hover{
-	background: var(--msg_input_dark);
+	background: var(--msg_input);
 	cursor: pointer;
 }
 
 
 /* Menu button */
 #lines {
-    /*border-bottom: 17px double #62929eff;
-    border-top: 6px solid #62929eff;*/
     height: 30px;
     width:30px;
 	float: right;
@@ -82,8 +71,10 @@ button{
 	position: sticky;
 	right: -20px;
 	top: -20px;
-	background: var(--background_dark);
-	border: var(--background_dark) solid 20px;
+	background: var(--background);
+	border: var(--background) solid 20px;
+	border-color: transparent;
+	box-shadow: 1px 1px 7px var(--box_shadow);
 	border-bottom-left-radius: 5px;
 	margin-top: -20px;
 	margin-right: -20px;
@@ -91,7 +82,7 @@ button{
 .menu_line{
 	height: 6px;
 	width: 100%;
-	background: #62929eff;
+	background: var(--button_color);
 	transition: 0.4s ease-out;
 }
 .menu_line.l1{
@@ -115,8 +106,8 @@ button{
 .menu_button{
 	width: 80%;
 	height: 75%;
-	color: white;
-	background: #62929eff;
+	color: var(--button_font_color);
+	background: var(--button_color);
 	border:none;
 	border-top: black solid 0px;
 	border-bottom: black solid 0px;
@@ -133,13 +124,13 @@ button{
 	width: 8px;
 }
 ::-webkit-scrollbar-track {
-	background: var(--background_dark);
+	background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-	background: #282828;
+	background: var(--scrollbar);
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: #222; 
+	background: var(--scrollbar_hover);
 }
 
 /* TESTING AREA */
@@ -154,23 +145,6 @@ button{
   z-index: 2;
   cursor: pointer;
 }
-
-/* Word count at the bottom of the message input field */
-#charcount {
-  position: absolute;
-  display: block;
-  width: 40px;
-  height: 13px;
-  bottom: 4px;
-  bottom: 4px;
-  color: #adadad;
-  font-size: 10px;
-  z-index: 2;
-  cursor: pointer;
-  justify-self: center;
-  justify-content: center;
-}
-
 
 /*Animations*/
 .angrymode{
