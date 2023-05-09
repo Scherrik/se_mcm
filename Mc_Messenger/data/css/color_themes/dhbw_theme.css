@@ -1,0 +1,15 @@
+/* Farb Palette */
+:root {
+    --background: #ffffff;
+    --msg_input: #cfd4da;
+    --msg_box: #cfd4da;
+    --font_color: #000000;
+    --box_shadow: #767676;
+    --button_color: #d40319;
+    --button_font_color: white;
+    --user_divider: #7e878d;
+    --scrollbar: #b6b6b6;
+    --scrollbar_hover: #a2a2a2;
+    --logo_fill: #d40319;
+    --logo_stroke: #b4b9bc;
+}
