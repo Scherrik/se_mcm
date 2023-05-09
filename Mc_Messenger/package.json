@@ -1,10 +1,11 @@
 {
   "dependencies": {
-    "bufferutil": "^4.0.7",
+    "babel": "^6.23.0",
     "express": "^4.18.2",
     "express-ws": "^5.0.2",
     "http-server": "^14.1.1",
-    "utf-8-validate": "^6.0.3",
+    "jest-html-reporter": "^3.8.0",
+    "mocha": "^10.2.0",
     "ws": "^8.13.0"
   },
   "optionalDependencies": {
@@ -16,11 +17,15 @@
   "version": "1.0.0",
   "main": "wsserver.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test-coverage": "jest --coverage",
     "start": "node wsserver.js"
   },
   "keywords": [],
   "author": "MCM Team",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
 }
