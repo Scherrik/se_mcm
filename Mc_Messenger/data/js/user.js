@@ -1,8 +1,6 @@
-var FLAG_TEST_LOCAL = false;
-
-const IS_ANGRY = 1;
-const IS_HUNGRY = 2;
-
+(function(userdb) {
+'use strict';
+/*
 class User {
 	constructor(id=-1, name="Default", color="black", pkey="") {
 		this.id = id;
@@ -17,7 +15,7 @@ class User {
 		this.keys = keypair;
 	}
 }
-
+/*
 class UserDB {
 	constructor(){
 		this.dbHostToken = false;
@@ -38,22 +36,35 @@ class UserDB {
 			this.others.set(4, {na: "Atomfried Jesus",  cl: "black"});
 		}
 	}
+	*/
+	let dbHostToken = false;
 	
-	getNameList(){
-		return [...this.others.values()];
+	userdb.init = function(){
+		userdb.me = { 
+			id: -1, 
+			na: "Default", 
+			cl: "white", /* depends on chosen theme, but we start by default with dark one */
+			keys: nacl.box.keyPair(),
+			fl: 0
+		}
+		userdb.others = new Map();
 	}
 	
-	getIdByName(name){
-		return [...this.others.values()].find(([key,val]) => name == value)[0];
+	userdb.getNameList = function(){
+		return [...userdb.others.values()];
 	}
 	
-	toObject(){
+	userdb.getIdByName = function(name){
+		return [...userdb.others.values()].find(([key,val]) => name == value)[0];
+	}
+	
+	userdb.toObject = function(){
 		// TODO Add groups to database
 		var out = {}
-		out[this.me.id] = { 
-			na: this.me.na,
-			cl: this.me.cl,
-			pk: bytesToString(this.me.keys.publicKey)
+		out[userdb.me.id] = { 
+			na: userdb.me.na,
+			cl: userdb.me.cl,
+			pk: bytesToString(userdb.me.keys.publicKey)
 		};
 		this.others.forEach((values, keys) => {
 			out[keys] = {
@@ -65,43 +76,41 @@ class UserDB {
 		return out;
 	}
 	
-	toString(){
-		return JSON.stringify(this.toObject());
+	userdb.toString = function(){
+		return JSON.stringify(userdb.toObject());
 	}
 	
-	removeUser(uid){
-		this.others.delete(uid);
-		removeuser(uid);
+	userdb.removeUser = function(uid){
+		userdb.others.delete(uid);
 	}
 	
-	updateUser(uid, obj){
-		this.others.set(uid, obj);
-		
-		adduser(uid, obj);
-		//this.dispatchEvent(event);
+	userdb.updateUser = function(uid, obj){
+		userdb.others.set(uid, obj);
 	}
 	
 	// Update whole database
-	update(obj){
-		this.others.clear();
+	userdb.update = function(obj){
+		userdb.others.clear();
 		console.log("DB UPDATE");
 		console.log(obj);
 		for( let key in obj ){
 			if(obj.hasOwnProperty(key)){
 				obj[key]["pk"] = stringToBytes(obj[key]["pk"]);
-				this.others.set(Number(key), obj[key]);
+				userdb.others.set(Number(key), obj[key]);
 			}
 		}
 		
 		updateUserlist();
 	}
 	
-	setHostToken(b){
-		this.dbHostToken = b;
+	userdb.hostToken = function() {
+		return dbHostToken;
 	}
-}
-
-var userDatabase = new UserDB();
+	
+	userdb.setHostToken = function(b){
+		dbHostToken = b;
+	}
+})(typeof module !== 'undefined' && module.exports ? module.exports : (self.userdb = self.userdb || {}));
 /*
 Object.freeze(udb);
 export default udb;

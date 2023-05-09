@@ -1,3 +1,26 @@
+var FLAG_TEST_LOCAL = false;
+const IS_ANGRY = 1;
+const IS_HUNGRY = 2;
+
+
+function bytesToString(bytes) {
+    var chars = [];
+    for(var i = 0, n = bytes.length; i < n;) {
+        chars.push(((bytes[i++] & 0xff) << 8) | (bytes[i++] & 0xff));
+    }
+    return String.fromCharCode.apply(null, chars);
+}
+
+// https://codereview.stackexchange.com/a/3589/75693
+function stringToBytes(str) {
+    var bytes = [];
+    for(var i = 0, n = str.length; i < n; i++) {
+        var char = str.charCodeAt(i);
+        bytes.push(char >>> 8, char & 0xFF);
+    }
+    return bytes;
+}
+
 function initUIElements(){
 	viewport_check();
 	overlay();
@@ -10,25 +33,39 @@ function initEventHandler(){
 	});
 	document.addEventListener("mh_newuser", function(e){
 		console.log("USER ADD TRIGGERED");
+		if(userdb.me.id == e.detail.id) return;
+		userdb.updateUser(e.detail.id, { na: "Guest", cl: "white", pk: e.detail.pk });
+		addUserToUI(e.detail.id, userdb.others.get(e.detail.id));
 	});
 	document.addEventListener("mh_dbsync", function(e){
 		console.log("DB SYNC TRIGGERED");
+		userdb.update(e.detail.db);
+		userdb.setHostToken(e.detail.dbTok);
+		updateUserlistInUI();
 	});
-	document.addEventListener("mh_message", function(e){
+	document.addEventListener("mh_messagerecv", function(e){
 		console.log("MESSAGE RECEIVED TRIGGERED");
 		console.log(e.detail);
 		addMessageToChatBox(e.detail.msg);
 	});
+	document.addEventListener("mh_messagesent", function(e){
+		console.log("MESSAGE SENT TRIGGERED");
+		console.log(e.detail);
+	});
 	document.addEventListener("mh_metachange", function(e){
 		console.log("META CHANGE TRIGGERED");
+		userdb.updateUser(e.detail.id, e.detail.meta);
+		addUserToUI(e.detail.id, e.detail.meta);
 	});
-	document.addEventListener("mh_tokenChange", function(e){
+	document.addEventListener("mh_tokenchange", function(e){
 		console.log("TOKEN CHANGE TRIGGERED");
+		userdb.setHostToken(e.detail.dbTok);
 	});
 	document.addEventListener("mh_cldisconnect", function(e){
 		console.log("OPPOSITE CLIENT DISCONNECTED");
+		userdb.removeUser(e.detail.cid);
+		removeUserFromUI(e.detail.cid);
 	});
-	
 	
 	// UI Element Event Listeners
 	document.querySelector("#btn_send").addEventListener("click", function(e) {
@@ -36,9 +73,33 @@ function initEventHandler(){
 		console.log("BTN_SEND => " + val);
 		msghandler.sendMessage(val);
 	});
+	
+	document.querySelector("#msg_input").addEventListener("keydown", function(event){
+		if(event.key == "Enter"){
+			event.preventDefault();
+			if(event.shiftKey){
+				event.target.value = event.target.value + "\n";
+			} else {
+				if(event.ctrlKey){
+					userdb.me.fl |= IS_ANGRY;
+				} else {
+					userdb.me.fl &= ~IS_ANGRY;
+				}
+				msghandler.sendMessage(event.target.value);
+				event.target.value = "";
+			}
+		}
+	});
+	
+	document.querySelector("#user_color").addEventListener("change", function(event){
+		userdb.me.cl = event.target.value;
+		console.log("Color updated: " + userdb.me.cl);
+		msghandler.sendMetaChange();
+	});
 }
 
 function init(){
+	userdb.init();
 	msghandler.init();
 	initUIElements();
 	initEventHandler();
@@ -54,46 +115,42 @@ function expand_menu(selector){
 	document.getElementById("menu").classList.toggle(selector + "_show");
 }
 
-function updateUserlist(){
+function updateUserlistInUI(){
 	console.log("UPDATE UL IN FRONTEND");
-	console.log(userDatabase.toString());
+	console.log(userdb.toString());
 	
 	let userlist = document.getElementById("userlist");
 	userlist.innerHTML = "";
 	
-	userDatabase.others.forEach(function(value, key){
-		adduser(key, value);
+	userdb.others.forEach(function(value, key){
+		addUserToUI(key, value);
 	});
 }
 
-function adduser(id, user){
+function addUserToUI(id, user){
 	let entry = document.getElementById("ul"+id);
-	if(entry){
-		if(user["na"] == "Default") {
-			entry.innerHTML = user["na"].fontcolor(user["cl"]) + "." + id;
-		} else {
-			entry.innerHTML = user["na"].fontcolor(user["cl"])
-		}
-		return;
+	let userlist = document.getElementById("userlist");
+	
+	if(!entry){
+		entry = document.createElement("div");
+		entry.classList.add("userentry");
+		entry.id = "ul"+id;
 	}
 	
 	console.log("USER ADD " + id);
 	console.log(user)
-	let userlist = document.getElementById("userlist");
 	
-	entry = document.createElement("div");
-	entry.classList.add("userentry");
-	entry.id = "ul"+id;
-	if(user["na"] == "Default") {
+	if(user["na"] == "Guest") {
 		entry.innerHTML = user["na"].fontcolor(user["cl"]) + "." + id;
 	} else {
 		entry.innerHTML = user["na"].fontcolor(user["cl"])
 	}
 	entry.addEventListener("click", function(event){
+		let input = document.querySelector("#msg_input");
 		let input_str = String(input.value);
 		
 		let id = Number(entry.id.replace(/\D/g, ""));
-		let name = userDatabase.others.get(id).na;
+		let name = userdb.others.get(id).na;
 		if(input.value.startsWith("@") == false){
 			input.value = "@" + name + " " + input.value;
 		}else{
@@ -104,37 +161,9 @@ function adduser(id, user){
 	userlist.appendChild(entry);
 }
 
-function removeuser(uid){
+function removeUserFromUI(uid){
 	document.getElementById("ul" + uid).remove();
 }
-
-var input = document.getElementById("msg_input");
-var wcount = document.getElementById("charcount");
-input.addEventListener("keydown", function(event){
-	if(event.key == "Enter"){
-		event.preventDefault();
-		if(event.shiftKey){
-			input.value = input.value + "\n";
-		} else {
-			if(event.ctrlKey){
-				userDatabase.me.fl |= IS_ANGRY;
-			} else {
-				userDatabase.me.fl &= ~IS_ANGRY;
-			}
-			msghandler.sendMessage(input.value);
-		}
-	}
-	console.log(event.target);
-	wcount.innerHTML = String(event.target.value.length).padStart(3, '0') + "/500";
-});
-
-//color selector + update color
-var colorPicker = document.getElementById("user_color");
-colorPicker.addEventListener("change", function(event){
-	userDatabase.me.cl = event.target.value;
-	console.log("Color updated: " + userDatabase.me.cl);
-	msghandler.sendMetaChange();
-});
 
 function angrymode(){
 	document.body.classList.toggle("angrymode");
@@ -153,7 +182,7 @@ function check_usrname(){
 	if(name.includes(" ") || name == ""){
 		name_field.classList.add("shake-horizontal");
 		return false;
-	}else{
+	} else{
 		return true;
 	}
 }
@@ -165,14 +194,14 @@ function overlay() {
 	start_button.onclick = function (){
 		if(check_usrname()){
 			background.style.display = "none";
-			userDatabase.me.na = name_field.value;
+			userdb.me.na = name_field.value;
 			msghandler.sendMetaChange();
 		}
 	}
 	window.onclick = function(event) {
 		if (event.target == background && check_usrname()) {
 			background.style.display = "none";
-			userDatabase.me.na = name_field.value;
+			userdb.me.na = name_field.value;
 			msghandler.sendMetaChange();
 		}
 	}
@@ -209,6 +238,18 @@ function viewport_check() {
 
 
 function addMessageToChatBox(obj){
+	console.log(obj);
+	let sid = obj.sid;
+	if(sid === userdb.me.id) {
+		// It's a message from myself
+		obj["na"] = "You";
+		obj["cl"] = userdb.me.cl;
+	} else {
+		// Get metadata fom the user database
+		obj["na"] = userdb.others.get(sid).na;
+		obj["cl"] = userdb.others.get(sid).cl;
+	}
+	
 	let box = document.getElementById("chat_box");
 	
 	//TODO Create a message from HTML template
