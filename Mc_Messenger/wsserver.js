@@ -21,6 +21,9 @@ const requestListener = function (req, res) {
 		case "/css/regular.css":
 		case "/css/frame.css":
 		case "/css/modal.css":
+		case "/css/color_themes/dark_theme.css":
+		case "/css/color_themes/dhbw_theme.css":
+		case "/css/color_themes/light_theme.css":
 		contentType = "text/css";
 		break;
 		case "/js/main.js":
@@ -28,7 +31,7 @@ const requestListener = function (req, res) {
 		case "/js/nacl-util.js":
 		case "/js/message.js":
 		case "/js/user.js":
-		case "/js/main.js":
+		case "/js/ui.js":
 		contentType = "application/javascript";
 		break;
 		case "/fonts/fa-regular-400.woff2":
