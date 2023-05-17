@@ -16,14 +16,14 @@ pipeline {
         stage('Setup npm'){
             steps {
                 script {
-                    npm command: 'install', workspaceSubdirectory 'Mc_Messenger'
+                    npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
                 }
             }
         }
         stage('Unit test') {
             steps {
                 print "Executing..."
-                npm command: 'install', workspaceSubdirectory 'Mc_Messenger'
+                npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
             }
         
         }
