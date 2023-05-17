@@ -3,7 +3,7 @@ pipeline {
 
     triggers {
         //pollSCM('*/5 * * * *'),
-        pipelineTriggers([cron('*/5 * * * *')])
+        cron('*/5 * * * *');
     }
     
     stages {
