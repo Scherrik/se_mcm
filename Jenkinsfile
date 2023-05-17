@@ -28,16 +28,7 @@ pipeline {
             }
         
         }
-        stage ('Stress test'){
-            steps {
-                print "Waiting for user input..."
-                script {
-                    input message: 'Stresstest passed and ready to release?'
-                }
-            }
-        
-        }
-        stage ('Collect test results'){
+        stage ('Collect test results and metrics'){
             steps {
                 print "Collecting test results..."
             }
@@ -55,6 +46,7 @@ pipeline {
         }
         success {
             print ("SUCCESS");
+            
         }
         
     }
