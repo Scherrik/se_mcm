@@ -3,7 +3,7 @@ pipeline {
 
     triggers {
         //pollSCM('*/5 * * * *'),
-        cron('*/5 * * * *');
+        pollSCM('*/5 * * * *');
     }
     
     stages {
@@ -24,7 +24,7 @@ pipeline {
         stage('Unit test') {
             steps {
                 print "Executing..."
-                npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
+                npm command: 'test', workspaceSubdirectory: 'Mc_Messenger'
             }
         
         }
