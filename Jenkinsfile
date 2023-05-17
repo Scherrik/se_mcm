@@ -15,15 +15,13 @@ pipeline {
         */
         stage('Setup npm'){
             steps {
-                npm install
+                npm command: 'install', workspaceSubdirectory 'Mc_Messenger'
             }
         }
         stage('Unit test') {
             steps {
                 print "Executing..."
-                dir('/Mc_Messenger'){
-                   npm test
-                }
+                npm command: 'install', workspaceSubdirectory 'Mc_Messenger'
             }
         
         }
