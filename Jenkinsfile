@@ -15,7 +15,9 @@ pipeline {
         */
         stage('Setup npm'){
             steps {
-                npm command: 'install', workspaceSubdirectory 'Mc_Messenger'
+                script {
+                    npm command: 'install', workspaceSubdirectory 'Mc_Messenger'
+                }
             }
         }
         stage('Unit test') {
@@ -28,7 +30,9 @@ pipeline {
         stage ('Stress test'){
             steps {
                 print "Waiting for user input..."
-                input message: 'Stresstest passed and ready to release?'
+                script {
+                    input message: 'Stresstest passed and ready to release?'
+                }
             }
         
         }
