@@ -7,13 +7,6 @@ pipeline {
     }
     
     stages {
-        /*
-        stage('Build') {
-            steps {
-                print "BUILD BUILD"
-            }
-        }
-        */
         stage('Setup npm'){
             steps {
                 script {
