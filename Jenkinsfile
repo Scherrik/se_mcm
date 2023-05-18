@@ -38,7 +38,7 @@ pipeline {
                 input message: "Is text readable in all color schemes? (Contrast)"
                 input message: "Angry mode works?"
                 input message: "UTF-8 support enabled? (Emoticons, ...)"
-                input message: "
+                input message: "Anything else tested?"
             }
         }
         stage ('Deploy'){
