@@ -22,7 +22,7 @@ test.each(table)("Encrypt and decrypt %s", (str, expected) => {
     let resultDec = msghandle.decryptPayload(sender.secretKey, receiver.publicKey, resultEnc);
     log(testString, resultDec);
     expect(resultDec).toBe(expected);
-}
+});
 /*
 for(let i = 0; i < testStrings.length; i++){
 	test('EncryptDecrypt: ' + testStrings[i], () => {
