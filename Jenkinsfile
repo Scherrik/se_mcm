@@ -77,14 +77,16 @@ pipeline {
                                             
                     }
                 }
-                if(versionMap['Version'] == "NONE"){
-                    echo "No release for this build"
-                    currentBuild.result = 'ABORTED'
-                    error('Stopping early…')
-                } else {
-                    echo "This build gets a ${approvalMap['Version']} update"
+                script {
+                    if(versionMap['Version'] == "NONE"){
+                        echo "No release for this build"
+                        currentBuild.result = 'ABORTED'
+                        error('Stopping early…')
+                    } else {
+                        echo "This build gets a ${approvalMap['Version']} update"
+                    }
+                    print "Push tag to github repo and release new version"
                 }
-                print "Push tag to github repo and release new version"
             }
         }
     }
