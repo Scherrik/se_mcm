@@ -8,7 +8,9 @@ pipeline {
     }
     
     stages {
-        stage ('
+        stage ('Get latest from dev'){
+            print "Merge dev_nmcm..."
+        }
         stage ('Stresstest'){
             agent none
             steps {
