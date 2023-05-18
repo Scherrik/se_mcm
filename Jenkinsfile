@@ -76,7 +76,7 @@ pipeline {
                                             )
                                         ]
                                         
-                        if(versionMap == "NONE"){
+                        if(version == "NONE"){
                             echo "No release for this build"
                             currentBuild.result = 'ABORTED'
                             error('Stopping early…')
