@@ -26,7 +26,6 @@ pipeline {
                 print "Executing..."
                 npm command: 'test', workspaceSubdirectory: 'Mc_Messenger'
             }
-        
         }
         stage ('Collect test results and metrics'){
             steps {

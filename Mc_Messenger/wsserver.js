@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const port = process.argv[2];
 
 let indexFile;
 // Serve requested files to connected client
@@ -58,7 +59,7 @@ const server = createServer({
   key: readFileSync('cert/privatekey.pem')
 }, requestListener);
 		
-server.listen(8080,'::');
+server.listen(port,'::');
 
 const wss = new WebSocketServer({ server });
 
