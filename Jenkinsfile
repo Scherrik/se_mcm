@@ -1,4 +1,5 @@
 def approvalMap
+def versionMap
 
 pipeline {
     agent any
@@ -63,7 +64,7 @@ pipeline {
                 timeout(60) {                // timeout waiting for input after 60 minutes
                     script {
                         // capture the approval details in approvalMap. 
-                         approvalMap = input id: 'version', 
+                         versionMap = input id: 'version', 
                                         message: 'Hello', 
                                         ok: 'Version update?', 
                                         parameters: [
@@ -76,7 +77,7 @@ pipeline {
                                             
                     }
                 }
-                if(approvalMap['Version'] == "NONE"){
+                if(versionMap['Version'] == "NONE"){
                     echo "No release for this build"
                     currentBuild.result = 'ABORTED'
                     error('Stopping early…')
