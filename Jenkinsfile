@@ -8,6 +8,7 @@ pipeline {
     }
     
     stages {
+        stage ('
         stage ('Stresstest'){
             agent none
             steps {
@@ -65,6 +66,7 @@ pipeline {
                                                 description: 'Choose version upgrade mode', 
                                                 name: 'Version'
                                             )
+                                        ]
                                             
                     }
                 }
