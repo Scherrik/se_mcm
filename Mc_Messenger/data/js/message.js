@@ -1,6 +1,21 @@
 (function(msghandler) {
 'use strict';
 
+function areWeTestingWithJest() {
+    return typeof jest !== 'undefined';
+}
+
+var salt;
+if(typeof module !== 'undefined'){
+    console.log("MODULE FOUND");
+    salt = require("./nacl.js");
+    salt.util = require("./nacl-util.js");
+} else {
+    salt = nacl;
+    salt.util = nacl.util;
+  
+}
+
 const BROADC_ADDR = 0xFFFF;
 //const db = new Map();
 var soc;
@@ -30,17 +45,28 @@ typeMap.set('message', 128);
 typeMap.set('metaInfo', 129);
 typeMap.set('poll', 130);
 typeMap.set('file', 131);
+
 let eventMap = new Map();
-/*
-eventMap.set("mh_onconnect", new CustomEvent("mh_onconnect", { detail: {} }));
-eventMap.set("mh_newuser", new CustomEvent("mh_newuser", { detail: {} }));
-eventMap.set("mh_dbsync", new CustomEvent("mh_dbsync", { detail: {} }));
-eventMap.set("mh_messagerecv", new CustomEvent("mh_messagerecv", { detail: {} }));
-eventMap.set("mh_metachange", new CustomEvent("mh_metachange", { detail: {} }));
-eventMap.set("mh_tokenchange", new CustomEvent("mh_tokenChange", {detail: {} }));
-eventMap.set("mh_cldisconnect", new CustomEvent("mh_cldisconnect", {detail: {} }));
-eventMap.set("mh_messagesent", new CustomEvent("mh_messagesent", {detail: {} }));
-*/
+
+if(areWeTestingWithJest()){
+    eventMap.set("mh_onconnect",    new Event("mh_onconnect", { detail: {} }));
+    eventMap.set("mh_newuser",      new Event("mh_newuser", { detail: {} }));
+    eventMap.set("mh_dbsync",       new Event("mh_dbsync", { detail: {} }));
+    eventMap.set("mh_messagerecv",  new Event("mh_messagerecv", { detail: {} }));
+    eventMap.set("mh_metachange",   new Event("mh_metachange", { detail: {} }));
+    eventMap.set("mh_tokenchange",  new Event("mh_tokenChange", {detail: {} }));
+    eventMap.set("mh_cldisconnect", new Event("mh_cldisconnect", {detail: {} }));
+    eventMap.set("mh_messagesent",  new Event("mh_messagesent", {detail: {} }));
+} else {
+    eventMap.set("mh_onconnect", new CustomEvent("mh_onconnect", { detail: {} }));
+    eventMap.set("mh_newuser", new CustomEvent("mh_newuser", { detail: {} }));
+    eventMap.set("mh_dbsync", new CustomEvent("mh_dbsync", { detail: {} }));
+    eventMap.set("mh_messagerecv", new CustomEvent("mh_messagerecv", { detail: {} }));
+    eventMap.set("mh_metachange", new CustomEvent("mh_metachange", { detail: {} }));
+    eventMap.set("mh_tokenchange", new CustomEvent("mh_tokenChange", {detail: {} }));
+    eventMap.set("mh_cldisconnect", new CustomEvent("mh_cldisconnect", {detail: {} }));
+    eventMap.set("mh_messagesent", new CustomEvent("mh_messagesent", {detail: {} }));
+}
 function typeToString(id){
 	for (const [key, value] of typeMap) {
 		if(value == id) return key;
@@ -63,7 +89,7 @@ async function extract(blob){
 // Initialize websocket connection and its handlers
 msghandler.init = function(){
 	const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
-    const port = 8080;
+    const port = 8082;
 	soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
 	soc.onmessage = function(event) {
 		extract(event.data);
@@ -304,17 +330,17 @@ msghandler.processIncomingMessage = function(json_str){
 }
 
 function encryptPayload(secretKey, rcvrPubKey, msg){
-	let nonce = new Uint8Array(nacl.box.nonceLength);
-	let message = nacl.util.decodeUTF8(msg);
-	let result = nacl.box(message, nonce, rcvrPubKey, secretKey);
+	let nonce = new Uint8Array(salt.box.nonceLength);
+	let message = salt.util.decodeUTF8(msg);
+	let result = salt.box(message, nonce, rcvrPubKey, secretKey);
 	return result;
 }
 
 function decryptPayload(secretKey, sndrPubKey, msgUint8_Array){
-	let nonce = new Uint8Array(nacl.box.nonceLength);
+	let nonce = new Uint8Array(salt.box.nonceLength);
 	let ui8a = Uint8Array.from(msgUint8_Array);
-	let obox = nacl.box.open(ui8a, nonce, sndrPubKey, secretKey);
-	return nacl.util.encodeUTF8(obox);
+	let obox = salt.box.open(ui8a, nonce, sndrPubKey, secretKey);
+	return salt.util.encodeUTF8(obox);
 }
 	
 msghandler.sendMessage = function(msg){
@@ -364,6 +390,28 @@ msghandler.sendMetaChange = function(){
 		frame["da"]["pl"] = "Meta-Info change";
 		addMessageToChatBox(frame);
 	}
+}
+
+
+// TESTONLY
+msghandler.__get__ = function(name){
+    switch(name){
+        case "encrypt":
+            return encryptPayload;
+            break;
+        case "decrypt":
+            return decryptPayload;
+            break;
+        case "createPayload":
+            return createPayload;
+            break;
+        case "createFrame":
+            return createFrame;
+            break;
+        case "isEmpty":
+            return createPayload;
+            break;
+    }
 }
 
 })(typeof module !== 'undefined' && module.exports ? module.exports : (self.msghandler = self.msghandler || {}));

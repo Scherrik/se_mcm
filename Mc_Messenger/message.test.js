@@ -18,11 +18,11 @@ const table = [
 test.each(table)("Encrypt and decrypt %s", (str, expected) => {
     let sender = nacl.box.keyPair();
     let receiver = nacl.box.keyPair();
-    const encrypt = msghandler.__get__('encryptPayload');
-    const decrypt = msghandler.__get__('decryptPayload');
+    const encrypt = msghandler.__get__('encrypt');
+    const decrypt = msghandler.__get__('decrypt');
     let resultEnc = encrypt(receiver.secretKey, sender.publicKey, str);
     let resultDec = decrypt(sender.secretKey, receiver.publicKey, resultEnc);
-    log(testString, resultDec);
+    //log(testString, resultDec);
     expect(resultDec).toBe(expected);
 });
 /*
