@@ -6,7 +6,9 @@ pipeline {
     triggers {
         upstream(upstreamProjects: "../MCM_Deploy/dev_nmcm", threshold: hudson.model.Result.SUCCESS)
     }
-    
+    options {
+        disableConcurrentBuilds abortPrevious: true
+    }
     stages {
         stage ('Get latest from dev'){
             print "Merge dev_nmcm..."
