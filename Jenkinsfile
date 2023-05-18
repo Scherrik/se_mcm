@@ -2,38 +2,41 @@ pipeline {
     agent any
 
     triggers {
-        //pollSCM('*/5 * * * *'),
-        pollSCM('*/5 * * * *');
+        upstream(upstreamProjects: "../MCM_Deploy/dev_nmcm", threshold: hudson.model.Result.SUCCESS)
     }
     
     stages {
-        /*
-        stage('Build') {
+        stage ('Stresstest'){
             steps {
-                print "BUILD BUILD"
-            }
-        }
-        */
-        stage('Setup npm'){
-            steps {
-                script {
-                    npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
+                timeout(60) {                // timeout waiting for input after 60 minutes
+                    script {
+                        // capture the approval details in approvalMap. 
+                         approvalMap = input 
+                                        id: 'test', 
+                                        message: 'Hello', 
+                                        ok: 'Proceed?', 
+                                        parameters: [
+                                            choice(
+                                                choices: 'apple\npear\norange', 
+                                                description: 'Select a fruit for this build', 
+                                                name: 'FRUIT'
+                                            ), 
+                                            string(
+                                                defaultValue: '', 
+                                                description: '', 
+                                                name: 'myparam'
+                                            )
+                                        ], 
+                                        submitter: 'user1,user2,group1', 
+                                        submitterParameter: 'APPROVER'
+                                            
+                    }
                 }
-            }
-        }
-        stage('Unit test') {
-            steps {
-                npm command: 'test', workspaceSubdirectory: 'Mc_Messenger'
-            }
-        }
-        stage('Test coverage') {
-            steps {
-                npm command: 'test-coverage', workspaceSubdirectory: 'Mc_Messenger'
-            }
-        }
-        stage ('Collect test results and metrics'){
-            steps {
-                print "Collecting test results..."
+            
+                input message: "Is text readable in all color schemes? (Contrast)"
+                input message: "Angry mode works?"
+                input message: "UTF-8 support enabled? (Emoticons, ...)"
+                input message: "
             }
         }
         stage ('Deploy'){
