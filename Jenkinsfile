@@ -14,8 +14,7 @@ pipeline {
                 timeout(60) {                // timeout waiting for input after 60 minutes
                     script {
                         // capture the approval details in approvalMap. 
-                         approvalMap = input 
-                                        id: 'test', 
+                         approvalMap = input id: 'test', 
                                         message: 'Hello', 
                                         ok: 'Proceed?', 
                                         parameters: [
