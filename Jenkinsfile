@@ -14,6 +14,7 @@ pipeline {
         stage ('Get latest from dev'){
             steps {
                 print "Merge dev_nmcm..."
+                
             }
         }
         stage ('Stresstest'){
@@ -74,18 +75,19 @@ pipeline {
                                                 name: 'Version'
                                             )
                                         ]
-                                            
+                                        
+                        if(versionMap['Version'] == "NONE"){
+                            echo "No release for this build"
+                            currentBuild.result = 'ABORTED'
+                            error('Stopping early…')
+                        } else {
+                            echo "This build gets a ${approvalMap['Version']} update"
+                            
+                            
+                        }
+                        print "Push tag to github repo and release new version"
+                                                
                     }
-                }
-                dir("") {
-                    if(versionMap['Version'] == "NONE"){
-                        echo "No release for this build"
-                        currentBuild.result = 'ABORTED'
-                        error('Stopping early…')
-                    } else {
-                        echo "This build gets a ${approvalMap['Version']} update"
-                    }
-                    print "Push tag to github repo and release new version"
                 }
             }
         }
