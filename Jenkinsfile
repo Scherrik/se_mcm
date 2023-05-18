@@ -77,7 +77,7 @@ pipeline {
                                             
                     }
                 }
-                script {
+                dir("") {
                     if(versionMap['Version'] == "NONE"){
                         echo "No release for this build"
                         currentBuild.result = 'ABORTED'
