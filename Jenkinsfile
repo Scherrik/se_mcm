@@ -23,8 +23,12 @@ pipeline {
         }
         stage('Unit test') {
             steps {
-                print "Executing..."
                 npm command: 'test', workspaceSubdirectory: 'Mc_Messenger'
+            }
+        }
+        stage('Test coverage') {
+            steps {
+                npm command: 'test-coverage', workspaceSubdirectory: 'Mc_Messenger'
             }
         }
         stage ('Collect test results and metrics'){
