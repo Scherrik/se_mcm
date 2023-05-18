@@ -1,3 +1,5 @@
+def approvalMap
+
 pipeline {
     agent any
 
@@ -7,6 +9,7 @@ pipeline {
     
     stages {
         stage ('Stresstest'){
+            agent none
             steps {
                 timeout(60) {                // timeout waiting for input after 60 minutes
                     script {
@@ -41,6 +44,10 @@ pipeline {
         }
         stage ('Deploy'){
             steps {
+                // print the details gathered from the approval
+                echo "This build was approved by: ${approvalMap['APPROVER']}"
+                echo "This build is brought to you today by the fruit: ${approvalMap['FRUIT']}"
+                echo "This is myparam: ${approvalMap['myparam']}"
                 print "Push tag to github repo and release new version"
             }
         }
