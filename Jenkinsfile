@@ -81,7 +81,7 @@ pipeline {
                             currentBuild.result = 'ABORTED'
                             error('Stopping early…')
                         } else {
-                            echo "This build gets a ${approvalMap['Version']} update"
+                            echo "This build gets a ${versionMap['Version']} update"
                             
                             
                         }
