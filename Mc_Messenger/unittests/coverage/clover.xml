@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1684444339632" clover="3.2.0">
-  <project timestamp="1684444339632" name="All files">
+<coverage generated="1684881769080" clover="3.2.0">
+  <project timestamp="1684881769080" name="All files">
     <metrics statements="924" coveredstatements="406" conditionals="194" coveredconditionals="52" methods="124" coveredmethods="55" elements="1242" coveredelements="513" complexity="0" loc="924" ncloc="924" packages="1" files="3" classes="3"/>
     <file name="message.js" path="/mnt/data/Dokumente/DHBW/Semester3/SoftwareEngineering/Project/Mc_Messenger/data/js/message.js">
       <metrics statements="198" coveredstatements="45" conditionals="60" coveredconditionals="7" methods="20" coveredmethods="5"/>
