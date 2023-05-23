@@ -1,7 +1,7 @@
 
-//const userDatabase = require("./data/js/user");
-const nacl = require("./data/js/nacl");
-const msghandler = require("./data/js/message");
+//const userDatabase = require("../data/js/user");
+const nacl = require("../data/js/nacl");
+const msghandler = require("../data/js/message");
 
 //function log(expected, result) { console.log(expected + " = " + result); }
 

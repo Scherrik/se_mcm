@@ -17,8 +17,8 @@
   "version": "1.0.0",
   "main": "wsserver.js",
   "scripts": {
-    "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test": "jest --verbose",
+    "test-coverage": "jest --verbose --coverage",
     "start": "node wsserver.js"
   },
   "keywords": [],
