@@ -1,5 +1,5 @@
 import { createServer } from 'http';
-import { readFileSync } from 'fs';
+import * as fs from 'fs';
 import { WebSocketServer } from 'ws';
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -43,21 +43,23 @@ const requestListener = function (req, res) {
 	}
 	url = "data" + url;
 	let data = ""
-	try {
-		data = readFileSync(url);
-	} catch(e) {
-		console.log("Error: ", e);
-	}
-	
-	res.setHeader("Content-Type", contentType);
-    res.writeHead(200);
-    res.end(data);
+    fs.readFile(url, "utf8", function(err, data){
+        if(err){
+            return console.log(err);
+        }
+        
+        // Ugly hack to replace port number dynamically
+        if(url == "data/js/message.js"){
+            data = data.replace(/(const port ?= ?)[0-9]{4,5}(;)/, "$1"+ port + "$2");
+        }
+       
+        res.setHeader("Content-Type", contentType);
+        res.writeHead(200);
+        res.end(data);
+    });
 }
 
-const server = createServer({
-  cert: readFileSync('cert/certificate.pem'),
-  key: readFileSync('cert/privatekey.pem')
-}, requestListener);
+const server = createServer({}, requestListener);
 		
 server.listen(port,'::');
 
