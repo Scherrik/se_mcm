@@ -14,6 +14,7 @@ const requestListener = function (req, res) {
 	let contentType = "text/html";
     console.log(req.url);
     let url = req.url;
+    let enc = "utf8";
     switch(url){
 		case "/":
 		url = "/index.html";
@@ -37,20 +38,25 @@ const requestListener = function (req, res) {
 		break;
 		case "/fonts/fa-regular-400.woff2":
 		contentType = "font/woff2";
-		break;
+        //enc = "binary";
+        res.setHeader("Content-Type", contentType);
+        res.writeHead(200);
+        res.end(fs.readFileSync("data" + url), )
+        return;
+		//break;
 		case "/favicon.ico":
 		break;
 	}
 	url = "data" + url;
 	let data = ""
-    fs.readFile(url, "utf8", function(err, data){
+    fs.readFile(url, enc, function(err, data){
         if(err){
             return console.log(err);
         }
         
         // Ugly hack to replace port number dynamically
         if(url == "data/js/message.js"){
-            data = data.replace(/(const port ?= ?)[0-9]{4,5}(;)/, "$1"+ port + "$2");
+            data = data.replace(/(const port ?= ?)[0-9]{4,5}(.+)/, "$1"+ port + "$2");
         }
        
         res.setHeader("Content-Type", contentType);
