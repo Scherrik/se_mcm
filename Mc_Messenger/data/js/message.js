@@ -91,7 +91,12 @@ async function extract(blob){
 msghandler.init = function(){
 	const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
     const port = 8080; // Will be replaced by node.js dynamically through startup param
-	soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
+    const urlpath = undefined;
+    if(urlpath != undefined){
+        soc = new WebSocket(`${socketProtocol}//${window.location.hostname}/${urlpath}/ws`);
+    } else {
+        soc = new WebSocket(`${socketProtocol}//${window.location.hostname}:${port}/ws`);
+    }
 	soc.onmessage = function(event) {
 		extract(event.data);
 	}
