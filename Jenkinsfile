@@ -14,7 +14,8 @@ pipeline {
         stage ('Get latest from dev'){
             steps {
                 print "Merge dev_nmcm..."
-                sh 'git pull origin dev_nmcm'
+                
+                sh 'git config pull.rebase false && git pull origin dev_nmcm'
             }
         }
         stage ('Stresstest'){
