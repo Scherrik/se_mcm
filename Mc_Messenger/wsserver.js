@@ -6,7 +6,12 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const port = process.argv[2];
+
+const port = process.argv[2] || 8080;
+const urlpath = process.argv[3] || undefined;
+
+console.log(port);
+console.log(urlpath);
 
 let indexFile;
 // Serve requested files to connected client
@@ -50,7 +55,8 @@ const requestListener = function (req, res) {
         
         // Ugly hack to replace port number dynamically
         if(url == "data/js/message.js"){
-            data = data.replace(/(const port ?= ?)[0-9]{4,5}(;)/, "$1"+ port + "$2");
+            data = data.replace(/(const port ?= ?)[0-9]{4,5}(.+)/, "$1"+ port + "$2");
+            data = data.replace(/(const urlpath ?= ?)undefined(.+)/, "$1\""+ urlpath + "\"$2");
         }
        
         res.setHeader("Content-Type", contentType);
