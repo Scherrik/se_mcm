@@ -14,7 +14,7 @@ pipeline {
         stage ('Get latest from dev'){
             steps {
                 print "Merge dev_nmcm..."
-                
+                sh 'git merge dev_nmcm'
             }
         }
         stage ('Stresstest'){
