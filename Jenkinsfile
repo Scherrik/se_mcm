@@ -24,8 +24,10 @@ pipeline {
                     steps {
                         npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
                         dir('Mc_Messenger'){
-                            pid = sh 'npm start 8080 livetest';
-                            print pid;
+                            script {
+                                pid = sh 'npm start 8080 livetest';
+                                print pid;
+                            }
                         }
                         //npm command: 'start 8080 livetest', workspaceSubdirectory: 'Mc_Messenger'
                     }
