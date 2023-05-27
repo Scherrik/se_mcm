@@ -114,11 +114,13 @@ pipeline {
         success {
             print ("SUCCESS");
             
-            echo "This build gets a ${versionUpdate} update"
-            pjson = readJSON file: 'Mc_Messenger/package.json'
-            print pjson["version"];
-            //Push to release branch and create a new version tag
-            print "Push tag to github repo and release new version"
+            script {
+                echo "This build gets a ${versionUpdate} update"
+                pjson = readJSON file: 'Mc_Messenger/package.json'
+                print pjson["version"];
+                //Push to release branch and create a new version tag
+                print "Push tag to github repo and release new version"
+            }   
             
         }
         
