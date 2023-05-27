@@ -8,10 +8,7 @@ const __dirname = path.dirname(__filename);
 
 
 const port = process.argv[2] || 8080;
-const urlpath = process.argv[3] || undefined;
-
-console.log(port);
-console.log(urlpath);
+const urlpath = process.argv[3];
 
 let indexFile;
 // Serve requested files to connected client
@@ -19,7 +16,7 @@ const requestListener = function (req, res) {
 	let contentType = "text/html";
     console.log(req.url);
     let url = req.url;
-    let enc = "utf8";
+    const enc = "utf8";
     switch(url){
 		case "/":
 		url = "/index.html";
@@ -43,12 +40,10 @@ const requestListener = function (req, res) {
 		break;
 		case "/fonts/fa-regular-400.woff2":
 		contentType = "font/woff2";
-        //enc = "binary";
         res.setHeader("Content-Type", contentType);
         res.writeHead(200);
-        res.end(fs.readFileSync("data" + url), )
+        res.end(fs.readFileSync("data" + url));
         return;
-		//break;
 		case "/favicon.ico":
 		break;
 	}
@@ -62,8 +57,9 @@ const requestListener = function (req, res) {
         // Ugly hack to replace port number dynamically
         if(url == "data/js/message.js"){
             data = data.replace(/(const port ?= ?)[0-9]{4,5}(.+)/, "$1"+ port + "$2");
-            data = data.replace(/(const urlpath ?= ?)undefined(.+)/, "$1\""+ urlpath + "\"$2");
-            console.log(data);
+            if(urlpath){
+                data = data.replace("const urlpath = null;", "const urlpath = \""+ urlpath + "\";");
+            }
         }
        
         res.setHeader("Content-Type", contentType);
