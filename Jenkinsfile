@@ -145,6 +145,11 @@ pipeline {
             }  
             
         }
+        cleanup {
+            script {
+                sh "git clean -fdx"
+            }
+        }
         
     }
 }
