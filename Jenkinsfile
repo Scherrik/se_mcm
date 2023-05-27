@@ -73,9 +73,11 @@ pipeline {
                                                     
                             }
                         }
-                        if(pid){
-                            sh "kill -9 ${pid}"
-                        }
+                        script {
+                            if(pid){
+                                sh "kill -9 ${pid}"
+                            }
+                        }   
                     }
                 }
             }
