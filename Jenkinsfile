@@ -18,6 +18,11 @@ pipeline {
                 sh 'git config pull.rebase false && git pull origin dev_nmcm'
             }
         }
+        stage('Start npm livetest session'){
+            steps {
+                npm command: 'start 8080 livetest', workspaceSubdirectory: 'Mc_Messenger'
+            }
+        }
         stage ('Stresstest'){
             agent none
             steps {
