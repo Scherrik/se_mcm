@@ -129,16 +129,17 @@ pipeline {
                     vers[2] = vers[2].toInteger()+1;
                 }
                 
-                versionStr = "${vers[0]}.${vers[1]}.${vers[2]}"
-                pjson["version"] = versionStr
+                newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
+                pjson["version"] = newVersion
                 writeJSON file: 'Mc_Messenger/package.json', json: pjson
                 //Push to release branch and create a new version tag
-                print "Push tag to github repo and release new version ${versionStr}"
+                print "Push tag to github repo and release new version ${newVersion}"
                 
                 //echo "git push origin rel_nmcm"
+                sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\"
                 sh "git push origin rel_nmcm"
-                //echo "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
-                sh "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
+                //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
+                sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
                 sh "git push --tags"
                 sh "git checkout dev_nmcm && git checkout --patch rel_nmcm Mc_Messenger/package.json && git commit -am \"Update version\" && git push origin dev_nmcm"
             }  
