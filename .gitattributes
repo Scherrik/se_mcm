@@ -1,1 +1,6 @@
+.gitattributes merge=ours
+
 Jenkinsfile merge=ours
+
+.gitignore merge=ours
+Mc_Messenger/.gitignore merge=ours
