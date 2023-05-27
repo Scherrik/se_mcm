@@ -49,13 +49,25 @@ button{
 .msg_block{
 	margin: 4px;
 	margin-bottom: 0.5em;
-	width: max-content;
+	width: 100%;
 	padding: 4px;
 	color: var(--font_color);
+	overflow-wrap: break-word;
 }
 .msg_block:hover{
 	background: var(--msg_input);
 	cursor: pointer;
+}
+.msg_head{
+	display: flex;
+	align-items: baseline;
+}
+.msg_head_time{
+	font-size: 0.5em;
+	margin-left: 1em;
+}
+.msg_head_name{
+	text-shadow: 0 0 1px var(--font_color);
 }
 
 
