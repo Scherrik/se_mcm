@@ -18,54 +18,59 @@ pipeline {
                 sh 'git config pull.rebase false && git pull origin dev_nmcm'
             }
         }
-        stage('Start npm livetest session'){
-            steps {
-                npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
-                dir('Mc_Messenger'){
-                    sh 'npm start 8080 livetest';
+        stage('Run'){
+            parallel {
+                stage('Start npm livetest session'){
+                    steps {
+                        npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
+                        dir('Mc_Messenger'){
+                            pid = sh 'npm start 8080 livetest';
+                            print pid;
+                        }
+                        //npm command: 'start 8080 livetest', workspaceSubdirectory: 'Mc_Messenger'
+                    }
                 }
-                //npm command: 'start 8080 livetest', workspaceSubdirectory: 'Mc_Messenger'
-            }
-        }
-        stage ('Stresstest'){
-            agent none
-            steps {
-                timeout(60) {                // timeout waiting for input after 60 minutes
-                    script {
-                        // capture the approval details in approvalMap. 
-                         approvalMap = input id: 'test', 
-                                        message: 'Hello', 
-                                        ok: 'Proceed?', 
-                                        parameters: [
-                                            choice(
-                                                choices: 'yes\nno', 
-                                                description: 'Contrast in dark theme ok?', 
-                                                name: 'DarkTheme'
-                                            ),
-                                            choice(
-                                                choices: 'yes\nno', 
-                                                description: 'Contrast in bright theme ok?', 
-                                                name: 'BrightTheme'
-                                            ),
-                                            choice(
-                                                choices: 'yes\nno', 
-                                                description: 'Contrast in dhbw theme ok?', 
-                                                name: 'DhbwTheme'
-                                            ),
-                                            choice(
-                                                choices: 'yes\nno', 
-                                                description: 'Angry mode works?', 
-                                                name: 'AngryMode'
-                                            ),
-                                            string(
-                                                defaultValue: '--', 
-                                                description: 'Fails anything else?', 
-                                                name: 'FailDescr'
-                                            )
-                                        ], 
-                                        submitter: 'user1,user2,group1', 
-                                        submitterParameter: 'APPROVER'
-                                            
+                stage ('Stresstest'){
+                    agent none
+                    steps {
+                        timeout(60) {                // timeout waiting for input after 60 minutes
+                            script {
+                                // capture the approval details in approvalMap. 
+                                approvalMap = input id: 'test', 
+                                                message: 'Hello', 
+                                                ok: 'Proceed?', 
+                                                parameters: [
+                                                    choice(
+                                                        choices: 'yes\nno', 
+                                                        description: 'Contrast in dark theme ok?', 
+                                                        name: 'DarkTheme'
+                                                    ),
+                                                    choice(
+                                                        choices: 'yes\nno', 
+                                                        description: 'Contrast in bright theme ok?', 
+                                                        name: 'BrightTheme'
+                                                    ),
+                                                    choice(
+                                                        choices: 'yes\nno', 
+                                                        description: 'Contrast in dhbw theme ok?', 
+                                                        name: 'DhbwTheme'
+                                                    ),
+                                                    choice(
+                                                        choices: 'yes\nno', 
+                                                        description: 'Angry mode works?', 
+                                                        name: 'AngryMode'
+                                                    ),
+                                                    string(
+                                                        defaultValue: '--', 
+                                                        description: 'Fails anything else?', 
+                                                        name: 'FailDescr'
+                                                    )
+                                                ], 
+                                                submitter: 'user1,user2,group1', 
+                                                submitterParameter: 'APPROVER'
+                                                    
+                            }
+                        }
                     }
                 }
             }
@@ -96,7 +101,6 @@ pipeline {
                             print pjson
                         }
                         print "Push tag to github repo and release new version"
-                                                
                     }
                 }
             }
