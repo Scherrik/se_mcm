@@ -73,6 +73,9 @@ pipeline {
                                                     
                             }
                         }
+                        if(pid){
+                            sh "kill -9 ${pid}"
+                        }
                     }
                 }
             }
