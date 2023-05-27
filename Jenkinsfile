@@ -71,7 +71,7 @@ pipeline {
                 timeout(60) {                // timeout waiting for input after 60 minutes
                     script {
                         // capture the approval details in approvalMap. 
-                         version = input id: 'version', 
+                         versionUpdate = input id: 'version', 
                                         message: 'Hello', 
                                         ok: 'Version update?', 
                                         parameters: [
@@ -87,9 +87,9 @@ pipeline {
                             currentBuild.result = 'ABORTED'
                             error('Stopping early…')
                         } else {
-                            echo "This build gets a ${version} update"
-                            
-                            
+                            echo "This build gets a ${versionUpdate} update"
+                            pjson = readFile 'Mc_Messenger/package.json'
+                            print pjson
                         }
                         print "Push tag to github repo and release new version"
                                                 
