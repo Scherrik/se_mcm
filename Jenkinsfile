@@ -15,7 +15,7 @@ pipeline {
             steps {
                 print "Merge dev_nmcm..."
                 
-                sh 'git config pull.rebase false && git pull origin dev_nmcm'
+                sh 'git config pull.rebase false && git fetch origin dev_nmcm:dev_nmcm && git merge dev_nmcm'
             }
         }
         stage('Start npm livetest session'){
