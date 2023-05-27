@@ -119,7 +119,7 @@ pipeline {
             script {
                 echo "This build gets a ${versionUpdate} update"
                 def pjson = readJSON file: 'Mc_Messenger/package.json'
-                print pjson["version"];
+                def oldVersion = pjson["version"];
                 def vers = pjson["version"].tokenize('.');
                 if(versionUpdate == "MAJOR"){
                     vers[0] = vers[0].toInteger()+1;
@@ -129,14 +129,14 @@ pipeline {
                     vers[2] = vers[2].toInteger()+1;
                 }
                 
-                newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
+                def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
                 pjson["version"] = newVersion
                 writeJSON file: 'Mc_Messenger/package.json', json: pjson
                 //Push to release branch and create a new version tag
                 print "Push tag to github repo and release new version ${newVersion}"
                 
                 //echo "git push origin rel_nmcm"
-                sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\"
+                sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\""
                 sh "git push origin rel_nmcm"
                 //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
                 sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
