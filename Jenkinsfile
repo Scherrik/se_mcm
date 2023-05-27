@@ -119,7 +119,7 @@ pipeline {
             script {
                 echo "This build gets a ${versionUpdate} update"
                 pjson = readJSON file: 'Mc_Messenger/package.json'
-                //print pjson["version"];
+                print pjson["version"];
                 vers = pjson["version"].split('.');
                 print vers;
                 if(versionUpdate == "MAJOR"){
