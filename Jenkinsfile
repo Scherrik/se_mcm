@@ -92,12 +92,14 @@ pipeline {
                                                 name: 'Version'
                                             )
                                         ]
-                                        
-                        if(versionUpdate == "NONE"){
-                            echo "No release for this build"
-                            currentBuild.result = 'ABORTED'
-                            error('Stopping early…')
-                        }
+                         
+                    }
+                }
+                script {
+                    if(versionUpdate == "NONE"){
+                        echo "No release for this build"
+                        currentBuild.result = 'ABORTED'
+                        error('Stopping early…')
                     }
                 }
             }
@@ -117,9 +119,27 @@ pipeline {
             script {
                 echo "This build gets a ${versionUpdate} update"
                 pjson = readJSON file: 'Mc_Messenger/package.json'
-                print pjson["version"];
+                //print pjson["version"];
+                vers = pjson["version"].split('.');
+                print vers;
+                if(versionUpdate == "MAJOR"){
+                    vers[0] = vers[0].toInteger()+1;
+                } else if(versionUpdate == "MINOR"){
+                    vers[1] = vers[1].toInteger()+1;
+                } else if(versionUpdate == "PATCH"){
+                    vers[2] = vers[2].toInteger()+1;
+                }
+                
+                versionStr = "${vers[0]}.${vers[1]}.${vers[2]}"
+                pjson["version"] = versionStr
+                writeJSON file: 'Mc_Messenger/package.json', json: pjson
                 //Push to release branch and create a new version tag
                 print "Push tag to github repo and release new version"
+                
+                echo "git push origin rel_nmcm"
+                //sh "git push origin rel_nmcm"
+                echo "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
+                //sh "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
             }   
             
         }
