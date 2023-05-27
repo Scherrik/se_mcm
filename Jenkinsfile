@@ -75,7 +75,7 @@ pipeline {
                         }
                         script {
                             if(pid){
-                                sh "kill -9 ${pid}"
+                                sh "kill -9 ${pid} || echo Process not found"
                             }
                         }   
                     }
