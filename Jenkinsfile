@@ -120,8 +120,12 @@ pipeline {
                 echo "This build gets a ${versionUpdate} update"
                 pjson = readJSON file: 'Mc_Messenger/package.json'
                 print pjson["version"];
-                vers = pjson["version"].split('.');
-                print vers;
+                String[] vers = pjson["version"].split('.');
+                for(String val : vers){
+                    print val;
+                }
+                versionStr = "${vers[0]}.${vers[1]}.${vers[2]}"
+                print versionStr;
                 if(versionUpdate == "MAJOR"){
                     vers[0] = vers[0].toInteger()+1;
                 } else if(versionUpdate == "MINOR"){
