@@ -118,9 +118,9 @@ pipeline {
             
             script {
                 echo "This build gets a ${versionUpdate} update"
-                pjson = readJSON file: 'Mc_Messenger/package.json'
+                def pjson = readJSON file: 'Mc_Messenger/package.json'
                 print pjson["version"];
-                String[] vers = String(pjson["version"]).split('.');
+                def vers = pjson["version"].tokenize('.');
                 for(String val : vers){
                     print val;
                 }
