@@ -121,11 +121,6 @@ pipeline {
                 def pjson = readJSON file: 'Mc_Messenger/package.json'
                 print pjson["version"];
                 def vers = pjson["version"].tokenize('.');
-                for(String val : vers){
-                    print val;
-                }
-                versionStr = "${vers[0]}.${vers[1]}.${vers[2]}"
-                print versionStr;
                 if(versionUpdate == "MAJOR"){
                     vers[0] = vers[0].toInteger()+1;
                 } else if(versionUpdate == "MINOR"){
@@ -138,14 +133,15 @@ pipeline {
                 pjson["version"] = versionStr
                 writeJSON file: 'Mc_Messenger/package.json', json: pjson
                 //Push to release branch and create a new version tag
-                print "Push tag to github repo and release new version"
+                print "Push tag to github repo and release new version ${versionStr}"
                 
-                echo "git push origin rel_nmcm"
-                //sh "git push origin rel_nmcm"
-                echo "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
-                //sh "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
-                //sh "git push --tags"
-            }   
+                //echo "git push origin rel_nmcm"
+                sh "git push origin rel_nmcm"
+                //echo "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
+                sh "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
+                sh "git push --tags"
+                sh "git checkout dev_nmcm && git checkout --patch rel_nmcm Mc_Messenger/package.json && git commit -am \"Update version\" && git push origin dev_nmcm"
+            }  
             
         }
         
