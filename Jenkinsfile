@@ -7,11 +7,17 @@ pipeline {
     }
     
     stages {
-        stage('Setup npm'){
+        stage('Check version update'){
             steps {
                 script {
-                    npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
+                    def commits = sh ( script: "git log --pretty=oneline", returnStdout: true).trim();
+                    print commits;
                 }
+            }
+        }
+        stage('Setup npm'){
+            steps {
+                npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
             }
         }
         stage('Unit test') {
