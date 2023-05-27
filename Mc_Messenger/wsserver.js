@@ -10,15 +10,13 @@ const __dirname = path.dirname(__filename);
 const port = process.argv[2] || 8080;
 const urlpath = process.argv[3] || undefined;
 
-console.log(port);
-console.log(urlpath);
-
 let indexFile;
 // Serve requested files to connected client
 const requestListener = function (req, res) {
 	let contentType = "text/html";
     console.log(req.url);
     let url = req.url;
+    const enc = "utf8";
     switch(url){
 		case "/":
 		url = "/index.html";
@@ -48,7 +46,7 @@ const requestListener = function (req, res) {
 	}
 	url = "data" + url;
 	let data = ""
-    fs.readFile(url, "utf8", function(err, data){
+    fs.readFile(url, enc, function(err, data){
         if(err){
             return console.log(err);
         }
