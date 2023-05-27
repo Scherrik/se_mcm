@@ -120,7 +120,7 @@ pipeline {
                 echo "This build gets a ${versionUpdate} update"
                 pjson = readJSON file: 'Mc_Messenger/package.json'
                 print pjson["version"];
-                String[] vers = pjson["version"].split('.');
+                String[] vers = String(pjson["version"]).split('.');
                 for(String val : vers){
                     print val;
                 }
