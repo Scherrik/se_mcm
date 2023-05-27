@@ -20,6 +20,7 @@ pipeline {
         }
         stage('Start npm livetest session'){
             steps {
+                npm command: 'install', workspaceSubdirectory: 'Mc_Messenger'
                 npm command: 'start 8080 livetest', workspaceSubdirectory: 'Mc_Messenger'
             }
         }
