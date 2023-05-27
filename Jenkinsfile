@@ -140,6 +140,7 @@ pipeline {
                 //sh "git push origin rel_nmcm"
                 echo "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
                 //sh "git tag -a v${versionStr} -m \"New ${versionUpdate} update to ${versionStr}\""
+                //sh "git push --tags"
             }   
             
         }
