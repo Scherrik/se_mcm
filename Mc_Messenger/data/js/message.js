@@ -196,6 +196,7 @@ function createPayload(type, msgObj = {}){
 			// "poll" consists of: "qu" = question, "an" = the possible answers as an array ( SEE "server-poll" >> NOT IMPLEMENTED YET )
 			result["qu"] = msgObj.question;
 			result["an"] = msgObj.answers;
+			result["id"] = msgObj.id;
 		break;
 		case "interaction":
 			result["pl"] = msgObj;
@@ -337,6 +338,9 @@ msghandler.processIncomingMessage = function(json_str){
 			break;
 		//Poll
 		case "poll":
+			e = eventMap.get("mh_messagerecv");
+			e.detail.msg = json_obj;
+			document.dispatchEvent(e);
 			break;
 		//Cookie
 		case "cookie":
@@ -428,6 +432,27 @@ msghandler.sendInteraction = function (id){
 	frame["da"] = createPayload("interaction", id);
 	let jsonFrame = JSON.stringify(frame);
 	soc.send(jsonFrame);
+}
+
+msghandler.sendPoll = function (msg){
+	let e = eventMap.get("mh_messagesent");
+	let frame = createFrame("poll", [BROADC_ADDR]);
+	var pollOptions = document.getElementsByName("poll_option");
+	let id = new Date().toISOString();
+	var msgObj = {question:msg,
+				  answers:{},
+				  id:id};
+	for (var i = 0; i < pollOptions.length;i++){
+		let key = "-opt" + i;
+		let value = pollOptions[i].value;
+		msgObj.answers[key]=value;
+	}
+	frame["da"] = createPayload("poll", msgObj);
+	console.log(frame);
+	let jsonFrame = JSON.stringify(frame);
+	soc.send(jsonFrame);
+	e.detail.payload = frame["da"];
+	document.dispatchEvent(e);
 }
 
 // TESTONLY

@@ -93,12 +93,13 @@ function initEventHandler(){
 
 	document.querySelector("#add_poll_option").addEventListener("click", function (e){
 		console.log("Poll option added to UI")
-		addPollOption()
+		addPollOption();
 	});
 
 	document.querySelector("#send_poll").addEventListener("click", function (e){
+		let val = document.querySelector("#poll_question_field").value;
 		console.log("POLL SENT TRIGGERED")
-		msghandler.sendPoll()
+		msghandler.sendPoll(val);
 	});
 	
 	document.querySelector("#msg_input").addEventListener("keydown", function(event){
@@ -130,7 +131,6 @@ function init(){
 	msghandler.init();
 	initUIElements();
 	initEventHandler();
-	addPollToChatBox(poll);
 }
 
 
@@ -204,6 +204,8 @@ function addMessageToChatBox(obj){
 	}else if(obj["typ"] === 132){
 		var clone = document.getElementById("cookie_template").content.cloneNode(true);
 		clone.querySelector(".msg_body").setAttribute("id", new Date().toISOString());
+	}else if(obj["typ"] === 130){
+		var clone = addPollToChatBox(obj);
 	}
 
 	let name = clone.querySelector(".msg_head_name");

@@ -101,11 +101,11 @@
 				<div class="menu_votes_content menu_entry">
 					<div>
 						<label>Create Vote</label>
-						<input type="text" placeholder="Vote name">
+						<input type="text" placeholder="Vote name" id="poll_question_field">
 						<label>Answer options</label>
 						<div id="poll_option_container">
-							<template id="poll_option_template"><input type="text"></template>
-							<input type="text"><input type="text">
+							<template id="poll_option_template"><input type="text" name="poll_option"></template>
+							<input type="text" name="poll_option"><input type="text" name="poll_option">
 						</div>
 						<button id="add_poll_option">Add option</button>
 						<button id="send_poll">Send poll</button>

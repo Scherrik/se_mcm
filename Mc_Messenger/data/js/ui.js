@@ -121,32 +121,22 @@ function cookie_handler(msg){
     cookie_counter.textContent = +(cookie_counter.textContent) + +1;
 }
 
-const poll={"da":{"pl":{
-                    "msg":"Test Poll",
-                    "id":"superid",
-                    "options":{opt1:"Ja",
-                                opt2:"Nein",
-                                opt3:"Vielleicht"}}}};
 function addPollToChatBox(poll = {}){
-    console.log(poll["da"]);
     let clone = document.getElementById("poll_template").content.cloneNode(true);
     let msg = clone.querySelector(".msg_body");
-    msg.textContent = poll["da"]["pl"]["msg"];
-
+    msg.textContent = poll["da"]["qu"];
     var poll_container = clone.querySelector(".poll_res_container");
     var poll_option_tmp = clone.getElementById("poll_res_option");
-    Object.entries(poll["da"]["pl"]["options"]).forEach((entry) => {
+    Object.entries(poll["da"]["an"]).forEach((entry) => {
         let [key, value] = entry;
         let poll_option = poll_option_tmp.cloneNode(true);
-        let poll_res_id = poll["da"]["pl"]["id"] + key;
+        let poll_res_id = poll["da"]["id"] + key;
         poll_option.textContent = value;
         poll_option.setAttribute("id",poll_res_id);
         poll_container.appendChild(poll_option);
     })
     poll_container.removeChild(poll_option_tmp);
-
-    let box = document.getElementById("chat_box");
-    box.appendChild(clone);
+    return clone;
 }
 
 function addPollOption(){
