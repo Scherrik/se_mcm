@@ -6,6 +6,12 @@ Here are the links related with our WEbEngineering Project:
 
 ### nodejs: https://github.com/Scherrik/se_mcm/tree/we_nmcm/Mc_Messenger
 
+### Jenkins files:
+https://github.com/Scherrik/se_mcm/blob/dev_nmcm/Jenkinsfile
+
+https://github.com/Scherrik/se_mcm/blob/rel_nmcm/Jenkinsfile
+
+
 ## Technical Report: https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/WE_TechnicalReport.md
 ## Others
 ### Blog: https://semcmessenger.wordpress.com/  
