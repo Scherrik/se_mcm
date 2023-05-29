@@ -45,6 +45,8 @@ typeMap.set('message', 128);
 typeMap.set('metaInfo', 129);
 typeMap.set('poll', 130);
 typeMap.set('file', 131);
+typeMap.set('cookie', 132);
+typeMap.set('interaction', 133);
 
 let eventMap = new Map();
 
@@ -57,6 +59,8 @@ if(areWeTestingWithJest()){
     eventMap.set("mh_tokenchange",  new Event("mh_tokenChange", {detail: {} }));
     eventMap.set("mh_cldisconnect", new Event("mh_cldisconnect", {detail: {} }));
     eventMap.set("mh_messagesent",  new Event("mh_messagesent", {detail: {} }));
+	eventMap.set("mh_interactionsent", new Event("mh_interactionsent", {detail: {} }));
+	eventMap.set("mh_interactionrecv", new Event("mh_interactionrecv", {detail: {} }));
 } else {
     eventMap.set("mh_onconnect", new CustomEvent("mh_onconnect", { detail: {} }));
     eventMap.set("mh_newuser", new CustomEvent("mh_newuser", { detail: {} }));
@@ -66,6 +70,8 @@ if(areWeTestingWithJest()){
     eventMap.set("mh_tokenchange", new CustomEvent("mh_tokenChange", {detail: {} }));
     eventMap.set("mh_cldisconnect", new CustomEvent("mh_cldisconnect", {detail: {} }));
     eventMap.set("mh_messagesent", new CustomEvent("mh_messagesent", {detail: {} }));
+	eventMap.set("mh_interactionsent", new CustomEvent("mh_interactionsent", {detail: {} }));
+	eventMap.set("mh_interactionrecv", new CustomEvent("mh_interactionrecv", {detail: {} }));
 }
 function typeToString(id){
 	for (const [key, value] of typeMap) {
@@ -190,6 +196,9 @@ function createPayload(type, msgObj = {}){
 			// "poll" consists of: "qu" = question, "an" = the possible answers as an array ( SEE "server-poll" >> NOT IMPLEMENTED YET )
 			result["qu"] = msgObj.question;
 			result["an"] = msgObj.answers;
+		break;
+		case "interaction":
+			result["pl"] = msgObj;
 		break;
 		default:
 			// Couldn't identify message type
@@ -329,6 +338,18 @@ msghandler.processIncomingMessage = function(json_str){
 		//Poll
 		case "poll":
 			break;
+		//Cookie
+		case "cookie":
+			e = eventMap.get("mh_messagerecv");
+			e.detail.msg = json_obj;
+			document.dispatchEvent(e);
+			break;
+		//Global Ineraction
+		case "interaction":
+			e = eventMap.get("mh_interactionrecv");
+			e.detail.msg = json_obj;
+			document.dispatchEvent(e);
+			break;
 		default:
 			console.log("DEFAULT NOTHING TODO...");
 			break;
@@ -351,22 +372,26 @@ function decryptPayload(secretKey, sndrPubKey, msgUint8_Array){
 	
 msghandler.sendMessage = function(msg){
 	console.log("Send message");
-	//let msg = document.getElementById("msg_input").value;
-	
+
+	let e = eventMap.get("mh_messagesent");
+
 	if(isEmpty(msg)){
 		console.log("Empty message, nothing to do...");
 		return;
-	}	
+	}else if(msg === "#cookie"){
+		console.log("COOKIE");
+		var frame = createFrame("cookie", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
+		e.detail.header = frame;
+		frame["da"] = createPayload("message", msg);
+	}else{
+		var frame = createFrame("message", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
+		e.detail.header = frame;
+		frame["da"] = createPayload("message", msg);
+	}
 	/*
 	 * TODO Extract name from message and determine id(s) from belonging user 
 	 */ 
-	
-	let e = eventMap.get("mh_messagesent");
-	
-	let frame = createFrame("message", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
-	e.detail.header = frame;
-	
-	frame["da"] = createPayload("message", msg);
+
 	/* Encryption part
 	let enc = JSON.stringify(messageHandler.create(msg, "msg"));
 	enc = encryptPayload(enc, myUser.keys.publicKey ); //Has to be replaced by receiver public keys
@@ -398,6 +423,12 @@ msghandler.sendMetaChange = function(){
 	}
 }
 
+msghandler.sendInteraction = function (id){
+	let frame = createFrame("interaction", [BROADC_ADDR]);
+	frame["da"] = createPayload("interaction", id);
+	let jsonFrame = JSON.stringify(frame);
+	soc.send(jsonFrame);
+}
 
 // TESTONLY
 msghandler.__get__ = function(name){

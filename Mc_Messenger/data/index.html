@@ -27,6 +27,32 @@
 				<div class="msg_body">{{msg}}</div>
 			</div>
 		</template>
+		<template id="cookie_template">
+			<div class="msg_block">
+				<div class="msg_head">
+					<div class="msg_head_name">{{name}}</div>
+					<div class="msg_head_time">{{time}}</div>
+				</div>
+				<div class="msg_body" onclick="msghandler.sendInteraction(this.id)">
+					<img src="img/cookie.webp" class="cookie">
+					<label class="cookie_counter">0</label>
+				</div>
+			</div>
+		</template>
+		<template id="poll_template">
+			<div class="msg_block">
+				<div class="msg_head">
+					<div class="msg_head_name">{{name}}</div>
+					<div class="msg_head_time">{{time}}</div>
+				</div>
+				<div class="poll_body">
+					<div class="poll_msg msg_body">{{msg}}</div>
+					<div class="poll_res_container" id="poll_res_container">
+						<div class="poll_res_option" id="poll_res_option"></div>
+					</div>
+				</div>
+			</div>
+		</template>
 		<template id="ulentry_template">
 			<div>
 				<!-- TODO -->
@@ -72,7 +98,19 @@
 			<div class="menu" id="menu">
 				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)">
 					<button class="menu_button" onclick="expand_menu(id)">Votes</button></div>
-				<div class="menu_votes_content menu_entry">Content of Votes</div>
+				<div class="menu_votes_content menu_entry">
+					<div>
+						<label>Create Vote</label>
+						<input type="text" placeholder="Vote name">
+						<label>Answer options</label>
+						<div id="poll_option_container">
+							<template id="poll_option_template"><input type="text"></template>
+							<input type="text"><input type="text">
+						</div>
+						<button id="add_poll_option">Add option</button>
+						<button id="send_poll">Send poll</button>
+					</div>
+				</div>
 
 				<div class="menu_leader menu_entry" id="menu_leader" onclick="expand_menu(id)">
 					<button class="menu_button" onclick="expand_menu(id)">Leader</button></div>

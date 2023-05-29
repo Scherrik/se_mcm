@@ -192,3 +192,30 @@ button{
 	90% { transform: translate(1px, 2px) rotate(0deg); }
 	100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+.cookie{
+	width: 4em;
+}
+.cookie_counter{
+	font-size: 3em;
+	vertical-align: bottom;
+}
+.poll_body{
+	background: var(--msg_input);
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	width: max-content;
+	padding: 0.3em;
+}
+.poll_msg{
+	text-align: center;
+}
+.poll_res_container{
+	display: flex;
+	padding-top: 0.3em;
+}
+.poll_res_option{
+	background: var(--background);
+	border: 2px solid var(--msg_box);
+	padding: 0.2em;
+	margin: 0.1em;
+}
