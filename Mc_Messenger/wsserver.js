@@ -46,6 +46,13 @@ const requestListener = function (req, res) {
         return;
 		case "/favicon.ico":
 		break;
+		case "/img/cookie.webp":
+		contentType = "image/webp";
+		res.setHeader("Content-Type", contentType);
+		res.writeHead(200);
+		res.end(fs.readFileSync("data" + url));
+		return;
+		break;
 	}
 	url = "data" + url;
 	let data = ""
