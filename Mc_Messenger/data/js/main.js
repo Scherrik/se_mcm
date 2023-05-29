@@ -206,6 +206,7 @@ function addMessageToChatBox(obj){
 		clone.querySelector(".msg_body").setAttribute("id", new Date().toISOString());
 	}else if(obj["typ"] === 130){
 		var clone = addPollToChatBox(obj);
+		var pollList = document.querySelector(".poll_list");
 	}
 
 	let name = clone.querySelector(".msg_head_name");
@@ -215,7 +216,13 @@ function addMessageToChatBox(obj){
 	let time = clone.querySelector(".msg_head_time");
 	time.textContent = (new Date()).toLocaleTimeString();
 
+	var clone2 = clone;
 	let box = document.getElementById("chat_box");
 	box.appendChild(clone);
 	box.scrollTop = box.scrollHeight;
+
+	if(obj["typ"] === 130){
+		console.log("tried my best");
+		pollList.appendChild(clone2);
+	}
 }

@@ -102,16 +102,23 @@
 				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)">
 					<button class="menu_button" onclick="expand_menu(id)">Votes</button></div>
 				<div class="menu_votes_content menu_entry">
-					<div>
+					<div class="poll_create">
 						<label>Create Vote</label>
-						<input type="text" placeholder="Vote name" id="poll_question_field">
+						<input type="text" placeholder="Vote name" id="poll_question_field" class="login_input poll_input">
+						<br>
 						<label>Answer options</label>
-						<div id="poll_option_container">
-							<template id="poll_option_template"><input type="text" name="poll_option"></template>
-							<input type="text" name="poll_option"><input type="text" name="poll_option">
+						<div class="poll_option_container">
+							<template id="poll_option_template">
+								<input type="text" name="poll_option" class="login_input poll_input" placeholder="Option">
+							</template>
+							<input type="text" name="poll_option" class="login_input poll_input" placeholder="Option">
+							<input type="text" name="poll_option" class="login_input poll_input" placeholder="Option">
 						</div>
-						<button id="add_poll_option">Add option</button>
-						<button id="send_poll">Send poll</button>
+						<div id="add_poll_option" class="login_input start_chatting poll_input">Add option</div>
+						<div id="send_poll" class="login_input start_chatting poll_input">Send poll</div>
+					</div>
+					<div class="poll_list">
+
 					</div>
 				</div>
 
