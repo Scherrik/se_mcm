@@ -15,6 +15,8 @@ pipeline {
             steps {
                 print "Merge dev_nmcm..."
                 
+                
+                
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     sh 'git config pull.rebase false && git config merge.ours.driver true && git status'
                 }
@@ -139,6 +141,7 @@ pipeline {
                 
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     //echo "git push origin rel_nmcm"
+                    sh "git checkout rel_nmcm"
                     sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\""
                     sh "git push origin rel_nmcm"
                     //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
