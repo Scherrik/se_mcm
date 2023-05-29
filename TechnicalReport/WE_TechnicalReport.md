@@ -135,9 +135,13 @@ The color schemes can than be selected by the user in the settings window, selec
 Very easy to maintain and a huge enhancement for the users. Currently three color schemes are implemented. Dark, Light and DHBW-Theme (red, white, grey)
 The follwoing pictures show an example of the color schema and the settings window wich allows the user the change of the scheme.
 
-![OUCD](./UseCases/UML_MCM_Use_Case_Diagram.png)
+<p align="center" border="10px">
+  <img src="https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/images/DHBW_color.png" alt="DHBW_theme" />
+  <br>
+  <br>
+  <img src="https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/images/Settings_menu.png" alt="Settings_menu" />
+</p>
 
-![OUCD](./UseCases/UML_MCM_Use_Case_Diagram.png)
 
 ### CI/CD Pipeline & Self hosted Web Server
 
