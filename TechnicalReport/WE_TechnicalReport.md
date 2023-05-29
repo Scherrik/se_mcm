@@ -6,10 +6,18 @@
     - [Definitions, Acronyms and Abbreviations](#definitions-acronyms-and-abbreviations)
     - [References](#references)
 - [Project name and team members](#project-name-and-team-members)
-    - [Project Name](#project-name)
+    - [Organisation](#Organisation)
     - [Team Members](#team-members)
     - [Tech stack](#tech-stack)
 - [Major contributions](#major-contributions)
+-
+-
+- [Source Code Organisation and Design patterns](#source-code-organisation-and-design-patterns)
+    - [Project Name](#project-name)
+    - [Design Patterns and Clean Code](#design-patterns-and-clean-code)
+    - [Tech stack](#tech-stack)
+- [Highlights](#highlights)
+
 
 - [Supporting Information](#supporting-information)
 
@@ -21,15 +29,17 @@
 | ----------- | --------------------------------|
 | MC          | MicroController                 |
 | nMCM        | no Micro Controller - Messenger |
+| img         | image                           |
+
 
 ### References
 
 | Title                                                                                                        | Date       | Publishing organization   |
-| -------------------------------------------------------------------------------------------------------------|:----------:| ------------------------- |
-| [nMCM-GitHub](https://github.com/Scherrik/se_mcm/tree/we_nmcm)                                               | 29.05.2023 | MC-Messenger Team     |
-| [Source Codeb](https://github.com/Scherrik/se_mcm/tree/we_nmcm/Mc_Messenger)                                 | 29.05.2023 | MC-Messenger Team     |
-| [Technical Report](https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/WE_TechnicalReport.md)    | 29.05.2023 | MC-Messenger Team     |
-| [WordPress Blog](https://semcmessenger.wordpress.com)                                                        | 29.05.2023 | MC-Messenger Team         | 
+| -------------------------------------------------------------------------------------------------------------|------------| --------------------------|
+| [nMCM-GitHub](https://github.com/Scherrik/se_mcm/tree/we_nmcm)                                               | 29.05.2023 | MC-Messenger Team         |
+| [Source Codeb](https://github.com/Scherrik/se_mcm/tree/we_nmcm/Mc_Messenger)                                 | 29.05.2023 | MC-Messenger Team         |
+| [Technical Report](https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/WE_TechnicalReport.md)    | 29.05.2023 | MC-Messenger Team         |
+| [WordPress Dev-Blog from Software Engineering](https://semcmessenger.wordpress.com)                          | 29.05.2023 | MC-Messenger Team         | 
 
 
 ## Project name and team members
@@ -62,6 +72,7 @@ But another Situation where you can't talk to each other directly is when you ar
 Our Websites provides an Easy, fast and reliable Messaging-Service that everyone can access from their Devices to Chat with each other. You don't need to create an Account or Sign up, you just connect to the Messenger and choose a name that should be displayed with your Message, and you're ready to go. We also implemented some Features to make the chatting more alive and exciting e.g. the Angry Mode that lets others know you're angry when sending a specific Message.
 
 
+
 ## Structure of your website, i.e., navigation/routing structure
 ### Erik S
 
@@ -71,16 +82,44 @@ Our Websites provides an Easy, fast and reliable Messaging-Service that everyone
 ## Key functions implemented by your back-end program
 ### Erik G
 
-## How did you organize your source code (functions/classes/files/folders), etc. – Which design pattern / state-ofthe-
-art framework applied?
-- singleton pattern: only one userdatabase (one object)
-- Create Payload, Create Frame: Factory Pattern  
 
 
-## Any highlights in your design/implementation, e.g., auto-scale web pages for various client devices?
-### Marcel
-- Colour
-- 
+## Source Code Organisation and Design Patterns
+
+### Organisation
+Our hole project is maintained via GitHub. We make use of different branches for the development, deployment and the delivery of the WE source code and Technical Report for assesment.
+The different elements of our project have also been divided and structured in different section. 
+First we seperated the source code and the documentation (for WE this technical report) into different folders. These are called Mc_Messenger and TechnicalReport.
+In the Mc_Messenger folder the source code can be found. In the root folder are all the node.js files stored.
+The frontend files are stored in a separate subfolder called data. The data folder contains more subfolders to store css, fonts, img (images) and js-code and it also contains the main index.html file. 
+
+### Design Patterns and Clean Code
+We used different design patterns and clean code principles for our project. 
+One of these patterns is the "singleton pattern". This spezifies that an object can only exists once. The database of conneccted users will always only be one object and there do not exist any duplicats of itself 
+
+The second design pattern which was used is the principle of "Factory pattern". This principle states that every object is created with the help of an function and not directly with an constructor call. 
+Examples for this pattern are the functions are "Create Payload" and "Create Frame"form the file message.js.
+
+Clean code principles can also be found in our project. These show themselfs throughout the project in different ways:
+#### CSS
+Our CSS is divided into different files depending on their task. Especially the declaration of the color variables in a seperate file plays a vital role in the maintainability and scalability of the layout.
+#### Frontend-JS
+Our JS is also divided into different files to increase readability and maintainability: The main files are: main.js, user.js and messsage.js. The names make the purpose of the files clear automatically.
+The functions have expressive names to showcase their task. Example: addMessageToChatBox()
+Further Principles:
+YAGNI: You Aren’t Gonna Need It – unnecessary code has been removed (exeption code for testing of features during the ongoing development) 
+DRY: Don’t Repeat Yourself – Repeated code has been cleared
+
+#### Backend node.js
+Our nodejs files are also following some vital clean code principles
+KISS: Keep It Simple Stupid – The functions are coded as simple as possible
+YAGNI: You Aren’t Gonna Need It – unnecessary code has been removed (exeption code for testing of features during the ongoing development) 
+DRY: Don’t Repeat Yourself – Repeated code has been cleared
+
+## Highlights
+### Adaptive Layout 
+### Color Scheme 
+### CI/CD Pipeline & Self hosted Web Server
 
 ## Supporting Information
 For any further information you can contact the MC-Messenger Team or check our [Blog](https://semcmessenger.wordpress.com). 
