@@ -35,7 +35,7 @@
 				</div>
 				<div class="msg_body" onclick="msghandler.sendInteraction(this.id)">
 					<img src="img/cookie.webp" class="cookie">
-					<label class="cookie_counter">0</label>
+					<label class="cookie_counter counter">0</label>
 				</div>
 			</div>
 		</template>
@@ -48,7 +48,10 @@
 				<div class="poll_body">
 					<div class="poll_msg msg_body">{{msg}}</div>
 					<div class="poll_res_container" id="poll_res_container">
-						<div class="poll_res_option" id="poll_res_option"></div>
+						<div class="poll_res_option counter" id="poll_res_option" onclick="msghandler.sendInteraction(this.id)">
+							<label class="poll_ans"></label>
+							<label class="counter">0</label>
+						</div>
 					</div>
 				</div>
 			</div>

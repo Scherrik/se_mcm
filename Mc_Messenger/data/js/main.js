@@ -73,7 +73,7 @@ function initEventHandler(){
 	document.addEventListener("mh_interactionrecv", function(e){
 		console.log("INTERACTION RECEIVED TRIGGERED");
 		console.log(e.detail);
-		cookie_handler(e.detail.msg);
+		interactionHandler(e.detail.msg);
 	});
 	
 	// UI Element Event Listeners

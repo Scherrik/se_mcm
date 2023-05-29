@@ -114,11 +114,11 @@ function change_color_theme(theme){
     }
 }
 
-function cookie_handler(msg){
+function interactionHandler(msg){
     let id = msg["da"]["pl"];
-    let cookie_jar = document.getElementById(id);
-    let cookie_counter = cookie_jar.querySelector(".cookie_counter");
-    cookie_counter.textContent = +(cookie_counter.textContent) + +1;
+    let element = document.getElementById(id);
+    let number_element = element.querySelector(".counter");
+    number_element.textContent = +(number_element.textContent) + +1;
 }
 
 function addPollToChatBox(poll = {}){
@@ -131,7 +131,7 @@ function addPollToChatBox(poll = {}){
         let [key, value] = entry;
         let poll_option = poll_option_tmp.cloneNode(true);
         let poll_res_id = poll["da"]["id"] + key;
-        poll_option.textContent = value;
+        poll_option.querySelector(".poll_ans").textContent = value;
         poll_option.setAttribute("id",poll_res_id);
         poll_container.appendChild(poll_option);
     })
