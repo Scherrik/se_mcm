@@ -88,9 +88,10 @@ Our Websites provides an Easy, fast and reliable Messaging-Service that everyone
 ### Erik S
 
 ## Key functions implemented by your backend program
-### Erik G
+In order to accommodate the limited resources on the microcontroller, we have made the decision to offload a significant portion of the backend logic to the client side. This entails that all tasks related to the user database are performed by the clients themselves. They are responsible for tasks such as database synchronization between clients, as well as adding and removing clients. Consequently, the clients also assume the responsibility of storing the database.
+The client-side backend logic encompasses the generation of outgoing messages based on the specified type to be sent by the client, as well as the processing of incoming messages.
 
-
+On the server side, the tasks can be divided into two main parts. Firstly, the web server component handles the provision of various web files, including HTML, CSS, and JavaScript files. Secondly, the server manages the different states of a websocket connection for each client. When a new connection is established, the server generates a unique identifier for the client and sends it back as a response. Additionally, the server is responsible for routing incoming messages to their intended destinations, similar to the routing mechanism employed by a Layer 2 switch. Lastly, in the event of a client disconnection, the server is responsible for notifying the remaining clients so that they can update their respective user databases.
 
 ## Source Code Organisation and Design Patterns
 
