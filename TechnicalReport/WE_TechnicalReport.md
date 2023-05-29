@@ -21,7 +21,7 @@ coding!)
 Marcel Fischer - 
 Erik Günther -   
 Erik Schneider - 
-Tim Nau -
+Tim Nau - Implementet Logo + Color Scheme for Logo
 
 ## Introduction of your website – what is it for?
 Our Project began as MCM- Microcontroller Messenger where we used a Microcontroller to host a Messaging Service that is independent of the Web and works in every Environment even if there is no Internet Connection. With that we wanted to solve our need to communicate with each other, especially in Situations where you can't directly talk to each other, e.g. we are not allowed to speak, or the situation makes it very difficult(school, university, library, industrial fairs, plane/train/bus, disco, loud bar).
