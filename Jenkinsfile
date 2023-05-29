@@ -16,7 +16,7 @@ pipeline {
                 print "Merge dev_nmcm..."
                 
                 sshagent(['6157ed59-4107-44de-b01a-40f03d8d872d']) {
-                    sh 'git config pull.rebase false && git config merge.ours.driver true && git fetch origin dev_nmcm:dev_nmcm && git merge dev_nmcm'
+                    sh 'git config pull.rebase false && git config merge.ours.driver true && git status'
                 }
             }
         }
