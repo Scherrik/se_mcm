@@ -6,7 +6,7 @@
     - [Definitions, Acronyms and Abbreviations](#definitions-acronyms-and-abbreviations)
     - [References](#references)
 - [Project name and team members](#project-name-and-team-members)
-    - [Organisation](#Organisation)
+    - [Organisation](#organisation)
     - [Team Members](#team-members)
     - [Tech stack](#tech-stack)
 - [Major contributions](#major-contributions)
@@ -41,6 +41,9 @@
 | [Technical Report](https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/WE_TechnicalReport.md)    | 29.05.2023 | MC-Messenger Team         |
 | [WordPress Dev-Blog from Software Engineering](https://semcmessenger.wordpress.com)                          | 29.05.2023 | MC-Messenger Team         | 
 
+### Where can our applciation be found
+The Webpage is currently deployment o nthe following URL:
+https://mcm.servebeer.com/live/
 
 ## Project name and team members
 
@@ -117,8 +120,25 @@ YAGNI: You Aren’t Gonna Need It – unnecessary code has been removed (exeptio
 DRY: Don’t Repeat Yourself – Repeated code has been cleared
 
 ## Highlights
+Beside our main feature of chatting with other connected users we implemented some highlights to enhace the experience of our application
+
 ### Adaptive Layout 
-### Color Scheme 
+Our first hightlight is the adaptive layout depending of the screen size. The UI  is adapting for different screen sizes and below a window width of 500px the layout is changed more dramatically.
+The list of connected users is moved from the left side of the screen into the expandable menu on the right side. The menu user is added in there and can be expanded to show the user list. 
+This allows for a cleaner look and allows for the chatbox to be reasonable sized on smaller screens.
+
+### Choice of Color Scheme 
+The second highlight is the implementation of different color themes the user can chose from. The separation the color variables into a different filer allows us as developes to easilie add more color schemes. 
+We just have to create a new .css file and place it into the css/color_themes folder. 
+Then the only things left to do are to copy the template, fill it out with the colors and finally add a new line into the switch case statement located in the function "change_color_theme" in js/ui.js. 
+The color schemes can than be selected by the user in the settings window, selectable from the right side menu + click settings.
+Very easy to maintain and a huge enhancement for the users. Currently three color schemes are implemented. Dark, Light and DHBW-Theme (red, white, grey)
+The follwoing pictures show an example of the color schema and the settings window wich allows the user the change of the scheme.
+
+![OUCD](./UseCases/UML_MCM_Use_Case_Diagram.png)
+
+![OUCD](./UseCases/UML_MCM_Use_Case_Diagram.png)
+
 ### CI/CD Pipeline & Self hosted Web Server
 
 ## Supporting Information
