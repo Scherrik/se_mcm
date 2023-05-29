@@ -10,13 +10,17 @@
     - [Team Members](#team-members)
     - [Tech stack](#tech-stack)
 - [Major contributions](#major-contributions)
--
--
+- [Overall Structure](#overall-structure)
+- [Abstract layout of the Webpage](#abstract-layout-of-the-webpage)
+- [Key functions implemented by your backend program](#key-functions-implemented-by-your-backend-program)
 - [Source Code Organisation and Design patterns](#source-code-organisation-and-design-patterns)
     - [Project Name](#project-name)
     - [Design Patterns and Clean Code](#design-patterns-and-clean-code)
     - [Tech stack](#tech-stack)
 - [Highlights](#highlights)
+    - [Adaptive Layout](#adaptive-layout)
+    - [Color Schemes](#color-schemes)
+    - [CI/CD Pipeline and Self hosted Web Server](#ci-cd-pipeline-and-self-hosted-web-server)
 
 
 - [Supporting Information](#supporting-information)
@@ -76,13 +80,14 @@ Our Websites provides an Easy, fast and reliable Messaging-Service that everyone
 
 
 
-## Structure of your website, i.e., navigation/routing structure
+## Overall Structure
+(i.e., navigation/routing structure)
 ### Erik S
 
-## Abstract layout of your Web pages
+## Abstract layout of the Webpage
 ### Erik S
 
-## Key functions implemented by your back-end program
+## Key functions implemented by your backend program
 ### Erik G
 
 
@@ -125,25 +130,63 @@ Beside our main feature of chatting with other connected users we implemented so
 ### Adaptive Layout 
 Our first hightlight is the adaptive layout depending of the screen size. The UI  is adapting for different screen sizes and below a window width of 500px the layout is changed more dramatically.
 The list of connected users is moved from the left side of the screen into the expandable menu on the right side. The menu user is added in there and can be expanded to show the user list. 
-This allows for a cleaner look and allows for the chatbox to be reasonable sized on smaller screens.
+This allows for a cleaner look and allows for the chatbox to be reasonable sized on smaller screens. The feature can be tested on our currently deployed application (https://mcm.servebeer.com/live/)
 
-### Choice of Color Scheme 
+### Color Schemes 
 The second highlight is the implementation of different color themes the user can chose from. The separation the color variables into a different filer allows us as developes to easilie add more color schemes. 
 We just have to create a new .css file and place it into the css/color_themes folder. 
 Then the only things left to do are to copy the template, fill it out with the colors and finally add a new line into the switch case statement located in the function "change_color_theme" in js/ui.js. 
 The color schemes can than be selected by the user in the settings window, selectable from the right side menu + click settings.
 Very easy to maintain and a huge enhancement for the users. Currently three color schemes are implemented. Dark, Light and DHBW-Theme (red, white, grey)
-The follwoing pictures show an example of the color schema and the settings window wich allows the user the change of the scheme.
+The follwowing pictures show an example of the color schema and the settings window wich allows the user the change of the scheme.
 
 <p align="center" border="10px">
-  <img src="https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/images/DHBW_color.png" alt="DHBW_theme" />
+  <img src="https://github.com/Scherrik/se_mcm/blob/ecb60ee9e819484eebf24b1fe94782c6fcf791b5/TechnicalReport/images/DHBW_color.png" alt="DHBW_theme" />
   <br>
   <br>
-  <img src="https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/images/Settings_menu.png" alt="Settings_menu" />
+  <img src="https://github.com/Scherrik/se_mcm/blob/ecb60ee9e819484eebf24b1fe94782c6fcf791b5/TechnicalReport/images/Settings_menu.png" alt="Settings_menu" />
 </p>
 
 
-### CI/CD Pipeline & Self hosted Web Server
+### CI CD Pipeline and Self hosted Web Server
+
+For CI/CD our Environment we use Jenkins. Our Pipeline is shown in the picture below.
+
+<p align="center" border="10px">
+  <img src="https://github.com/Scherrik/se_mcm/blob/main/docs/CI_CD/git_jenkins_CI_CD_workflow.jpg" alt="Jenkins Workflow" />
+</p>
+
+We use two branches for the deployment. The first is called dev_nmcm, the second test_nmcm (because of the ongoing development in the meantime refactored to "dev_nmcm").
+The picture shows the three most possible paths our pipline could go through. One path is a sucessfull deploy, the other two are failures on the different points.
+
+#### Path 1 – sucessfull release:
+1. The MCM development team comits new changes to the dev_nmcm branche.
+2. Jenkins starts a automatic build and executes the unit tests. An automatic test report is created and stored on the branche in the folder MC_Messenger/unittests in the form of a html file
+3. If sucessful: The new commits are transfered to the test_nmcm (rel_nmcm) branch.
+4. The webpage is deployed to the livetest server (hosted on a Raspberry Pi) (https://mcm.servebeer.com/livetest/ ; only online during a new deployment cicle)
+5. The developer executes live- and stresstests and sets a version tag (major, minor, patch)
+6. The developer triggers the release. The application is deployed on the release server (also hosted on a Raspberry Pi) (https://mcm.servebeer.com/live/)
+
+#### Path 2 – Failure during unit tests
+1. The MCM development team comits new changes to the dev_nmcm branche.
+2. Jenkins starts a automatic build and executes the unit tests. An automatic test report is created and stored on the branche in the folder MC_Messenger/unittests in the form of a html file
+3. Not sucessful: Abort => developers are notified via discord (seperate channel on the dev-team-server
+
+
+#### Path 3 – Failure or abort during live testing
+1. The MCM development team commits new changes to the dev_nmcm branche.
+2. Jenkins starts a automatic build and executes the unit tests. An automatic test report is created and stored on the branche in the folder MC_Messenger/unittests in the form of a html file
+3. If sucessful: The new commits are transfered to the test_nmcm (rel_nmcm) branch.
+4. he webpage is deployed to the livetest server (hosted on a Raspberry Pi)
+5. The developer executes live- and stresstests and sets a version tag (major, minor, patch)
+6. Release abort is triggered due to failure or wish to abort. => developers are notified via discord (seperate channel on the dev-team-server
+
+The code for jenkins can be found in the main folders of the two deployment branches and are different for each branche.
+
+(https://github.com/Scherrik/se_mcm/blob/dev_nmcm/Jenkinsfile)
+
+(https://github.com/Scherrik/se_mcm/blob/rel_nmcm/Jenkinsfile)
+
 
 ## Supporting Information
 For any further information you can contact the MC-Messenger Team or check our [Blog](https://semcmessenger.wordpress.com). 
