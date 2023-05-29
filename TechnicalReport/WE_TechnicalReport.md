@@ -2,7 +2,7 @@
 
 ## Table of contents
 - [Table of contents](#table-of-contents)
-- [Introduction](#introduction)
+- [Basic Information](#basic-information)
     - [Definitions, Acronyms and Abbreviations](#definitions-acronyms-and-abbreviations)
     - [References](#references)
 - [Project name and team members](#project-name-and-team-members)
@@ -11,9 +11,11 @@
     - [Tech stack](#tech-stack)
 - [Major contributions](#major-contributions)
 
+- [Supporting Information](#supporting-information)
 
 
-## Introduction
+
+## Basic Information
 ### Definitions, Acronyms and Abbreviations
 | Abbrevation | Explanation                     |
 | ----------- | --------------------------------|
