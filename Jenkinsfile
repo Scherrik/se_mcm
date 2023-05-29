@@ -15,7 +15,7 @@ pipeline {
             steps {
                 print "Merge dev_nmcm..."
                 
-                sshagent(['6157ed59-4107-44de-b01a-40f03d8d872d']) {
+                sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     sh 'git config pull.rebase false && git config merge.ours.driver true && git status'
                 }
             }
@@ -137,7 +137,7 @@ pipeline {
                 //Push to release branch and create a new version tag
                 print "Push tag to github repo and release new version ${newVersion}"
                 
-                sshagent(['6157ed59-4107-44de-b01a-40f03d8d872d']) {
+                sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     //echo "git push origin rel_nmcm"
                     sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\""
                     sh "git push origin rel_nmcm"
