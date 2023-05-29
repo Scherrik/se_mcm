@@ -133,16 +133,17 @@ pipeline {
                     vers[2] = vers[2].toInteger()+1;
                 }
                 
-                def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
-                pjson["version"] = newVersion
-                writeJSON file: 'Mc_Messenger/package.json', json: pjson
-                //Push to release branch and create a new version tag
-                print "Push tag to github repo and release new version ${newVersion}"
                 
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     //echo "git push origin rel_nmcm"
                     sh "git checkout rel_nmcm"
-                    sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\""
+                    
+                    def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
+                    pjson["version"] = newVersion
+                    writeJSON file: 'Mc_Messenger/package.json', json: pjson
+                    //Push to release branch and create a new version tag
+                    print "Push tag to github repo and release new version ${newVersion}"
+                    sh "git commit -am \"${versionUpdate} Version update from ${oldVersion} to ${newVersion}\""
                     sh "git push origin rel_nmcm"
                     //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
                     sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
@@ -154,7 +155,7 @@ pipeline {
         }
         cleanup {
             script {
-                sh "git clean -fdx"
+                //sh "git clean -fdx"
             }
         }
         
