@@ -171,7 +171,7 @@ pipeline {
                     //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
                     sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
                     sh "git push --tags"
-                    sh "git checkout dev_nmcm && git pull origin dev_nmcm && y | git checkout --patch rel_nmcm Mc_Messenger/package.json && git push origin dev_nmcm"
+                    sh "git checkout dev_nmcm && git pull origin dev_nmcm && y | git checkout --patch rel_nmcm Mc_Messenger/package.json && git push origin dev_nmcm || true"
                 }
             }
         }
