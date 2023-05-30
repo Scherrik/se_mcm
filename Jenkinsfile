@@ -137,11 +137,14 @@ pipeline {
                 def pjson = readJSON file: 'Mc_Messenger/package.json'
                 def oldVersion = pjson["version"];
                 def vers = '';
+                print oldVersion
                 if(oldVersion instanceof String) {
-                    vers = pjson["version"].tokenize('.');
+                    print ">> String"
+                    vers = oldVersion.tokenize('.');
                 }
                 else {
-                    vers = pjson["version"].toString().tokenize('.');
+                    print ">> ${oldVersion.getClass()}"
+                    vers = oldVersion.toString().tokenize('.');
                 }
                 if(versionUpdate == "MAJOR"){
                     vers[0] = vers[0].toInteger()+1;
@@ -162,6 +165,7 @@ pipeline {
                     writeJSON file: 'Mc_Messenger/package.json', json: pjson, pretty: 4;
                     
                     //Push to release branch and create a new version tag
+                    /*
                     print "Push tag to github repo and release new version ${newVersion}"
                     sh "git commit -am \"${versionUpdate} Version update from ${oldVersion} to ${newVersion}\" || true"
                     sh "git push origin rel_nmcm"
@@ -169,6 +173,7 @@ pipeline {
                     sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
                     sh "git push --tags"
                     sh "git checkout dev_nmcm && git checkout --patch rel_nmcm Mc_Messenger/package.json && git push origin dev_nmcm"
+                    */
                 }
             }
         }
