@@ -153,7 +153,7 @@ pipeline {
                     
                     def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
                     pjson["version"] = newVersion
-                    writeJSON file: 'Mc_Messenger/package.json', json: pjson;
+                    writeJSON file: 'Mc_Messenger/package.json', json: pjson, pretty: 4;
                     
                     //Push to release branch and create a new version tag
                     print "Push tag to github repo and release new version ${newVersion}"
