@@ -15,23 +15,7 @@ pipeline {
         stage ('Get latest from dev'){
             steps {
                 print "Merge dev_nmcm..."
-                
-                
-                //checkout scmGit(branches: [[name: '*/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'THEIRS', mergeTarget: '*/rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm']])
-                
                 checkout scmGit(branches: [[name: 'origin/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'default', mergeRemote: 'origin', mergeTarget: 'rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm', name: 'origin']])
-                /*
-                sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
-                    sh '''
-                        git config pull.rebase false && 
-                        git config merge.ours.driver true && 
-                        git checkout rel_nmcm && 
-                        git pull origin rel_nmcm && 
-                        git fetch origin dev_nmcm && 
-                        git merge dev_nmcm
-                    '''
-                }
-                */
             }
         }
         stage('Start npm livetest session'){
@@ -52,7 +36,7 @@ pipeline {
                         // capture the approval details in approvalMap. 
                         approvalMap = input id: 'test', 
                                         message: 'Hello', 
-                                        ok: 'Proceed?', 
+                                        ok: 'All tests pass and no other findings?', 
                                         parameters: [
                                             choice(
                                                 choices: 'yes\nno', 
@@ -90,6 +74,10 @@ pipeline {
                     if(pid){
                         sh "kill -9 ${pid} || echo Process not found"
                     }
+                    if(approvalMap.containsValue('no') || approvalMap['FailDescr'] != '--'){
+                        currentBuild.result = 'ABORTED';
+                        error('Some test(s) fail');
+                    }                   
                 }   
             }
         }
@@ -100,7 +88,7 @@ pipeline {
                         // capture the approval details in approvalMap. 
                          versionUpdate = input id: 'version', 
                                         message: 'Hello', 
-                                        ok: 'Version update?', 
+                                        ok: 'Release?', 
                                         parameters: [
                                             choice(
                                                 choices: 'NONE\nMAJOR\nMINOR\nPATCH', 
@@ -108,14 +96,13 @@ pipeline {
                                                 name: 'Version'
                                             )
                                         ]
-                         
                     }
                 }
                 script {
                     if(versionUpdate == "NONE"){
                         echo "No release for this build"
                         currentBuild.result = 'ABORTED'
-                        error('Stopping early…')
+                        error('No release build')
                     }
                 }
             }
@@ -124,10 +111,15 @@ pipeline {
     post {
         always {
             print "Send to discord"
-            //discordSend description: "Jenkins Pipeline Build\nTest result: " + currentBuild.currentResult, footer: "Last commit: " + env.GIT_COMMIT, link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "https://discord.com/api/webhooks/1101127810992578772/tJdKaSwMOIgfv07yWk6xdu9qR4yEFg2K48PNAW32kECnaZ_6oFSsz-DsJ_EHQoVD1j_s"
         }
         aborted {
             print ("ABORTED");
+            discordSend description: "Aborted through tester\n", 
+                        footer: "Last commit: " + env.GIT_COMMIT, 
+                        link: env.BUILD_URL, 
+                        result: currentBuild.currentResult, 
+                        title: "Jenkins MCM Pipeline Release Build", 
+                        webhookURL: "https://discord.com/api/webhooks/1101127810992578772/tJdKaSwMOIgfv07yWk6xdu9qR4yEFg2K48PNAW32kECnaZ_6oFSsz-DsJ_EHQoVD1j_s"
         }
         success {
             print ("SUCCESS");
@@ -176,6 +168,14 @@ pipeline {
                     sh "git push --tags"
                     sh "git checkout dev_nmcm && git pull origin dev_nmcm && yes | git checkout --patch rel_nmcm Mc_Messenger/package.json && git push origin dev_nmcm || true"
                 }
+                
+                
+                discordSend description: "New ${versionUpdate} update released\nVersion: ${newVersion}\nOld: ${oldVersion}", 
+                        footer: "Last commit: " + env.GIT_COMMIT, 
+                        link: env.BUILD_URL, 
+                        result: currentBuild.currentResult, 
+                        title: "Jenkins MCM Pipeline Release Build", 
+                        webhookURL: "https://discord.com/api/webhooks/1101127810992578772/tJdKaSwMOIgfv07yWk6xdu9qR4yEFg2K48PNAW32kECnaZ_6oFSsz-DsJ_EHQoVD1j_s"
             }
         }
         /*
