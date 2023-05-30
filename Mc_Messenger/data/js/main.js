@@ -113,15 +113,6 @@ function init(){
 	initEventHandler();
 }
 
-function showmenu(){
-	document.getElementById("frame").classList.toggle("adjustframe");
-	document.getElementById("menu_line1").classList.toggle("l1");
-	document.getElementById("menu_line3").classList.toggle("l3");
-	document.getElementById("menu_line2").classList.toggle("l2");
-}
-function expand_menu(selector){
-	document.getElementById("menu").classList.toggle(selector + "_show");
-}
 
 function updateUserlistInUI(){
 	console.log("UPDATE UL IN FRONTEND");
@@ -187,24 +178,16 @@ function addMessageToChatBox(obj){
 	}
 	
 	let box = document.getElementById("chat_box");
-	
-	//TODO Create a message from HTML template
-	
-	let msg_block = document.createElement("div");
-	let msg_head = document.createElement("div");
-	let head_name = document.createElement("div");
-	let head_time = document.createElement("div");
-	let payload = document.createElement("div");
-	head_name.classList.add("msg_head_name");
-	head_name.style.color = obj["cl"];
-	head_name.innerText = obj["na"];
-	head_time.classList.add("msg_head_time");
-	head_time.innerHTML = (new Date()).toLocaleTimeString().fontsize("0.5em");
-	msg_block.classList.add("msg_block");
-	payload.innerText = obj["da"]["pl"].replace("\n", "<br>");
-	msg_block.appendChild(head_name);
-	msg_block.appendChild(head_time);
-	msg_block.appendChild(payload);	
-	box.appendChild(msg_block);
+	let template = document.getElementById("msg_template");
+	let clone = template.content.cloneNode(true);
+	let name = clone.querySelector(".msg_head_name");
+	let time = clone.querySelector(".msg_head_time");
+	let msg = clone.querySelector(".msg_body");
+
+	name.textContent = obj["na"];
+	name.style.color = obj["cl"];
+	time.textContent = (new Date()).toLocaleTimeString();
+	msg.textContent = obj["da"]["pl"].replace("\n", "<br>");
+	box.appendChild(clone);
 	box.scrollTop = box.scrollHeight;
 }
