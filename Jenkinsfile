@@ -136,7 +136,13 @@ pipeline {
                 echo "This build gets a ${versionUpdate} update"
                 def pjson = readJSON file: 'Mc_Messenger/package.json'
                 def oldVersion = pjson["version"];
-                def vers = pjson["version"].tokenize('.');
+                def vers = '';
+                if(oldVersion instanceof String) {
+                    vers = pjson["version"].tokenize('.');
+                }
+                else {
+                    vers = pjson["version"].toString().tokenize('.');
+                }
                 if(versionUpdate == "MAJOR"){
                     vers[0] = vers[0].toInteger()+1;
                 } else if(versionUpdate == "MINOR"){
