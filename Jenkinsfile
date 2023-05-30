@@ -148,8 +148,11 @@ pipeline {
                 }
                 if(versionUpdate == "MAJOR"){
                     vers[0] = vers[0].toInteger()+1;
+                    vers[1] = 0;
+                    vers[2] = 0;
                 } else if(versionUpdate == "MINOR"){
                     vers[1] = vers[1].toInteger()+1;
+                    vers[2] = 0;
                 } else if(versionUpdate == "PATCH"){
                     vers[2] = vers[2].toInteger()+1;
                 }
@@ -171,7 +174,7 @@ pipeline {
                     //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
                     sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
                     sh "git push --tags"
-                    sh "git checkout dev_nmcm && git pull origin dev_nmcm && y | git checkout --patch rel_nmcm Mc_Messenger/package.json && git push origin dev_nmcm || true"
+                    sh "git checkout dev_nmcm && git pull origin dev_nmcm && yes | git checkout --patch rel_nmcm Mc_Messenger/package.json && git push origin dev_nmcm || true"
                 }
             }
         }
