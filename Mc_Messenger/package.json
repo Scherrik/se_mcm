@@ -14,7 +14,7 @@
     },
     "type": "module",
     "name": "nmcm",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "main": "wsserver.js",
     "scripts":     {
         "test": "jest --verbose",
