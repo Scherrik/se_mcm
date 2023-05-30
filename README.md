@@ -13,6 +13,9 @@ https://github.com/Scherrik/se_mcm/blob/rel_nmcm/Jenkinsfile
 
 
 ## Technical Report: https://github.com/Scherrik/se_mcm/blob/we_nmcm/TechnicalReport/WE_TechnicalReport.md
+
+## Deployed application: https://mcm.servebeer.com/live/
+
 ## Others
 ### Blog: https://semcmessenger.wordpress.com/  
 ### Scrum Board: https://se-mcm.atlassian.net/jira/software/projects/SM/boards/1  
