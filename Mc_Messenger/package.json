@@ -14,27 +14,7 @@
     },
     "type": "module",
     "name": "nmcm",
-    "version":     {
-        "valueCount": 3,
-        "strings":         [
-            "",
-            ".",
-            ".",
-            ""
-        ],
-        "bytes":         [
-            49,
-            46,
-            48,
-            46,
-            50
-        ],
-        "values":         [
-            "1",
-            "0",
-            2
-        ]
-    },
+    "version": "1.0.2",
     "main": "wsserver.js",
     "scripts":     {
         "test": "jest --verbose",

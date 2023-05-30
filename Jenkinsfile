@@ -161,7 +161,7 @@ pipeline {
                     sh "git checkout rel_nmcm && git pull origin rel_nmcm"
                     
                     def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
-                    pjson["version"] = newVersion
+                    pjson["version"] = newVersion.toString();
                     writeJSON file: 'Mc_Messenger/package.json', json: pjson, pretty: 4;
                     
                     //Push to release branch and create a new version tag
