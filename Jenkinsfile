@@ -19,7 +19,7 @@ pipeline {
                 
                 //checkout scmGit(branches: [[name: '*/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'THEIRS', mergeTarget: '*/rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm']])
                 
-                checkout scmGit(branches: [[name: 'origin/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'RECURSIVE_THEIRS', mergeRemote='', mergeTarget: 'origin/rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm']])
+                checkout scmGit(branches: [[name: 'origin/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'RECURSIVE_THEIRS', mergeRemote: '', mergeTarget: 'origin/rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm']])
                 /*
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     sh '''
