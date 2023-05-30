@@ -66,6 +66,15 @@ function initEventHandler(){
 		userdb.removeUser(e.detail.cid);
 		removeUserFromUI(e.detail.cid);
 	});
+	document.addEventListener("mh_interactionsent", function(e){
+		console.log("INTERACTION SENT TRIGGERED");
+		console.log(e.detail);
+	});
+	document.addEventListener("mh_interactionrecv", function(e){
+		console.log("INTERACTION RECEIVED TRIGGERED");
+		console.log(e.detail);
+		interactionHandler(e.detail.msg);
+	});
 	
 	// UI Element Event Listeners
 	document.querySelector("#msgbtn_send").addEventListener("click", function(e) {
@@ -80,6 +89,17 @@ function initEventHandler(){
 		userdb.me.fl |= IS_ANGRY;
 		msghandler.sendMessage(val);
 		userdb.me.fl &= ~IS_ANGRY;
+	});
+
+	document.querySelector("#add_poll_option").addEventListener("click", function (e){
+		console.log("Poll option added to UI")
+		addPollOption();
+	});
+
+	document.querySelector("#send_poll").addEventListener("click", function (e){
+		let val = document.querySelector("#poll_question_field").value;
+		console.log("POLL SENT TRIGGERED")
+		msghandler.sendPoll(val);
 	});
 	
 	document.querySelector("#msg_input").addEventListener("keydown", function(event){
@@ -176,18 +196,33 @@ function addMessageToChatBox(obj){
 		obj["na"] = userdb.others.get(sid).na;
 		obj["cl"] = userdb.others.get(sid).cl;
 	}
-	
-	let box = document.getElementById("chat_box");
-	let template = document.getElementById("msg_template");
-	let clone = template.content.cloneNode(true);
-	let name = clone.querySelector(".msg_head_name");
-	let time = clone.querySelector(".msg_head_time");
-	let msg = clone.querySelector(".msg_body");
+	if(obj["typ"] === 128){
+		var clone = document.getElementById("msg_template").content.cloneNode(true);
+		let msg = clone.querySelector(".msg_body");
+		msg.textContent = obj["da"]["pl"].replace("\n", "<br>");
 
+	}else if(obj["typ"] === 132){
+		var clone = document.getElementById("cookie_template").content.cloneNode(true);
+		clone.querySelector(".msg_body").setAttribute("id", new Date().toISOString());
+	}else if(obj["typ"] === 130){
+		var clone = addPollToChatBox(obj);
+		var pollList = document.querySelector(".poll_list");
+	}
+
+	let name = clone.querySelector(".msg_head_name");
 	name.textContent = obj["na"];
 	name.style.color = obj["cl"];
+
+	let time = clone.querySelector(".msg_head_time");
 	time.textContent = (new Date()).toLocaleTimeString();
-	msg.textContent = obj["da"]["pl"].replace("\n", "<br>");
+
+	var clone2 = clone;
+	let box = document.getElementById("chat_box");
 	box.appendChild(clone);
 	box.scrollTop = box.scrollHeight;
+
+	if(obj["typ"] === 130){
+		console.log("tried my best");
+		pollList.appendChild(clone2);
+	}
 }

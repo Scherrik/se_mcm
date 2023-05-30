@@ -192,3 +192,48 @@ button{
 	90% { transform: translate(1px, 2px) rotate(0deg); }
 	100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+.cookie{
+	width: 4em;
+}
+.cookie_counter{
+	font-size: 3em;
+	vertical-align: bottom;
+}
+.poll_body{
+	background: var(--msg_input);
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	width: max-content;
+	padding: 0.3em;
+	box-shadow: 0px 0px 2px var(--box_shadow);
+	border-radius: 2px;
+}
+.poll_msg{
+	text-align: center;
+}
+.poll_option_container{
+	max-height: 13em;
+	overflow-y: scroll;
+	overflow-y: hidden;
+	white-space: normal;
+}
+.poll_res_container{
+	display: flex;
+	padding-top: 0.3em;
+}
+.poll_res_option{
+	background: var(--background);
+	border: 2px solid var(--msg_box);
+	padding: 0.2em;
+	margin: 0.1em;
+}
+.poll_input{
+	height: 2em !important;
+}
+.poll_create{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	overflow: hidden;
+	white-space: nowrap;
+}

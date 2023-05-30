@@ -15,6 +15,7 @@ function angrymode(){
     document.getElementById("msg_input_frame").classList.toggle("angrymode");
     document.getElementById("lines").classList.toggle("angrymode");
     document.getElementById("frame").classList.toggle("angryshake");
+    document.get
 }
 
 function check_usrname(){
@@ -112,4 +113,38 @@ function change_color_theme(theme){
             change_color_theme(color_theme.value)
             break;
     }
+}
+
+function interactionHandler(msg){
+    let id = msg["da"]["pl"];
+    let element = document.getElementById(id);
+    let number_element = element.querySelector(".counter");
+    number_element.textContent = +(number_element.textContent) + +1;
+}
+
+function addPollToChatBox(poll = {}){
+    let clone = document.getElementById("poll_template").content.cloneNode(true);
+    let msg = clone.querySelector(".msg_body");
+    msg.textContent = poll["da"]["qu"];
+    var poll_list = document.querySelector(".poll_list");
+    var poll_container = clone.querySelector(".poll_res_container");
+    var poll_option_tmp = clone.getElementById("poll_res_option");
+    Object.entries(poll["da"]["an"]).forEach((entry) => {
+        let [key, value] = entry;
+        let poll_option = poll_option_tmp.cloneNode(true);
+        let poll_res_id = poll["da"]["id"] + key;
+        if(value != ""){
+            poll_option.querySelector(".poll_ans").textContent = value + " : ";
+            poll_option.setAttribute("id",poll_res_id);
+            poll_container.appendChild(poll_option);
+        }
+    });
+    poll_container.removeChild(poll_option_tmp);
+    return clone;
+}
+
+function addPollOption(){
+    let poll_option_container = document.querySelector(".poll_option_container");
+    let poll_option_field = document.querySelector("#poll_option_template").content.cloneNode(true);
+    poll_option_container.appendChild(poll_option_field);
 }

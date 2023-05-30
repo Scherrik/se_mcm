@@ -27,6 +27,35 @@
 				<div class="msg_body">{{msg}}</div>
 			</div>
 		</template>
+		<template id="cookie_template">
+			<div class="msg_block">
+				<div class="msg_head">
+					<div class="msg_head_name">{{name}}</div>
+					<div class="msg_head_time">{{time}}</div>
+				</div>
+				<div class="msg_body" onclick="msghandler.sendInteraction(this.id)">
+					<img src="img/cookie.webp" class="cookie">
+					<label class="cookie_counter counter">0</label>
+				</div>
+			</div>
+		</template>
+		<template id="poll_template">
+			<div class="msg_block">
+				<div class="msg_head">
+					<div class="msg_head_name">{{name}}</div>
+					<div class="msg_head_time">{{time}}</div>
+				</div>
+				<div class="poll_body">
+					<div class="poll_msg msg_body">{{msg}}</div>
+					<div class="poll_res_container" id="poll_res_container">
+						<div class="poll_res_option counter" id="poll_res_option" onclick="msghandler.sendInteraction(this.id)">
+							<label class="poll_ans"></label>
+							<label class="counter">0</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
 		<template id="ulentry_template">
 			<div>
 				<!-- TODO -->
@@ -72,7 +101,26 @@
 			<div class="menu" id="menu">
 				<div class="menu_votes menu_entry" id="menu_votes" onclick="expand_menu(id)">
 					<button class="menu_button" onclick="expand_menu(id)">Votes</button></div>
-				<div class="menu_votes_content menu_entry">Content of Votes</div>
+				<div class="menu_votes_content menu_entry">
+					<div class="poll_create">
+						<label>Create Vote</label>
+						<input type="text" placeholder="Vote name" id="poll_question_field" class="login_input poll_input">
+						<br>
+						<label>Answer options</label>
+						<div class="poll_option_container">
+							<template id="poll_option_template">
+								<input type="text" name="poll_option" class="login_input poll_input" placeholder="Option">
+							</template>
+							<input type="text" name="poll_option" class="login_input poll_input" placeholder="Option">
+							<input type="text" name="poll_option" class="login_input poll_input" placeholder="Option">
+						</div>
+						<div id="add_poll_option" class="login_input start_chatting poll_input">Add option</div>
+						<div id="send_poll" class="login_input start_chatting poll_input">Send poll</div>
+					</div>
+					<div class="poll_list">
+
+					</div>
+				</div>
 
 				<div class="menu_leader menu_entry" id="menu_leader" onclick="expand_menu(id)">
 					<button class="menu_button" onclick="expand_menu(id)">Leader</button></div>
