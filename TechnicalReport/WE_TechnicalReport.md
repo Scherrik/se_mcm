@@ -81,11 +81,22 @@ Our Websites provides an Easy, fast and reliable Messaging-Service that everyone
 
 
 ## Overall Structure
-(i.e., navigation/routing structure)
-### Erik S
+MCM is a single-page application designed with the goal of providing users immediate access to all the essential features without having to navigate to different webpages.
+At the core of MCM lies the chat interface, centrally positioned on the page. Here, users can effortlessly engage in real-time conversations, viewing incoming and outgoing messages. The messages are elegantly displayed in an organized manner, complete with timestamps to ensure seamless conversation tracking.
+On the left-hand side of the chat interface, users will find the user list, offering a comprehensive view of currently active users who are online.
+To the right-hand side, we have implemented a menu that can be expanded to reveal various other functions, such as the 'Votes' tab. In this section, users have the ability to create polls that allow other participants to express their opinions.
+Additionally, the settings menu is conveniently nested within this expanded menu. Once accessed, users can modify their personal details including name, color preferences, and even the overall color theme of the entire website.
 
 ## Abstract layout of the Webpage
-### Erik S
+The main screen of our application employs a grid layout, optimizing the available space for the chat interface. In order to prioritize the chat experience, we made a deliberate choice to forgo a traditional header.
+The layout consists of three distinct sections. Positioned on the left-hand side is the user list, providing an overview of active participants. The middle section is dedicated to the chat interface, where conversations unfold in real-time.
+The menu, located on the right-hand side, can be expanded or hidden based on user preference. When expanded, it occupies the available space without obstructing the chat interface. However, when hidden, the chat interface dynamically adapts to utilize the extra space.
+
+To ensure consistency and efficiency, we adopted a modular approach for styling and layout elements such as buttons and inputs. By limiting the number of different button styles and utilizing a handful of colors, we enable easy creation of new color themes to suit user preferences.
+As the chat interface becomes populated with messages, an automatic scroll-down feature is implemented to keep the latest content in view. Meanwhile, other surrounding elements remain fixed in their respective positions.
+
+To enhance responsiveness across devices, we have implemented a responsive design strategy. On smartphones, the user list seamlessly transitions into the menu, allowing users to focus solely on chat messages and the input field for sending messages.
+By employing this well-considered layout, our application provides users with an immersive and streamlined chat experience. The grid layout, combined with the dynamic adjustment of elements, ensures optimal space utilization while maintaining ease of use and visual appeal.
 
 ## Key functions implemented by your backend program
 In order to accommodate the limited resources on the microcontroller, we have made the decision to offload a significant portion of the backend logic to the client side. This entails that all tasks related to the user database are performed by the clients themselves. They are responsible for tasks such as database synchronization between clients, as well as adding and removing clients. Consequently, the clients also assume the responsibility of storing the database.
