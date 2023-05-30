@@ -9,6 +9,7 @@ pipeline {
     }
     options {
         disableConcurrentBuilds abortPrevious: true
+        skipDefaultCheckout true
     }
     stages {
         stage ('Get latest from dev'){
@@ -16,10 +17,19 @@ pipeline {
                 print "Merge dev_nmcm..."
                 
                 
-                
+                checkout scmGit(branches: [[name: '*/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'OURS', mergeTarget: '*/rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm']])
+                /*
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
-                    sh 'git config pull.rebase false && git config merge.ours.driver true && git status'
+                    sh '''
+                        git config pull.rebase false && 
+                        git config merge.ours.driver true && 
+                        git checkout rel_nmcm && 
+                        git pull origin rel_nmcm && 
+                        git fetch origin dev_nmcm && 
+                        git merge dev_nmcm
+                    '''
                 }
+                */
             }
         }
         stage('Start npm livetest session'){
