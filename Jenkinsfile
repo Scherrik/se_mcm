@@ -148,6 +148,7 @@ pipeline {
                 
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     //echo "git push origin rel_nmcm"
+                    sh "git branch -a"
                     sh "git checkout rel_nmcm && git pull origin rel_nmcm"
                     
                     def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
