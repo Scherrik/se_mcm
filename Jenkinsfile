@@ -157,7 +157,7 @@ pipeline {
                     
                     //Push to release branch and create a new version tag
                     print "Push tag to github repo and release new version ${newVersion}"
-                    sh "git commit -am \"${versionUpdate} Version update from ${oldVersion} to ${newVersion}\""
+                    sh "git commit -am \"${versionUpdate} Version update from ${oldVersion} to ${newVersion}\" || true"
                     sh "git push origin rel_nmcm"
                     //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
                     sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
