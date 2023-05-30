@@ -9,6 +9,7 @@ pipeline {
     }
     options {
         disableConcurrentBuilds abortPrevious: true
+        skipDefaultCheckout true
     }
     stages {
         stage ('Get latest from dev'){
@@ -16,10 +17,21 @@ pipeline {
                 print "Merge dev_nmcm..."
                 
                 
+                //checkout scmGit(branches: [[name: '*/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'THEIRS', mergeTarget: '*/rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm']])
                 
+                checkout scmGit(branches: [[name: 'origin/dev_nmcm']], extensions: [[$class: 'PreBuildMerge', options: [mergeStrategy: 'default', mergeRemote: 'origin', mergeTarget: 'rel_nmcm']]], userRemoteConfigs: [[credentialsId: 'b7c501a2-76b7-4f1c-bff0-10b91f0e03be', url: 'git@github.com:Scherrik/se_mcm', name: 'origin']])
+                /*
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
-                    sh 'git config pull.rebase false && git config merge.ours.driver true && git status'
+                    sh '''
+                        git config pull.rebase false && 
+                        git config merge.ours.driver true && 
+                        git checkout rel_nmcm && 
+                        git pull origin rel_nmcm && 
+                        git fetch origin dev_nmcm && 
+                        git merge dev_nmcm
+                    '''
                 }
+                */
             }
         }
         stage('Start npm livetest session'){
@@ -133,16 +145,19 @@ pipeline {
                     vers[2] = vers[2].toInteger()+1;
                 }
                 
-                def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
-                pjson["version"] = newVersion
-                writeJSON file: 'Mc_Messenger/package.json', json: pjson
-                //Push to release branch and create a new version tag
-                print "Push tag to github repo and release new version ${newVersion}"
                 
                 sshagent(['b7c501a2-76b7-4f1c-bff0-10b91f0e03be']) {
                     //echo "git push origin rel_nmcm"
-                    sh "git checkout rel_nmcm"
-                    sh "git commit -am \"Version update from ${oldVersion} to ${newVersion}\""
+                    sh "git branch -a"
+                    sh "git checkout rel_nmcm && git pull origin rel_nmcm"
+                    
+                    def newVersion = "${vers[0]}.${vers[1]}.${vers[2]}"
+                    pjson["version"] = newVersion
+                    writeJSON file: 'Mc_Messenger/package.json', json: pjson;
+                    
+                    //Push to release branch and create a new version tag
+                    print "Push tag to github repo and release new version ${newVersion}"
+                    sh "git commit -am \"${versionUpdate} Version update from ${oldVersion} to ${newVersion}\""
                     sh "git push origin rel_nmcm"
                     //echo "git tag -a v${newVersion} -m \"New ${versionUpdate} update to ${newVersion}\""
                     sh "git tag -a v${newVersion} -m \"New ${versionUpdate} release ${newVersion}\""
@@ -152,11 +167,13 @@ pipeline {
             }
             
         }
+        /*
         cleanup {
             script {
                 sh "git clean -fdx"
             }
         }
+        */
         
     }
 }

@@ -19,8 +19,12 @@
 	</head>
 	<body onload="init()">
 		<template id="msg_template">
-			<div>
-				<!-- TODO -->
+			<div class="msg_block">
+				<div class="msg_head">
+					<div class="msg_head_name">{{name}}</div>
+					<div class="msg_head_time">{{time}}</div>
+				</div>
+				<div class="msg_body">{{msg}}</div>
 			</div>
 		</template>
 		<template id="ulentry_template">
