@@ -1,9 +1,11 @@
 # MCM Technical Review Meeting - 25.05.2023
+
 ## Date and Time
 ### 25.05.2023
 
 ### 15.30 Uhr - 16.30 Uhr
 
+---
 ## Participants 
 Marcel Fischer - Notes
 
@@ -13,12 +15,13 @@ Tim Nau
 
 Erik Schneider
 
+---
 ## Goal/Focus of the review meeting
 
 - Code review of components of the main.js + message.js + ui.js files - To verify the quality of the most important functions to communicate between front and backend.
 - Addition of Content to the chat box
 
-
+---
 ## Components for Review
 ### main.js: 
 - addMessagetoChatBox()
@@ -27,6 +30,7 @@ Erik Schneider
 ### ui.js:
 -	checkUserName()
 
+---
 ## Criteria of review
 - code quality 
 - scalability
