@@ -2,25 +2,6 @@ var FLAG_TEST_LOCAL = false;
 const IS_ANGRY = 1;
 const IS_HUNGRY = 2;
 
-
-function bytesToString(bytes) {
-    var chars = [];
-    for(var i = 0, n = bytes.length; i < n;) {
-        chars.push(((bytes[i++] & 0xff) << 8) | (bytes[i++] & 0xff));
-    }
-    return String.fromCharCode.apply(null, chars);
-}
-
-// https://codereview.stackexchange.com/a/3589/75693
-function stringToBytes(str) {
-    var bytes = [];
-    for(var i = 0, n = str.length; i < n; i++) {
-        var char = str.charCodeAt(i);
-        bytes.push(char >>> 8, char & 0xFF);
-    }
-    return bytes;
-}
-
 function initUIElements(){
 	viewport_check();
 	overlay("login");

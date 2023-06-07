@@ -1,19 +1,26 @@
 (function(msghandler) {
 'use strict';
 
-function areWeTestingWithJest() {
-    return typeof jest !== 'undefined';
-}
 
 var salt;
+var udb;
+var helpster;
 if(typeof module !== 'undefined'){
+    // FOR JEST UNIT TESTING
     console.log("MODULE FOUND");
     salt = require("./nacl.js");
     salt.util = require("./nacl-util.js");
+    
+    helpster = require("./helper.js");
+    
+    // TEST DB 
+    udb = require("./user.js");
+    udb.init();
 } else {
     salt = nacl;
     salt.util = nacl.util;
-  
+    udb = userdb;
+    helpster = helper;
 }
 
 const BROADC_ADDR = 0xFFFF;
@@ -50,7 +57,7 @@ typeMap.set('interaction', 133);
 
 let eventMap = new Map();
 
-if(areWeTestingWithJest()){
+if(helpster.areWeTestingWithJest()){
     eventMap.set("mh_onconnect",    new Event("mh_onconnect", { detail: {} }));
     eventMap.set("mh_newuser",      new Event("mh_newuser", { detail: {} }));
     eventMap.set("mh_dbsync",       new Event("mh_dbsync", { detail: {} }));
@@ -72,18 +79,6 @@ if(areWeTestingWithJest()){
     eventMap.set("mh_messagesent", new CustomEvent("mh_messagesent", {detail: {} }));
 	eventMap.set("mh_interactionsent", new CustomEvent("mh_interactionsent", {detail: {} }));
 	eventMap.set("mh_interactionrecv", new CustomEvent("mh_interactionrecv", {detail: {} }));
-}
-function typeToString(id){
-	for (const [key, value] of typeMap) {
-		if(value == id) return key;
-	}
-	return "NO TYPE FOUND";
-	//return [...typeMap.values()].find(([key,val]) => id == value)[0];
-}
-
-// Helper function to determine if a string is empty
-function isEmpty(str){
-	return (!str || str.trim().length === 0);
 }
 
 // Using an async function to handle incoming messages
@@ -171,26 +166,26 @@ function createPayload(type, msgObj = {}){
 		// "message consists of: "pl" = payload, "fl" = flags (angry, ...)
 		case "message":
 			result["pl"] = msgObj;
-			result["fl"] = userdb.me.fl;
+			result["fl"] = udb.me.fl;
 		break;
 		// "meta-info" consists of: "na" = name, "cl" = color
 		case "metaInfo":
-			result["na"] = userdb.me.na;
-			result["cl"] = userdb.me.cl;
+			result["na"] = udb.me.na;
+			result["cl"] = udb.me.cl;
 		break;
 		// "server-poll" consists of: TODO >> NOT IMPLEMENTED YET
 		case "serverPoll":
 			// Not implemented yet
-			result = ""; 
+			result = {}; 
 		break;
 		// "db-sync" consists of: "db" = the user database, see userdb.toObject()
 		case "dbSync":
-			result["db"] = userdb.toObject(); 
+			result["db"] = udb.toObject(); 
 		break;
 		case "clientHello":
 		case "hostHello":
 			// "hello-world" consists of: "pk" = public key of the client
-			result["pk"] = bytesToString(userdb.me.keys.publicKey); 
+			result["pk"] = helpster.bytesToString(udb.me.keys.publicKey);
 		break;
 		case "poll":
 			// "poll" consists of: "qu" = question, "an" = the possible answers as an array ( SEE "server-poll" >> NOT IMPLEMENTED YET )
@@ -209,6 +204,9 @@ function createPayload(type, msgObj = {}){
 	}
 	return result;
 }
+
+// "{\"sid\": 0,\"rid\": [0, 23, 45], \"typ\": 0, \"da\": }"
+// "{ \"typ\":1,\"yid\":1234,\"dbs\":0}"
 	
 msghandler.processIncomingMessage = function(json_str){
 	// The incoming message will be interpreted as a JSON obj
@@ -223,7 +221,7 @@ msghandler.processIncomingMessage = function(json_str){
 	console.log("RECEIVED " + type + " Message");
 	
 	// If it's our client which sent the message, we can ignore the message if it's of specific type
-	if(json_obj["sid"] == userdb.me.id && (type == "clientHello" || type == "metaInfo"	))
+	if(json_obj["sid"] == udb.me.id && (type == "clientHello" || type == "metaInfo"	))
 		return;
 	
 	switch (type) {
@@ -249,12 +247,12 @@ msghandler.processIncomingMessage = function(json_str){
 			break;
 		case "clientHello":
 			// If the client is the sender of a hello-world message, it can ignore it
-			if(json_obj["sid"] == userdb.me.id) return;
+			if(json_obj["sid"] == udb.me.id) return;
 			
 			// Send new user 
 			e = eventMap.get("mh_newuser");
 			e.detail.id = json_obj["sid"];
-			e.detail.pk = stringToBytes(json_obj["da"]["pk"]);
+			e.detail.pk = helpster.stringToBytes(json_obj["da"]["pk"]);
 			document.dispatchEvent(e);
 			
 			// If the client is the host of the session, 
@@ -358,6 +356,7 @@ msghandler.processIncomingMessage = function(json_str){
 			console.log("DEFAULT NOTHING TODO...");
 			break;
 	}
+	
 }
 
 function encryptPayload(secretKey, rcvrPubKey, msg){

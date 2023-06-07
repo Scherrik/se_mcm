@@ -1,5 +1,19 @@
 (function(userdb) {
 'use strict';
+
+var salt;
+var helpster;
+if(typeof module !== 'undefined'){
+    // FOR JEST UNIT TESTING
+    console.log("MODULE FOUND");
+    salt = require("./nacl.js");
+    salt.util = require("./nacl-util.js");
+    helpster = require("./helper.js");
+} else {
+    salt = nacl;
+    salt.util = nacl.util;
+    helpster = helper;
+}
 /*
 class User {
 	constructor(id=-1, name="Default", color="black", pkey="") {
@@ -44,7 +58,7 @@ class UserDB {
 			id: -1, 
 			na: "Default", 
 			cl: "white", /* depends on chosen theme, but we start by default with dark one */
-			keys: nacl.box.keyPair(),
+			keys: salt.box.keyPair(),
 			fl: 0
 		}
 		userdb.others = new Map();
@@ -64,13 +78,13 @@ class UserDB {
 		out[userdb.me.id] = { 
 			na: userdb.me.na,
 			cl: userdb.me.cl,
-			pk: bytesToString(userdb.me.keys.publicKey)
+			pk: helpster.bytesToString(userdb.me.keys.publicKey)
 		};
 		this.others.forEach((values, keys) => {
 			out[keys] = {
 				na: values.na,
 				cl: values.cl,
-				pk: bytesToString(values.pk)
+				pk: helpster.bytesToString(values.pk)
 			};
 		})
 		return out;
@@ -95,7 +109,7 @@ class UserDB {
 		console.log(obj);
 		for( let key in obj ){
 			if(obj.hasOwnProperty(key)){
-				obj[key]["pk"] = stringToBytes(obj[key]["pk"]);
+				obj[key]["pk"] = helpster.stringToBytes(obj[key]["pk"]);
 				userdb.others.set(Number(key), obj[key]);
 			}
 		}
