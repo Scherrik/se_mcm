@@ -121,7 +121,7 @@ wss.on('connection', function connection(ws) {
 				newHost.send("{\"sid\": 0, \"rid\": [" + tokenId + "], \"typ\": 5 }", {binary:true});
 			}
 			wss.clients.forEach(function(client) {
-				client.send("{\"sid\": 0, \"rid\": [" + BROADC_ADDR + "], \"typ\": 16, \"cid\":" + ws.id + " }", {binary:true});
+				client.send("{\"sid\": 0, \"rid\": [" + BROADC_ADDR + "], \"typ\": 4, \"cid\":" + ws.id + " }", {binary:true});
 			});
 		}
 	});
