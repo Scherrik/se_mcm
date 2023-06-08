@@ -51,8 +51,18 @@ class UserDB {
 		}
 	}
 	*/
-	let dbHostToken = false;
 	
+    userdb.createGroup = function(id, name){
+        let keyPairs = salt.box.keyPair();
+        userdb.updateUser(id, {
+            na: name,
+            pk: keyPairs.publicKey,
+            sk: keyPairs.secretKey
+        })
+        console.debug(keyPairs);
+        console.debug(userdb.others);
+    }
+
 	userdb.init = function(){
 		userdb.me = { 
 			id: -1, 
@@ -69,7 +79,15 @@ class UserDB {
 	}
 	
 	userdb.getIdByName = function(name){
-		return [...userdb.others.values()].find(([key,val]) => name == value)[0];
+        let result = -1;
+		userdb.others.forEach((values, keys) => {
+			if(values.na === name){
+                console.debug("FOUND " + name + " with id " + keys);
+                result = keys;
+            }
+		})
+        return result;
+		//return [...userdb.others.values()].find(([key,val]) => name == value)[0];
 	}
 	
 	userdb.toObject = function(){
@@ -78,14 +96,18 @@ class UserDB {
 		out[userdb.me.id] = { 
 			na: userdb.me.na,
 			cl: userdb.me.cl,
-			pk: helpster.bytesToString(userdb.me.keys.publicKey)
+			pk: [...userdb.me.keys.publicKey]
 		};
-		this.others.forEach((values, keys) => {
+		userdb.others.forEach((values, keys) => {
 			out[keys] = {
 				na: values.na,
 				cl: values.cl,
-				pk: helpster.bytesToString(values.pk)
+				pk: [...values.pk],
 			};
+            // For the pseudo users, dont do this for userdb.me object!
+            if(values.sk){
+                out[keys].sk = [...values.sk];
+            }
 		})
 		return out;
 	}
@@ -99,30 +121,30 @@ class UserDB {
 	}
 	
 	userdb.updateUser = function(uid, obj){
-		userdb.others.set(uid, obj);
+		userdb.others.set(uid, {...userdb.others.get(uid), ...obj});
 	}
 	
 	// Update whole database
 	userdb.update = function(obj){
 		userdb.others.clear();
-		console.log("DB UPDATE");
-		console.log(obj);
+		console.info("DB UPDATE");
+		console.info(obj);
 		for( let key in obj ){
 			if(obj.hasOwnProperty(key)){
-				obj[key]["pk"] = helpster.stringToBytes(obj[key]["pk"]);
+                console.debug("ID: " + key);
+                if(key == userdb.me.id) continue;
+                
+                console.debug(Uint8Array.from(obj[key]["pk"]));
+				obj[key]["pk"] = Uint8Array.from(obj[key]["pk"]);
+                if(obj[key]["sk"]){
+                    obj[key]["sk"] = Uint8Array.from(obj[key]["sk"]);    
+                }
 				userdb.others.set(Number(key), obj[key]);
 			}
 		}
 		
-		updateUserlist();
-	}
-	
-	userdb.hostToken = function() {
-		return dbHostToken;
-	}
-	
-	userdb.setHostToken = function(b){
-		dbHostToken = b;
+		// Has to be replaced by event, no direct access to UI and vice versa should be the way to go
+		updateUserlistInUI();
 	}
 })(typeof module !== 'undefined' && module.exports ? module.exports : (self.userdb = self.userdb || {}));
 /*
