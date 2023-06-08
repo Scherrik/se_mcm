@@ -2,25 +2,6 @@ var FLAG_TEST_LOCAL = false;
 const IS_ANGRY = 1;
 const IS_HUNGRY = 2;
 
-
-function bytesToString(bytes) {
-    var chars = [];
-    for(var i = 0, n = bytes.length; i < n;) {
-        chars.push(((bytes[i++] & 0xff) << 8) | (bytes[i++] & 0xff));
-    }
-    return String.fromCharCode.apply(null, chars);
-}
-
-// https://codereview.stackexchange.com/a/3589/75693
-function stringToBytes(str) {
-    var bytes = [];
-    for(var i = 0, n = str.length; i < n; i++) {
-        var char = str.charCodeAt(i);
-        bytes.push(char >>> 8, char & 0xFF);
-    }
-    return bytes;
-}
-
 function initUIElements(){
 	viewport_check();
 	overlay("login");
@@ -29,76 +10,87 @@ function initUIElements(){
 function initEventHandler(){
 	//TODO
 	document.addEventListener("mh_onconnect", function(e){
-		console.log("ON CONNECT");
+		console.info("ON CONNECT");
 	});
 	document.addEventListener("mh_newuser", function(e){
-		console.log("USER ADD TRIGGERED");
+		console.info("USER ADD TRIGGERED");
 		if(userdb.me.id == e.detail.id) return;
 		userdb.updateUser(e.detail.id, { na: "Guest", cl: "white", pk: e.detail.pk });
 		addUserToUI(e.detail.id, userdb.others.get(e.detail.id));
 	});
 	document.addEventListener("mh_dbsync", function(e){
-		console.log("DB SYNC TRIGGERED");
+		console.info("DB SYNC TRIGGERED");
 		userdb.update(e.detail.db);
-		userdb.setHostToken(e.detail.dbTok);
+		//userdb.setHostToken(e.detail.dbTok);
 		updateUserlistInUI();
 	});
 	document.addEventListener("mh_messagerecv", function(e){
-		console.log("MESSAGE RECEIVED TRIGGERED");
-		console.log(e.detail);
+		console.info("MESSAGE RECEIVED TRIGGERED");
+		console.info(e.detail);
+        if(e.detail.msg.da.fl & IS_ANGRY){
+            angrymode();
+            setTimeout(function(){ angrymode(); }, 5000);
+        }
 		addMessageToChatBox(e.detail.msg);
 	});
 	document.addEventListener("mh_messagesent", function(e){
-		console.log("MESSAGE SENT TRIGGERED");
-		console.log(e.detail);
+		console.info("MESSAGE SENT TRIGGERED");
+		console.info(e.detail);
+        
+        if(FLAG_TEST_LOCAL){
+            e.detail.frame["na"] = udb.me.na;
+            e.detail.frame["cl"] = udb.me.cl;
+            //addMessageToChatBox(frame);
+        }
 	});
-	document.addEventListener("mh_metachange", function(e){
-		console.log("META CHANGE TRIGGERED");
+	document.addEventListener("mh_metarecv", function(e){
+		console.info("META CHANGE TRIGGERED");
 		userdb.updateUser(e.detail.id, e.detail.meta);
 		addUserToUI(e.detail.id, e.detail.meta);
 	});
 	document.addEventListener("mh_tokenchange", function(e){
-		console.log("TOKEN CHANGE TRIGGERED");
-		userdb.setHostToken(e.detail.dbTok);
+        if(e.detail.token) console.info("I'm new host");
+        else console.info("My token was stolen :(");
+		//userdb.setHostToken(e.detail.dbTok);
 	});
 	document.addEventListener("mh_cldisconnect", function(e){
-		console.log("OPPOSITE CLIENT DISCONNECTED");
+		console.info("OPPOSITE CLIENT " + e.detail.cid + " DISCONNECTED");
 		userdb.removeUser(e.detail.cid);
 		removeUserFromUI(e.detail.cid);
 	});
 	document.addEventListener("mh_interactionsent", function(e){
-		console.log("INTERACTION SENT TRIGGERED");
-		console.log(e.detail);
+		console.info("INTERACTION SENT TRIGGERED");
+		console.info(e.detail);
 	});
 	document.addEventListener("mh_interactionrecv", function(e){
-		console.log("INTERACTION RECEIVED TRIGGERED");
-		console.log(e.detail);
+		console.info("INTERACTION RECEIVED TRIGGERED");
+		console.info(e.detail);
 		interactionHandler(e.detail.msg);
 	});
 	
 	// UI Element Event Listeners
 	document.querySelector("#msgbtn_send").addEventListener("click", function(e) {
 		let val = document.querySelector("#msg_input").value;
-		console.log("BTN_SEND => " + val);
+		console.info("BTN_SEND => " + val);
 		msghandler.sendMessage(val);
 	});
 	
 	document.querySelector("#msgbtn_angry").addEventListener("click", function(e) {
 		let val = document.querySelector("#msg_input").value;
-		console.log("BTN_SEND => " + val);
+		console.info("BTN_SEND => " + val);
 		userdb.me.fl |= IS_ANGRY;
 		msghandler.sendMessage(val);
 		userdb.me.fl &= ~IS_ANGRY;
 	});
 
 	document.querySelector("#add_poll_option").addEventListener("click", function (e){
-		console.log("Poll option added to UI")
+		console.info("Poll option added to UI")
 		addPollOption();
 	});
 
 	document.querySelector("#send_poll").addEventListener("click", function (e){
 		let val = document.querySelector("#poll_question_field").value;
-		console.log("POLL SENT TRIGGERED")
+		console.info("POLL SENT TRIGGERED")
 		msghandler.sendPoll(val);
 	});
 	
@@ -121,7 +113,7 @@ function initEventHandler(){
 	
 	document.querySelector("#user_color").addEventListener("change", function(event){
 		userdb.me.cl = event.target.value;
-		console.log("Color updated: " + userdb.me.cl);
+		console.info("Color updated: " + userdb.me.cl);
 		msghandler.sendMetaChange();
 	});
 }
@@ -135,8 +127,8 @@ function init(){
 
 
 function updateUserlistInUI(){
-	console.log("UPDATE UL IN FRONTEND");
-	console.log(userdb.toString());
+	console.info("UPDATE UL IN FRONTEND");
+	console.info(userdb.toString());
 	
 	let userlist = document.getElementById("userlist");
 	userlist.innerHTML = "";
@@ -156,8 +148,8 @@ function addUserToUI(id, user){
 		entry.id = "ul"+id;
 	}
 	
-	console.log("USER ADD " + id);
-	console.log(user)
+	console.info("USER ADD " + id);
+	console.info(user)
 	
 	if(user["na"] == "Guest") {
 		entry.innerHTML = user["na"].fontcolor(user["cl"]) + "." + id;
@@ -175,6 +167,7 @@ function addUserToUI(id, user){
 		}else{
 			input.value = input_str.substring(input_str.substring(0,input_str.indexOf(" ")).length + 1);
 			input.value = "@" + name + " " + input.value;
+            // Or create a group?!
 		}
 	})
 	userlist.appendChild(entry);
@@ -185,7 +178,8 @@ function removeUserFromUI(uid){
 }
 
 function addMessageToChatBox(obj){
-	console.log(obj);
+	console.info("Add message to chatbox");
+	console.info(obj);
 	let sid = obj.sid;
 	if(sid === userdb.me.id) {
 		// It's a message from myself
@@ -222,7 +216,7 @@ function addMessageToChatBox(obj){
 	box.scrollTop = box.scrollHeight;
 
 	if(obj["typ"] === 130){
-		console.log("tried my best");
+		console.info("tried my best");
 		pollList.appendChild(clone2);
 	}
 }

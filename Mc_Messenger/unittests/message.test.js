@@ -1,7 +1,8 @@
 
-//const userDatabase = require("../data/js/user");
+//const userdb = require("../data/js/user");
 const nacl = require("../data/js/nacl");
 const msghandler = require("../data/js/message");
+//const main = require("../data/js/main");
 
 //function log(expected, result) { console.log(expected + " = " + result); }
 
@@ -25,16 +26,22 @@ test.each(table)("Encrypt and decrypt %s", (str, expected) => {
     //log(testString, resultDec);
     expect(resultDec).toBe(expected);
 });
-/*
-for(let i = 0; i < testStrings.length; i++){
-	test('EncryptDecrypt: ' + testStrings[i], () => {
-		let sender = nacl.box.keyPair();
-		let receiver = nacl.box.keyPair();	
-		let testString = testStrings[i];
-		let resultEnc = msghandle.encryptPayload(receiver.secretKey, sender.publicKey, testString);
-		let resultDec = msghandle.decryptPayload(sender.secretKey, receiver.publicKey, resultEnc);
-		log(testString, resultDec);
-		expect(resultDec).toBe(testString);
-	});
-}
-*/
+
+
+const payloadTypeTable = [
+    [ "message", { fl: 0, pl: {} } ],
+    [ "metaInfo", { na: "Default", cl: "white" } ],
+    [ "serverPoll", {} ],
+    [ "poll", {qu: undefined, an: undefined, id: undefined } ]
+];
+
+test.each(payloadTypeTable)("Create payload for %s", (str, expected) => {
+    const createPayload = msghandler.__get__('createPayload');
+    console.log(str);
+    let result = createPayload(str);
+    console.log(result);
+    
+    expect(result).toStrictEqual(expected);
+});
+
+

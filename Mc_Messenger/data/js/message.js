@@ -1,46 +1,41 @@
 (function(msghandler) {
 'use strict';
 
-function areWeTestingWithJest() {
-    return typeof jest !== 'undefined';
-}
 
 var salt;
+var udb;
+var helpster;
 if(typeof module !== 'undefined'){
+    // FOR JEST UNIT TESTING
     console.log("MODULE FOUND");
     salt = require("./nacl.js");
     salt.util = require("./nacl-util.js");
+    
+    helpster = require("./helper.js");
+    
+    // TEST DB 
+    udb = require("./user.js");
+    udb.init();
 } else {
     salt = nacl;
     salt.util = nacl.util;
-  
+    udb = userdb;
+    helpster = helper;
 }
 
 const BROADC_ADDR = 0xFFFF;
-//const db = new Map();
+
 var soc;
 
 const typeMap = new Map();
-/*
-typeMap.set('hello-client', 1);
-typeMap.set('hello-world', 2);
-typeMap.set('db-sync', 3);
-typeMap.set('server-poll', 4);
-typeMap.set('token-handover', 5);
-typeMap.set('byebye-client', 16);
-typeMap.set('message', 128);
-typeMap.set('meta-info', 129);
-typeMap.set('poll', 130);
-typeMap.set('file', 131);
-*/
 
 typeMap.set('serverHello', 1);
 typeMap.set('clientHello', 2);
 typeMap.set('hostHello', 3);
 typeMap.set('clientGoodbye', 4);
+typeMap.set('tokenHandover', 5);
 typeMap.set('dbSync', 8);
 typeMap.set('serverPoll', 9);
-typeMap.set('tokenHandover', 10);
 typeMap.set('message', 128);
 typeMap.set('metaInfo', 129);
 typeMap.set('poll', 130);
@@ -48,42 +43,27 @@ typeMap.set('file', 131);
 typeMap.set('cookie', 132);
 typeMap.set('interaction', 133);
 
-let eventMap = new Map();
 
-if(areWeTestingWithJest()){
-    eventMap.set("mh_onconnect",    new Event("mh_onconnect", { detail: {} }));
-    eventMap.set("mh_newuser",      new Event("mh_newuser", { detail: {} }));
-    eventMap.set("mh_dbsync",       new Event("mh_dbsync", { detail: {} }));
-    eventMap.set("mh_messagerecv",  new Event("mh_messagerecv", { detail: {} }));
-    eventMap.set("mh_metachange",   new Event("mh_metachange", { detail: {} }));
-    eventMap.set("mh_tokenchange",  new Event("mh_tokenChange", {detail: {} }));
-    eventMap.set("mh_cldisconnect", new Event("mh_cldisconnect", {detail: {} }));
-    eventMap.set("mh_messagesent",  new Event("mh_messagesent", {detail: {} }));
-	eventMap.set("mh_interactionsent", new Event("mh_interactionsent", {detail: {} }));
-	eventMap.set("mh_interactionrecv", new Event("mh_interactionrecv", {detail: {} }));
-} else {
-    eventMap.set("mh_onconnect", new CustomEvent("mh_onconnect", { detail: {} }));
-    eventMap.set("mh_newuser", new CustomEvent("mh_newuser", { detail: {} }));
-    eventMap.set("mh_dbsync", new CustomEvent("mh_dbsync", { detail: {} }));
-    eventMap.set("mh_messagerecv", new CustomEvent("mh_messagerecv", { detail: {} }));
-    eventMap.set("mh_metachange", new CustomEvent("mh_metachange", { detail: {} }));
-    eventMap.set("mh_tokenchange", new CustomEvent("mh_tokenChange", {detail: {} }));
-    eventMap.set("mh_cldisconnect", new CustomEvent("mh_cldisconnect", {detail: {} }));
-    eventMap.set("mh_messagesent", new CustomEvent("mh_messagesent", {detail: {} }));
-	eventMap.set("mh_interactionsent", new CustomEvent("mh_interactionsent", {detail: {} }));
-	eventMap.set("mh_interactionrecv", new CustomEvent("mh_interactionrecv", {detail: {} }));
-}
-function typeToString(id){
+function typeToString(msg_id){
 	for (const [key, value] of typeMap) {
-		if(value == id) return key;
+		if(value == msg_id) return key;
 	}
+	console.warn("Could not identify message");
 	return "NO TYPE FOUND";
 	//return [...typeMap.values()].find(([key,val]) => id == value)[0];
 }
 
-// Helper function to determine if a string is empty
-function isEmpty(str){
-	return (!str || str.trim().length === 0);
+let dbHostToken = false;
+
+function getToken() {
+    return dbHostToken;
+}
+
+function setToken(b){
+    dbHostToken = b;
+    let e = helpster.createEvent("mh_tokenchange");
+    e.detail.token = b;
+    document.dispatchEvent(e);
 }
 
 // Using an async function to handle incoming messages
@@ -155,7 +135,7 @@ function createFrame(type, receiver_list){
 	//   - the type of message 
 	//   - a data field with the payload
 	return {
-		"sid": userdb.me.id,
+		"sid": udb.me.id,
 		"rid": receiver_list,
 		"typ": typeMap.get(type),			//type 0 = server(not encrypted), type 2 = message(encrypted), type 3 = poll(encrypted)
 		"da": []
@@ -166,31 +146,31 @@ function createPayload(type, msgObj = {}){
 	// In dependency of the type of a message,
 	// different named fields will be used as the message payload
 	let result = {}
-	console.log("CREATE " + type + " PAYLOAD");
+	console.info("CREATE " + type + " PAYLOAD");
 	switch(type){
 		// "message consists of: "pl" = payload, "fl" = flags (angry, ...)
 		case "message":
 			result["pl"] = msgObj;
-			result["fl"] = userdb.me.fl;
+			result["fl"] = udb.me.fl;
 		break;
 		// "meta-info" consists of: "na" = name, "cl" = color
 		case "metaInfo":
-			result["na"] = userdb.me.na;
-			result["cl"] = userdb.me.cl;
+			result["na"] = udb.me.na;
+			result["cl"] = udb.me.cl;
 		break;
 		// "server-poll" consists of: TODO >> NOT IMPLEMENTED YET
 		case "serverPoll":
 			// Not implemented yet
-			result = ""; 
+			result = {}; 
 		break;
 		// "db-sync" consists of: "db" = the user database, see userdb.toObject()
 		case "dbSync":
-			result["db"] = userdb.toObject(); 
+			result["db"] = udb.toObject();
 		break;
 		case "clientHello":
 		case "hostHello":
 			// "hello-world" consists of: "pk" = public key of the client
-			result["pk"] = bytesToString(userdb.me.keys.publicKey); 
+			result["pk"] = [...udb.me.keys.publicKey];
 		break;
 		case "poll":
 			// "poll" consists of: "qu" = question, "an" = the possible answers as an array ( SEE "server-poll" >> NOT IMPLEMENTED YET )
@@ -209,61 +189,78 @@ function createPayload(type, msgObj = {}){
 	}
 	return result;
 }
-	
+
+// "{\"sid\": 0,\"rid\": [0, 23, 45], \"typ\": 0, \"da\": }"
+// "{ \"typ\":1,\"yid\":1234,\"dbs\":0}"
+
+let prev_sent_msg;
+
 msghandler.processIncomingMessage = function(json_str){
 	// The incoming message will be interpreted as a JSON obj
-	console.log(json_str);
+	console.debug(json_str);
 	let json_obj = JSON.parse(json_str);
 	let e; // Custom Event
 	if(!json_obj){
 		return;
 	}
-	// On success the client extracts the header and interprets the message depending on the type
-	let type = typeToString(json_obj["typ"]);
-	console.log("RECEIVED " + type + " Message");
 	
+	
+	let type = typeToString(json_obj["typ"]);
 	// If it's our client which sent the message, we can ignore the message if it's of specific type
-	if(json_obj["sid"] == userdb.me.id && (type == "clientHello" || type == "metaInfo"	))
-		return;
+	if(json_obj["sid"] == udb.me.id){
+        if(type == "message"){
+			e = helpster.createEvent("mh_messagerecv");
+			e.detail.msg = prev_sent_msg;
+            document.dispatchEvent(e);
+            return;
+        }
+        else if(type == "clientHello" || type == "metaInfo"	){
+            return;
+        }
+    }
+    
+	// On success the client extracts the header and interprets the message depending on the type
+	console.log("RECEIVED " + type + " Message");
 	
 	switch (type) {
 		//Server message on init, properties: "yid"=ClientID(yourID), "dbs"=User database size, "
 		case "serverHello":
-			userdb.me.id = json_obj["yid"];
-			e = eventMap.get("mh_onconnect");
+			udb.me.id = json_obj["yid"];
+			e = helpster.createEvent("mh_onconnect");
 			e.detail.id = json_obj["yid"];
 			let db_size = json_obj["dbs"];
 			let resp_obj = {}
 			if(db_size == 0){
 				// Nobody is online, so the client is the host of the session
 				//userdb.setHostToken(true);
-				console.log("I'm first host");
-				e.detail.dbToken = true;
+				//e.detail.dbToken = true;
+                setToken(true);
+                userdb.createGroup(BROADC_ADDR, "All");
 			} else {
 				// Send a broadcast message to say hello to all other clients
 				resp_obj = createFrame("clientHello", [BROADC_ADDR]);
 				resp_obj["da"] = createPayload("clientHello");
 				soc.send(JSON.stringify(resp_obj));
 			}
-			document.dispatchEvent(e);
+			//document.dispatchEvent(e);
 			break;
 		case "clientHello":
 			// If the client is the sender of a hello-world message, it can ignore it
-			if(json_obj["sid"] == userdb.me.id) return;
+			if(json_obj["sid"] == udb.me.id) return;
 			
 			// Send new user 
-			e = eventMap.get("mh_newuser");
+			e = helpster.createEvent("mh_newuser");
 			e.detail.id = json_obj["sid"];
-			e.detail.pk = stringToBytes(json_obj["da"]["pk"]);
-			document.dispatchEvent(e);
+			e.detail.pk = [...json_obj["da"]["pk"]];
+            document.dispatchEvent(e);
 			
 			// If the client is the host of the session, 
 			// it has to respond with a "hello_world" message 
 			// and after a small amount of time respond with a "db-sync" message 
 			// which contains the user database
-			if(userdb.hostToken()){
+			if(getToken()){
 				//Preparation of "hello world" and "db-sync" messages"
-				console.log("got token, send hello_world response and db");
+				console.info("got token, send hello_world response and db");
 				var obj = createFrame("hostHello", [json_obj["sid"]]);
 				obj["da"] = createPayload("hostHello");
 				soc.send(JSON.stringify(obj));
@@ -271,146 +268,145 @@ msghandler.processIncomingMessage = function(json_str){
 				obj["da"] = createPayload("dbSync");
 				var json = JSON.stringify(obj);
 				setTimeout(function(){ 
+                    console.log("Send database and remove token");
 					soc.send(json);
 					// After sending the "db-sync" message, the newly connected client becomes the host of the session, so remove the token
-					console.log("Removed db host token");
-					e = eventMap.get("mh_tokenchange");
-					e.detail.dbTok = false;
-					document.dispatchEvent(e);
+                    setToken(false);
 					console.log("done");
 				}, 250);
 			}
-			
-			//userdb.updateUser(, { na: "Default", cl: "black", pk: stringToBytes(json_obj["da"]["pk"])})
-			break;
+			return;
+        case "hostHello":
+            e = helpster.createEvent("mh_newuser");
+			e.detail.id = json_obj["sid"];
+			e.detail.pk = [...json_obj["da"]["pk"]];
+            break;
 		case "dbSync":
-			// when a new client connects to mcm, he gets this message
-			e = eventMap.get("mh_dbsync");
-			e.detail.dbTok = true;
+            setToken(true);
+			e = helpster.createEvent("mh_dbsync");
 			e.detail.db = json_obj["da"]["db"];
-			document.dispatchEvent(e);
-			console.log("Now I'm new db host provider");
 			break;
 		case "tokenHandover":
-			e = eventMap.get("mh_tokenchange");
-			e.detail.dbToken = true;
-			document.dispatchEvent(e);
-			// Needed if the old host was disconnected, send by server automatically
-			// userdb.dbHostToken = true;
+            setToken(true);
 			break;
 		case "clientGoodbye":
 			// Notification for all other clients about a disconnectiing client
-			e = eventMap.get("mh_cldisconnect");
+			e = helpster.createEvent("mh_cldisconnect");
 			e.detail.cid = json_obj["cid"];
-			document.dispatchEvent(e);
+			//document.dispatchEvent(e);
 			break;
 		//Chat message
 		case "message":
-			//decryptPayload(json_obj);
-			// Check if angry flag is set, and if so start angry mode for 5seconds
-			if(json_obj["da"]["fl"] & IS_ANGRY){
-				angrymode();
-				setTimeout(function(){ angrymode(); }, 5000);
-			}
-			// Add color and name to the json object before it will be added to the chat box
-			e = eventMap.get("mh_messagerecv");
+            //let bytes = helpster.stringToBytes(json_obj.da);
+            if(json_obj.rid[0] == BROADC_ADDR){
+                json_obj.da = JSON.parse(decryptPayload(udb.others.get(BROADC_ADDR).sk, udb.others.get(json_obj["sid"]).pk, json_obj.da));
+            } else {
+                json_obj.da = JSON.parse(decryptPayload(udb.me.keys.secretKey, udb.others.get(json_obj["sid"]).pk, json_obj.da));
+            }
+			e = helpster.createEvent("mh_messagerecv");
 			e.detail.msg = json_obj;
-			document.dispatchEvent(e);
-			
-			//addMessageToChatBox(json_obj);
 			break;
 		//Meta change
 		case "metaInfo":
 			// A name or color change was recognized and will be written to the user database
-			/*
-			userdb.updateUser(
-				json_obj.sid,
-				{
-				  na: json_obj["da"]["na"], 
-				  cl: json_obj["da"]["cl"]
-				}
-			)
-			*/ 
-			e = eventMap.get("mh_metachange");
+			e = helpster.createEvent("mh_metarecv");
 			e.detail.id = json_obj.sid;
 			e.detail.meta = json_obj["da"];
-			document.dispatchEvent(e);
 			break;
 		//Poll
 		case "poll":
-			e = eventMap.get("mh_messagerecv");
+			e = helpster.createEvent("mh_messagerecv");
 			e.detail.msg = json_obj;
-			document.dispatchEvent(e);
+			//document.dispatchEvent(e);
 			break;
 		//Cookie
 		case "cookie":
-			e = eventMap.get("mh_messagerecv");
+			e = helpster.createEvent("mh_messagerecv");
 			e.detail.msg = json_obj;
-			document.dispatchEvent(e);
+			//document.dispatchEvent(e);
 			break;
 		//Global Ineraction
 		case "interaction":
-			e = eventMap.get("mh_interactionrecv");
+			e = helpster.createEvent("mh_interactionrecv");
 			e.detail.msg = json_obj;
-			document.dispatchEvent(e);
+			//document.dispatchEvent(e);
 			break;
 		default:
 			console.log("DEFAULT NOTHING TODO...");
 			break;
 	}
+	
+	if(e){
+        document.dispatchEvent(e);
+    }
+	
 }
 
 function encryptPayload(secretKey, rcvrPubKey, msg){
+    console.info("Encrypt payload => " + msg);
 	let nonce = new Uint8Array(salt.box.nonceLength);
-	let message = salt.util.decodeUTF8(msg);
+	let message = salt.util.decodeUTF8(msg); // String => Uint8Array
+    console.debug(message);
 	let result = salt.box(message, nonce, rcvrPubKey, secretKey);
-	return result;
+    console.debug(result);
+    return result.toLocaleString();
+	return salt.util.encodeUTF8(); // Uint8Array => String
 }
 
-function decryptPayload(secretKey, sndrPubKey, msgUint8_Array){
+function decryptPayload(secretKey, sndrPubKey, msg){
 	let nonce = new Uint8Array(salt.box.nonceLength);
-	let ui8a = Uint8Array.from(msgUint8_Array);
-	let obox = salt.box.open(ui8a, nonce, sndrPubKey, secretKey);
-	return salt.util.encodeUTF8(obox);
+	//let ui8a = Uint8Array.from(msgUint8_Array);
+    //let ui8a = Uint8Array.from(msgarr);
+    console.info("Decrypt payload => " + msg);
+    let message = Uint8Array.from(msg.split(",").map(Number));
+    console.debug(message);
+	//let message = salt.util.decodeUTF8(msg); // String => Uint8Array
+	let obox = salt.box.open(message, nonce, sndrPubKey, secretKey);
+    console.debug(obox);
+	return salt.util.encodeUTF8(obox); // Uint8Array => String
 }
 	
 msghandler.sendMessage = function(msg){
-	console.log("Send message");
-
-	let e = eventMap.get("mh_messagesent");
-
-	if(isEmpty(msg)){
-		console.log("Empty message, nothing to do...");
+    
+    let rx_addr = BROADC_ADDR;
+    if(msg.startsWith("@")){
+        let rx_name = msg.substring(1, msg.indexOf(" "));
+        rx_addr = udb.getIdByName(rx_name);
+        console.debug("NAME: " + rx_name + " | ADDR: " + rx_addr);
+    }
+    
+	if(helpster.isEmpty(msg)){
+		console.info("Empty message, nothing to do...");
 		return;
 	}else if(msg === "#cookie"){
-		console.log("COOKIE");
-		var frame = createFrame("cookie", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
-		e.detail.header = frame;
-		frame["da"] = createPayload("message", msg);
+		console.info("COOKIE");
+		var frame = createFrame("cookie", [rx_addr]/* Has to be replaced by real receiver list */);
+		//frame["da"] = createPayload("message", msg);
 	}else{
-		var frame = createFrame("message", [BROADC_ADDR]/* Has to be replaced by real receiver list */);
-		e.detail.header = frame;
-		frame["da"] = createPayload("message", msg);
+		var frame = createFrame("message", [rx_addr]/* Has to be replaced by real receiver list */);
+		//frame["da"] = createPayload("message", msg);
 	}
 	/*
 	 * TODO Extract name from message and determine id(s) from belonging user 
-	 */ 
-
-	/* Encryption part
-	let enc = JSON.stringify(messageHandler.create(msg, "msg"));
-	enc = encryptPayload(enc, myUser.keys.publicKey ); //Has to be replaced by receiver public keys
-	enc.forEach(ele => frame["da"].push(ele));
-	*/
+	 */
+    
+	// Encryption part
+	
+	let payload = createPayload("message", msg);
+    let enc = JSON.stringify(payload);
+    enc = encryptPayload(udb.me.keys.secretKey, udb.others.get(rx_addr).pk, enc); //Has to be replaced by receiver public keys
+    frame["da"] = enc;
+    //enc.forEach(ele => frame["da"].push(ele));
+	
 	let jsonFrame = JSON.stringify(frame);
 	soc.send(jsonFrame);
-	e.detail.payload = frame["da"];
+    
+    frame["da"] = payload;
+    prev_sent_msg = frame;
+    	
+    let e = helpster.createEvent("mh_messagesent");
+    e.detail.msg = frame;
 	document.dispatchEvent(e);
-	
-	if(FLAG_TEST_LOCAL){
-		frame["na"] = userdb.me.na;
-		frame["cl"] = userdb.me.cl;
-		addMessageToChatBox(frame);
-	}
 }
 	
 msghandler.sendMetaChange = function(){
@@ -419,10 +415,14 @@ msghandler.sendMetaChange = function(){
 	
 	let jsonFrame = JSON.stringify(frame);
 	soc.send(jsonFrame);
+    
+    let e = helpster.createEvent("mh_messagesent");
+    
 	if(FLAG_TEST_LOCAL){
-		frame["na"] = userdb.me.na;
-		frame["cl"] = userdb.me.cl;
+		frame["na"] = udb.me.na;
+		frame["cl"] = udb.me.cl;
 		frame["da"]["pl"] = "Meta-Info change";
+        
 		addMessageToChatBox(frame);
 	}
 }
@@ -435,7 +435,7 @@ msghandler.sendInteraction = function (id){
 }
 
 msghandler.sendPoll = function (msg){
-	let e = eventMap.get("mh_messagesent");
+	let e = helpster.createEvent("mh_messagesent");
 	let frame = createFrame("poll", [BROADC_ADDR]);
 	var pollOptions = document.getElementsByName("poll_option");
 	let id = new Date().toISOString();
@@ -448,7 +448,7 @@ msghandler.sendPoll = function (msg){
 		msgObj.answers[key]=value;
 	}
 	frame["da"] = createPayload("poll", msgObj);
-	console.log(frame);
+	console.debug(frame);
 	let jsonFrame = JSON.stringify(frame);
 	soc.send(jsonFrame);
 	e.detail.payload = frame["da"];
