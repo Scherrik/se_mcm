@@ -2,14 +2,18 @@
 ## Project name
 ## Members: Marcel Fischer, Erik Günther, Erik Schneider, Tim Nau
 ## Statistics of efforts
+Erik Schneider
 ### Hours per person, and the major contributions per person
 ### Hours per workflow (requirement analysis, project management, …)
 ### Hours per phase (inception, elaboration, …)
 
 ## Highlights of your demo
+Tim Nau
 
 ## Highlights of your project, such as:
 ### Architecture
+Marcel Fischer
+
 ### Software tools/platforms/techniques used for your development
 
 #### Backend:
@@ -40,7 +44,11 @@ Setup without the specific MC:
 ### Testing:
 - tbd
 ### Database design
+!nicht vorhanden!
 ### Testing
+Erik Günther
 ### Measurements
+Marcel Fischer
 ### CI/CD
+Erik Günther
 ### … … anything you are very proud of!
