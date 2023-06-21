@@ -2,11 +2,17 @@
 ## Project name
 ## Members: Marcel Fischer, Erik Günther, Erik Schneider, Tim Nau
 ## Statistics of efforts
-Erik Schneider
-### Hours per person, and the major contributions per person
-### Hours per workflow (requirement analysis, project management, …)
-### Hours per phase (inception, elaboration, …)
-
+### Time spend per person:
+![OUCD](/docs/Finals/images/time_spend_per_person.png "Time spend per person")
+#### Major contributions per person:
+- Marcel Fischer: Use-Case-Design, Project manager
+- Erik Günther: Back-End Design, Microcontroller-Setup
+- Erik Schneider: Front-End Design, Web-Design & Development
+- Tim Nau: Front-End-Development, Design-Review
+### Hours per workflow:
+![OUCD](/docs/Finals/images/time_spend_per_workflow.png  "Time spend per workflow")
+### Hours per phase:
+![OUCD](/docs/Finals/images/time_spend_per_phase.png  "Tiem spend per phase")
 ## Highlights of your demo
 -Angry Mode: The AngryMode can be used to show your emotions while chatting, sometimes when you're chatting you don't know how a message was meant by the other Person but with the implementation of the Angry Button everybody in the Chatroom knows that you are not happy right now.
 
