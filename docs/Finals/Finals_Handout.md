@@ -52,7 +52,7 @@ Setup without the specific MC:
 ### Testing
 - Unittests are created with Jest (a nodejs testing module)
 - Test report will be created for each build including the test coverage
-- Maual tests embedded in jenkins pipeline
+- Manual tests embedded in jenkins pipeline
   
 ### Measurements
 Marcel Fischer
