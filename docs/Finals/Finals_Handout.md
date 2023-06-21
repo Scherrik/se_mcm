@@ -48,6 +48,10 @@ Frontend that provides the needed funtions to access the data
 - Event: user input (message, namechange, colour, etc)
 - Server manages: flow, encapsulation of the header, check the database, forward to receivers
 
+#### Arguments
+We chose this open layered and event drive ndesign because it suits our project very well. Our apllication is dependened on user interactions and those trigger events. 
+
+The event driven architecture is perfect to handle those events (messages, name and color changes, votes etc). The open structure allows us the distribute the resources and reduce the load on the for us very small server (the microcontroller with limited cpi power and ram).
 
 ### Software tools/platforms/techniques used for your development
 
