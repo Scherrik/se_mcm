@@ -1,7 +1,8 @@
+<img src="./images/Favicon.png" width="80px" style="float: right;"/>
+
 # Project: MC-Messenger - Finals: Handout
-## Project name
 ## Members: Marcel Fischer, Erik Günther, Erik Schneider, Tim Nau
-## Statistics of efforts
+## Statistics of efforts:
 ### Time spend per person:
 ![OUCD](/docs/Finals/images/time_spend_per_person.png "Time spend per person")
 #### Major contributions per person:
