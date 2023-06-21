@@ -8,7 +8,11 @@ Erik Schneider
 ### Hours per phase (inception, elaboration, …)
 
 ## Highlights of your demo
-Tim Nau
+-Angry Mode: The AngryMode can be used to show your emotions while chatting, sometimes when you're chatting you don't know how a message was meant by the other Person but with the implementation of the Angry Button everybody in the Chatroom knows that you are not happy right now.
+
+-Theme Changer: The theme changer can be used to adapt the style of the application to the user's Preference. If someone wants a bright application the can just the Light Theme, if they want a more subtle dark application they use the dark Theme. For Special occasions there are more themes to choose from like the DHBW Theme. 
+
+-Cookie Clicker: Every good Project needs a Cookie Clicker ;).
 
 ## Highlights of your project, such as:
 ### Architecture
