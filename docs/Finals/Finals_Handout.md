@@ -14,15 +14,50 @@
 ### Hours per phase:
 ![OUCD](/docs/Finals/images/time_spend_per_phase.png  "Tiem spend per phase")
 ## Highlights of your demo
--Angry Mode: The AngryMode can be used to show your emotions while chatting, sometimes when you're chatting you don't know how a message was meant by the other Person but with the implementation of the Angry Button everybody in the Chatroom knows that you are not happy right now.
+- Angry Mode: The AngryMode can be used to show your emotions while chatting, sometimes when you're chatting you don't know how a message was meant by the other Person but with the implementation of the Angry Button everybody in the Chatroom knows that you are not happy right now.
 
--Theme Changer: The theme changer can be used to adapt the style of the application to the user's Preference. If someone wants a bright application the can just the Light Theme, if they want a more subtle dark application they use the dark Theme. For Special occasions there are more themes to choose from like the DHBW Theme. 
+- Theme Changer: The theme changer can be used to adapt the style of the application to the user's Preference. If someone wants a bright application the can just the Light Theme, if they want a more subtle dark application they use the dark Theme. For Special occasions there are more themes to choose from like the DHBW Theme. 
 
--Cookie Clicker: Every good Project needs a Cookie Clicker ;).
+- Cookie Clicker: Every good Project needs a Cookie Clicker ;).
 
 ## Highlights of your project, such as:
 ### Architecture
-Marcel Fischer
+
+A short snipped of our [ASR document](/docs/ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md)
+
+### Tactics: Modifiability
+
+### Data model:
+Encryption changes the data model: (primarly the database of the backend! 
+=> Data abstraction: database attributes (public key etc)
+
+#### Theming of the GUI:
+- Change of name, colour etc. by the user
+- Change of web overlay theme colours
+
+#### Data abstraction: 
+Use of data strings and flags to exchange data and information between server and client.
+
+### Tactics to achieve this goals: 
+Simple structured and extendible backend database
+Frontend that provides the needed funtions to access the data
+
+### Architectural design:
+#### Layered (open layers):
+1. Frontend
+2. Client-Backend: (scripts, js)
+3. Backend (and from 3. back to 1. when data is send fro mthe server to a client)
+
+### Highlight: Many functions of the backend are outsourced to the clients to reduce server load. For axample the management and distribution of ther user database. Only one user at the time is "master" and distributes the database to new connecting clients. After that each client maintains its own database
+
+#### Event-driven:
+- Event: user input (message, namechange, colour, etc)
+- Server manages: flow, encapsulation of the header, check the database, forward to receivers
+
+#### Arguments
+We chose this open layered and event drive ndesign because it suits our project very well. Our apllication is dependened on user interactions and those trigger events. 
+
+The event driven architecture is perfect to handle those events (messages, name and color changes, votes etc). The open structure allows us the distribute the resources and reduce the load on the for us very small server (the microcontroller with limited cpi power and ram).
 
 ### Software tools/platforms/techniques used for your development
 
@@ -52,7 +87,8 @@ Setup without the specific MC:
 - Web Browser
 
 #### Testing:
-- tbd
+- Jenskins /Jest : Unit- and Stress-Testing
+
 ### Database design
 - Database per client: Each client maintains its own database
 - Simple javascript map, with the id of the user as the identifier
@@ -100,4 +136,3 @@ Used components:
 - Jenkins in connection with github and discord (Jira could be included as well)
 - Runs on a raspberry pi 2B+ ...but it runs ;)
   
-### … … anything you are very proud of!
