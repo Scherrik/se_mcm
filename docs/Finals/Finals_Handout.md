@@ -50,9 +50,24 @@ Setup without the specific MC:
 ### Database design
 !nicht vorhanden!
 ### Testing
-Erik Günther
+- Unittests are created with Jest (a nodejs testing module)
+- Test report will be created for each build including the test coverage
+- Maual tests embedded in jenkins pipeline
+  
 ### Measurements
 Marcel Fischer
 ### CI/CD
-Erik Günther
+Includes:
+- Build pipeline (per branch)
+- Unittests
+- Test report creation (including coverage)
+- Manual (stress-)tests
+- Automatic release 
+- Automatically notify development/devops team via discord about build status and failures 
+- Strict separation of development and production code
+
+Used components:
+- Jenkins in connection with github and discord (Jira could be included as well)
+- Runs on a raspberry pi 2B+ ...but it runs ;)
+  
 ### … … anything you are very proud of!
