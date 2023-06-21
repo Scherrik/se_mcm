@@ -48,7 +48,12 @@ Setup without the specific MC:
 #### Testing:
 - tbd
 ### Database design
-!nicht vorhanden!
+- Database per client: Each client maintains its own database
+- Simple javascript map, with the id of the user as the identifier
+- The user object contains the following attributes: id, name, color, public key
+
+Due to the no-persistency approach in the application, there is no need for a more complex database.
+
 ### Testing
 - Unittests are created with Jest (a nodejs testing module)
 - Test report will be created for each build including the test coverage
