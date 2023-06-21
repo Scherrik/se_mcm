@@ -6,10 +6,10 @@
 ### Time spend per person:
 ![OUCD](/docs/Finals/images/time_spend_per_person.png "Time spend per person")
 #### Major contributions per person:
-- Marcel Fischer: Use-Case-Design, Project manager
-- Erik Günther: Back-End Design, Microcontroller-Setup
+- Marcel Fischer: Use-Case-Design, Project Manager, Unit Testing
+- Erik Günther: Back-End Design, Microcontroller-Setup, CI/CD-Setup, Testing
 - Erik Schneider: Front-End Design, Web-Design & Development
-- Tim Nau: Front-End-Development, Design-Review
+- Tim Nau: Front-End-Development, Design-Review, Unit-Testing
 ### Hours per workflow:
 ![OUCD](/docs/Finals/images/time_spend_per_workflow.png  "Time spend per workflow")
 ### Hours per phase:
