@@ -300,23 +300,29 @@ A description of how the software architecture contributes to all capabilities (
 
 ### 11.1 Tactics:
 Our main goal and discussed tactics focuss on modifiability. 
-
 We used the provided checklist and discussed how we need to implement certain features to achieve the desired goal. You can find the whole ASR document on github. 
 
 [ASR_Modifiability](./ArchitectureSignificantRequirements/Architecture-Design-and-Tactics.md)
 
-The document is also appended below:
+The rest of chapter 11 is this document also appended below:
 
 #### 11.1.1 Data model:
 The addition of encryption changes a part of the data model (primarly the database of the backend! The frontend while be mostly unaffected)
-=> data abstraction: database attributes (public key etc)
-Theming:
-change of name, colour etc. by the user
-change of web overlay theme colours
+
+=> Data abstraction: database attributes (public key etc)
+
+##### Theming of the GUI:
+- Change of name, colour etc. by the user
+- Change of web overlay theme colours
+
 => visibility of attributes and privileges to the user
-data abstraction: Use of data strings and flags to exchange data and information between server and client
+
+##### Data abstraction: 
+Use of data strings and flags to exchange data and information between server and client.
+
 ==> keep number and severity of modifications to the minimum (small changes)
-Tactics to achieve this goals:
+
+#### Tactics to achieve this goals: 
 Simple structured and extendible backend database
 Frontend that provides the needed funtions to access the data
 
@@ -342,6 +348,7 @@ Our software consists of several layers that need to be passed while sending and
 #### 11.2.2 Event-driven: (mediator in form of backend)
 Event: user input (message, namechange, colour, etc)
 Server manages: flow, encapsulation of the header, check the database, forward to receivers
+
 
 
 ## 12. Supporting Information
