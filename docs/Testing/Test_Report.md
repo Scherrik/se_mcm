@@ -84,4 +84,4 @@ Also there were  no major errors detected because those have been found an fixed
 
 ## Conclusion
 <!-- This section summarizes the key findings of the testing and the overall status of the software quality. -->
-### Erik S.
+In conclusion, the testing campaign for the MC-Messenger project successfully demonstrated the functionality of the code and helped identify any errors. The overall software quality was assessed through the implemented testing strategy. The test results and metrics provided valuable insights into the effectiveness of the testing process and identified areas for improvement. In future projects we can enhance the testing process and achieve higher software quality standards by implementing the recommendations mentioned above.
