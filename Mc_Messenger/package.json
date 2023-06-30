@@ -33,6 +33,9 @@
         "clearMocks": true,
         "collectCoverage": true,
         "coverageDirectory": "unittests/coverage",
+        "coveragePathIgnorePatterns" : [
+            "data/js/nacl*"
+        ],
         "reporters":         [
             "default",
                         [
