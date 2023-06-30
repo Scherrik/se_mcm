@@ -26,7 +26,17 @@ PowerPoint: https://suedwestrundfunk-my.sharepoint.com/:p:/g/personal/marcel_fis
 
 PDF: https://github.com/Scherrik/se_mcm/blob/main/docs/Finals/Presentation_Final_MCM.pdf
 ## Demo screenshots
-
+Below are some screenshots of our final demo including some highlights:
+### Login Screen
+![OUCD](/docs/Finals/images/Mcm_Login_Screen.png)
+### Example Chat
+![OUCD](/docs/Finals/images/Mcm_Chat_Example.png)
+### Angry Mode :)
+![OUCD](/docs/Finals/images/Mcm_Angry_Mode.png)
+### Polling system
+![OUCD](/docs/Finals/images/Mcm_Poll.png)
+### Cookie Clicker ;)
+![OUCD](/docs/Finals/images/Mcm_Cookie_Clicker.png)
 
 
 ## RUP SRS document -- Software Requirement Specification
