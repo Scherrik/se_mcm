@@ -33,12 +33,9 @@
         "clearMocks": true,
         "collectCoverage": true,
         "coverageDirectory": "unittests/coverage",
-<<<<<<< HEAD
-=======
         "coveragePathIgnorePatterns" : [
             "data/js/nacl*"
         ],
->>>>>>> dev_nmcm
         "reporters":         [
             "default",
                         [
@@ -53,8 +50,5 @@
         "rootDir": "./",
         "roots": ["./unittests/"]
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> dev_nmcm
+
