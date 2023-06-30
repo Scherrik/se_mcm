@@ -39,8 +39,8 @@ Every Build gets a downloadable test report
 
 ## Test Cases and Results
 <!-- This section details the specific test cases that were executed, including their pass/fail status and any defects found during testing. (You may link to the repository of your use cases.) -->
-<!--![Test cases and results](https://github.com/Scherrik/se_mcm/tree/main/docs/Finals/images/test_report.png)-->
 ![Test cases and results](../Finals/images/test_report.png?raw=true "Test cases and results")
+![Test cases and results document](https://github.com/Scherrik/se_mcm/tree/rel_nmcm/Mc_Messenger/unittests/test-report.html)
 <!-- ### Erik G -->
 
 <!-- ## Test Results -->
@@ -50,6 +50,7 @@ Every Build gets a downloadable test report
 ## Metrics
 <!-- This section provides quantitative data on the testing process, such as the number of defects found, the defect resolution time, and the test coverage achieved. -->
 ![Code coverage](../Finals/images/Code_Coverage.png?raw=true "Code coverage")
+![Coe coverage document](https://github.com/Scherrik/se_mcm/tree/rel_nmcm/Mc_Messenger/unittests/test-report.html)
 <!-- ### Erik G -->
 
 ## Recommendations 
