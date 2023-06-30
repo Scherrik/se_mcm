@@ -14,7 +14,7 @@
     },
     "type": "module",
     "name": "nmcm",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "main": "wsserver.js",
     "scripts":     {
         "test": "jest --verbose",
@@ -33,9 +33,7 @@
         "clearMocks": true,
         "collectCoverage": true,
         "coverageDirectory": "unittests/coverage",
-        "coveragePathIgnorePatterns" : [
-            "data/js/nacl*"
-        ],
+        "coveragePathIgnorePatterns": ["data/js/nacl*"],
         "reporters":         [
             "default",
                         [
@@ -51,4 +49,3 @@
         "roots": ["./unittests/"]
     }
 }
-
