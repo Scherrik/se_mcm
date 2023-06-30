@@ -1,31 +1,36 @@
 # MCM - Testing Report
 
 ## Introduction
-<!-- This section provides an overview of the software testing process and the scope of the testing activities. -->
-### Marcel
+<!-- This section provides an overview of the software testing process and the scope of the testing activities. ### Marcel -->
+The scope of this document will be to demonstrates the results of the testing campaign of the project MC-Messenger. 
+The goal of testing is to assure the correct functionality of our code and to expose unnoticed errors after a new update has been pushed to the project.
+
+The main focus of the testing will be automated unit tests with Jenkins.
+The secondary focus are manuell Smoke and Stress Tests before public deployment of a new build
+
 
 ## Test Strategy
 <!-- This section describes the overall approach to testing, including the testing methodology, testing types, and testing techniques used. Highlight which automatic testing tools/frameworks are used for your project -->
 
-### Type of Tests?
+### Type of Tests
 We want to focuse on the following tests:
 - Unit Test: Testing of most of the implemented functions (js) 
 - Smoke Test & Stress Test
 
-### Target test coverage?
+### Target test coverage
 Examples:
-message shows in the text box.
-Behaviour of the page without websocket
-Check for empty string.
-Many test from the files:
-Message and user functions.
-=> Around 50% - the correct coverage can be tetermined after the testing campagne 
+- message shown in the text box.
+- Behaviour of the page without a websocket
+- Check for empty string.
+- Many test from the files:
+- Message and user functions.
+=> Around 50% - the correct coverage can be determined after the testing campaign. 
 
 ### Testing tool
-Jenkins
+Our automatic testing tool will be Jenkins
 
-### Manage our test cases: Which tests passed (failed on which version?)
-In Jenkins: (We tag a test with the last git commit message)
+### Manage of the test cases: 
+In Jenkins: - We tag a test with the last git commit message
 Every Build gets a downloadable test report
 
 ## Test Plan
@@ -47,6 +52,7 @@ Every Build gets a downloadable test report
 ## Recommendations 
 <!-- This section offers suggestions for improving the testing process and the quality of the software. -->
 ### Marcel
+To improve the testing quality and progress
 
 ## Conclusion
 <!-- This section summarizes the key findings of the testing and the overall status of the software quality. -->
