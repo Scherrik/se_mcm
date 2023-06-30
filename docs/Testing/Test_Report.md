@@ -39,7 +39,7 @@ Every Build gets a downloadable test report
 
 ## Test Cases and Results
 <!-- This section details the specific test cases that were executed, including their pass/fail status and any defects found during testing. (You may link to the repository of your use cases.) -->
-![Test cases and results](../Finals/images/test_report.png?raw=true "Test cases and results")
+![Test cases and results](../Finals/images/test_report.png?raw=true "Test cases and results")<br>
 ![Test cases and results document](https://github.com/Scherrik/se_mcm/tree/rel_nmcm/Mc_Messenger/unittests/test-report.html)
 <!-- ### Erik G -->
 
