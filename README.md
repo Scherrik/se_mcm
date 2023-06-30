@@ -56,6 +56,6 @@ https://github.com/Scherrik/se_mcm/blob/main/docs/Metrics/metrics_results.md
 https://github.com/Scherrik/se_mcm/blob/main/docs/CI_CD/CI_CD_MCM.md
 ## Risk management table
 ![OUCD](/docs/RiskManagement/RMMM%20Table.png)
-## Lessons learned – screenshot / exported picture of your last retrospective meeting
+## Lessons learned
 https://github.com/Scherrik/se_mcm/blob/main/docs/Retrospective/MCM%20Retrospective_2023-06-01_14-55-53.png
 ![OUCD](/docs/Retrospective/MCM%20Retrospective_2023-06-01_14-55-53.png)
