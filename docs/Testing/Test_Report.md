@@ -36,6 +36,19 @@ Every Build gets a downloadable test report
 ## Test Plan
 <!-- This section outlines the specific testing tasks, timelines, and resources required to achieve the testing objectives. -->
 ### Tim Nau
+For the Testing in our Project we sat togehter and discusses which tool we wanted to use for our Project, we went with Jenkins to setup Testing and our CI/CD enviorment.
+For the CI_CD setup we settled on the following functions that needed to be incluced:
+- Build pipeline (per branch)
+- Unittests
+- Test report creation (including coverage)
+- Manual (stress-)tests
+- Automatic release
+- Automatically notify development/devops team via discord about build status and failures
+- Strict separation of development and production code
+
+This setup allowed us to use two Branches in development the first one beeing the development branch and the other one the realease branch. To ensure that the code we added into the dev branch only gets pushed to the release Branch if everything works as intended we needed to add Unittest to ensure that, therefore we came up with our Testing Strategie.
+
+We came up with the Test Cases we wanted to Test, to organize ourselfs we split the unittests into tasks that we could implement into Jira and assign to the Team Members. For the Tests themself we often set togheter and talked about how we can implement them in the best way, because some of us already had more knowledge then others this was helpful to make up for questions and ensure that each test actually works like the test case we defined it in. After everything was clear, the members that were responsible for writing the test could code and implement them into our code and track their Progress in Jira. After the Tests werre implemented we checked if they worke and them we used them in our CI/CD setup.
 
 ## Test Cases and Results
 <!-- This section details the specific test cases that were executed, including their pass/fail status and any defects found during testing. (You may link to the repository of your use cases.) -->
