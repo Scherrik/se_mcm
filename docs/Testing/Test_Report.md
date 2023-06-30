@@ -50,7 +50,7 @@ Every Build gets a downloadable test report
 ## Metrics
 <!-- This section provides quantitative data on the testing process, such as the number of defects found, the defect resolution time, and the test coverage achieved. -->
 ![Code coverage](../Finals/images/Code_Coverage.png?raw=true "Code coverage")
-![Coe coverage document](https://github.com/Scherrik/se_mcm/tree/rel_nmcm/Mc_Messenger/unittests/test-report.html)
+![Code coverage document](https://github.com/Scherrik/se_mcm/tree/rel_nmcm/Mc_Messenger/unittests/test-report.html)
 <!-- ### Erik G -->
 
 ## Recommendations 
