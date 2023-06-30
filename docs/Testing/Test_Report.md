@@ -50,9 +50,20 @@ Every Build gets a downloadable test report
 ### Erik G 
 
 ## Recommendations 
-<!-- This section offers suggestions for improving the testing process and the quality of the software. -->
-### Marcel
-To improve the testing quality and progress
+<!-- This section offers suggestions for improving the testing process and the quality of the software. ### Marcel -->
+
+To improve the testing quality and progress the following recommendations should be followed for future projects: 
+
+### Focus on clean code: 
+Testing had to be posponed because of unsuitable funstions: high coupling, low cohesion of the functions 
+=> functions needed to be untangled and Helper functions were moved to an extra js file
+### Focus on testability and apropiate choice of tests:
+Many of our send and receive functions are difficult to test with unit testing. Different test strategies would hneed to be chose nfor those functions. (manual tests/stress tests after deployment for example)
+
+### Start the writing of the tests much earlier: 
+When we started writing unit tests most of the development was finished. 
+Because of that we did not have many new builds which could benefit of the automated testing and not many automatic test reports where created.
+Also there were  no major errors detected because those have been found an fixed way before that.
 
 ## Conclusion
 <!-- This section summarizes the key findings of the testing and the overall status of the software quality. -->
