@@ -50,9 +50,9 @@ Findings for each component:
 - Flag for the message type is missing
 #### Solutions:
 
-#### => add: name -> id mapping - Person: Erik Günther - deadline: 01.06.2023
+#### => add: name -> id mapping - Person: Erik Günther - deadline: 01.06.2023 => done   
 
-#### => add: Message type flag - Person: Erik Günther - deadline: 01.06.2023
+#### => add: Message type flag - Person: Erik Günther - deadline: 01.06.2023 => done  
 
 #### Positive:
 Coded after the principles of clean code
@@ -66,9 +66,9 @@ Coded after the principles of clean code
 #### Solutions:
 Advantage of Templates: Use of different message types (votes, text, picture, video)
 
-#### => Create Templates on how to fill the chat window - Person: Erik Schneider - deadline: Do. 01.06.2023
+#### => Create Templates on how to fill the chat window - Person: Erik Schneider - deadline: Do. 01.06.2023 => done  
 
-#### => filter for type flag (set in the sendMessage() function) - Person: Erik Schneider - deadline: Do. 01.06.2023
+#### => filter for type flag (set in the sendMessage() function) - Person: Erik Schneider - deadline: Do. 01.06.2023 => done  
 
 
 ### checkUserName()
@@ -76,4 +76,4 @@ Advantage of Templates: Use of different message types (votes, text, picture, vi
 - username duplications are possible
 #### Solutions
 
-#### => compare user input with userlist - Person: Tim Nau - deadline: 01.06.2023
+#### => compare user input with userlist - Person: Tim Nau - deadline: 01.06.2023 => done  
